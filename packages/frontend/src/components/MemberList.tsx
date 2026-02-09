@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePublicClient, useWatchContractEvent } from "wagmi";
 import { type Address, parseAbiItem } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
-import { AGENT_POOL_DISTRIBUTOR_ADDRESS, CHAIN } from "@/config/contracts";
+import { AGENT_POOL_DISTRIBUTOR_ADDRESS, CHAIN, DEPLOY_BLOCK } from "@/config/contracts";
 
 const isDeployed =
   AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
@@ -30,7 +30,7 @@ export function MemberList() {
           event: parseAbiItem(
             "event AgentJoined(uint256 indexed agentId, address indexed agentWallet)"
           ),
-          fromBlock: BigInt(0),
+          fromBlock: DEPLOY_BLOCK,
           toBlock: "latest",
         });
 
@@ -40,7 +40,7 @@ export function MemberList() {
           event: parseAbiItem(
             "event AgentLeft(uint256 indexed agentId, address indexed agentWallet)"
           ),
-          fromBlock: BigInt(0),
+          fromBlock: DEPLOY_BLOCK,
           toBlock: "latest",
         });
 

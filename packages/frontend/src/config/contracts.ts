@@ -10,3 +10,6 @@ export const AGENT_POOL_DISTRIBUTOR_ADDRESS: Address =
   "0xb33239ef5c55cB62D83ED620C84Db992bD3107d6";
 
 export const CHAIN = baseSepolia;
+
+// Block at which AgentPoolDistributor was deployed
+export const DEPLOY_BLOCK = BigInt(37438410);
