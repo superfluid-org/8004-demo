@@ -24,7 +24,7 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <ConnectButton />
+          <ConnectButton showBalance={false} />
         </div>
       </header>
 
