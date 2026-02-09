@@ -4,10 +4,10 @@ import { useAccount, useReadContract } from "wagmi";
 import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
-import { SuperTokenABI } from "@/abi/SuperToken";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
 import { formatFlowRate } from "@/utils/format";
 import { FlowingBalance } from "./FlowingBalance";
+import { usePoolSubgraph } from "@/hooks/usePoolSubgraph";
 
 const isDeployed =
   AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
@@ -22,26 +22,9 @@ export function PoolDashboard() {
     query: { enabled: isDeployed },
   });
 
-  const { data: superToken } = useReadContract({
-    address: poolAddress as Address,
-    abi: SuperfluidPoolABI,
-    functionName: "superToken",
-    query: { enabled: !!poolAddress },
-  });
-
-  const { data: totalUnits } = useReadContract({
-    address: poolAddress as Address,
-    abi: SuperfluidPoolABI,
-    functionName: "getTotalUnits",
-    query: { enabled: !!poolAddress, refetchInterval: 10000 },
-  });
-
-  const { data: totalFlowRate } = useReadContract({
-    address: poolAddress as Address,
-    abi: SuperfluidPoolABI,
-    functionName: "getTotalFlowRate",
-    query: { enabled: !!poolAddress, refetchInterval: 10000 },
-  });
+  const { data: subgraphData } = usePoolSubgraph(
+    poolAddress as string | undefined
+  );
 
   const { data: memberFlowRate } = useReadContract({
     address: poolAddress as Address,
@@ -51,21 +34,13 @@ export function PoolDashboard() {
     query: { enabled: !!poolAddress && !!address, refetchInterval: 10000 },
   });
 
-  // Get the pool's realtime balance from the SuperToken
-  // This is how much is currently sitting in the pool (not yet claimed)
-  const { data: poolBalance } = useReadContract({
-    address: superToken as Address,
-    abi: SuperTokenABI,
-    functionName: "realtimeBalanceOfNow",
-    args: [poolAddress as Address],
-    query: { enabled: !!superToken && !!poolAddress, refetchInterval: 30000 },
-  });
-
-  const streamRate = totalFlowRate
-    ? `${formatFlowRate(BigInt(totalFlowRate.toString().replace("-", "")), "month")} SUP/mo`
+  const streamRate = subgraphData
+    ? `${formatFlowRate(subgraphData.flowRate, "month")} SUP/mo`
     : "-- SUP/mo";
 
-  const memberCount = totalUnits !== undefined ? totalUnits.toString() : "--";
+  const memberCount = subgraphData
+    ? subgraphData.totalMembers.toString()
+    : "--";
 
   const yourShare =
     !isConnected
@@ -74,28 +49,18 @@ export function PoolDashboard() {
         ? `${formatFlowRate(BigInt(memberFlowRate.toString().replace("-", "")), "month")} SUP/mo`
         : "-- SUP/mo";
 
-  // Pool balance = total distributed but not yet claimed by members
-  // It ticks up at totalFlowRate as streams flow in
-  const absFlowRate = totalFlowRate
-    ? BigInt(totalFlowRate.toString().replace("-", ""))
-    : BigInt(0);
-
-  const hasPoolBalance = poolBalance && poolBalance[0] !== undefined;
-  const poolBalanceValue = hasPoolBalance ? BigInt(poolBalance[0].toString()) : BigInt(0);
-  const poolBalanceTimestamp = hasPoolBalance ? Number(poolBalance[3]) : 0;
-
   return (
     <section className="flex flex-col gap-4">
       {/* Distributed So Far — full width */}
       <div className="rounded-xl border border-emerald-500/10 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-6">
         <p className="text-sm font-medium text-zinc-400">Distributed So Far</p>
         <div className="mt-1 text-3xl font-semibold text-emerald-400 streaming-number">
-          {hasPoolBalance && totalFlowRate !== undefined ? (
+          {subgraphData ? (
             <>
               <FlowingBalance
-                balance={poolBalanceValue < BigInt(0) ? BigInt(0) : poolBalanceValue}
-                balanceTimestamp={poolBalanceTimestamp}
-                flowRate={absFlowRate}
+                balance={subgraphData.totalAmountDistributedUntilUpdatedAt}
+                balanceTimestamp={subgraphData.updatedAtTimestamp}
+                flowRate={subgraphData.flowRate}
                 decimals={4}
               />
               {" SUP"}
