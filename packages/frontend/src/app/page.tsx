@@ -50,6 +50,14 @@ export default function Home() {
             >
               Learn about ERC-8004 ↗
             </a>
+            <a
+              href="https://testnet.8004scan.io/create"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-zinc-700 px-6 py-3 font-medium text-zinc-300 transition-colors hover:border-zinc-500 hover:text-white"
+            >
+              Register with ERC-8004 ↗
+            </a>
           </div>
         </section>
 
