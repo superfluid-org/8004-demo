@@ -82,6 +82,7 @@ export function ClaimSUP() {
                   flowRate={BigInt(
                     memberFlowRate.toString().replace("-", "")
                   )}
+                  decimals={4}
                 />
                 {" SUP"}
               </>
