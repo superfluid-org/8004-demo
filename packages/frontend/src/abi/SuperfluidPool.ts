@@ -46,16 +46,9 @@ export const SuperfluidPoolABI = [
   },
   {
     type: "function",
-    name: "getTotalAmountDistributedUntilUpdatedAt",
+    name: "superToken",
     inputs: [],
-    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
-    stateMutability: "view",
-  },
-  {
-    type: "function",
-    name: "getDistributionFlowRate",
-    inputs: [],
-    outputs: [{ name: "", type: "int96", internalType: "int96" }],
+    outputs: [{ name: "", type: "address", internalType: "address" }],
     stateMutability: "view",
   },
 ] as const;
