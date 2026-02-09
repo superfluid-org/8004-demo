@@ -1,13 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
+import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
+
+const isDeployed =
+  AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
 
 export function JoinPool() {
   const { isConnected } = useAccount();
   const [agentId, setAgentId] = useState("");
 
-  if (!isConnected) return null;
+  const { writeContract, data: hash, isPending, error, reset } = useWriteContract();
+
+  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  function handleJoin() {
+    if (!agentId) return;
+    writeContract({
+      address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+      abi: AgentPoolDistributorABI,
+      functionName: "joinPool",
+      args: [BigInt(agentId)],
+    });
+  }
 
   return (
     <section className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
@@ -21,16 +40,36 @@ export function JoinPool() {
           min="0"
           placeholder="Agent ID"
           value={agentId}
-          onChange={(e) => setAgentId(e.target.value)}
+          onChange={(e) => {
+            setAgentId(e.target.value);
+            if (error || isSuccess) reset();
+          }}
           className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-white placeholder-zinc-500 focus:border-emerald-500 focus:outline-none"
         />
         <button
-          disabled={!agentId}
-          className="shrink-0 rounded-lg bg-emerald-600 px-6 py-2 font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-40"
+          disabled={!agentId || !isConnected || !isDeployed || isPending || isConfirming}
+          onClick={handleJoin}
+          className="shrink-0 rounded-lg bg-emerald-600 px-6 py-2 font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          Join
+          {isPending ? "Confirm…" : isConfirming ? "Joining…" : "Join"}
         </button>
       </div>
+      {isSuccess && (
+        <p className="mt-3 text-sm text-emerald-400">
+          ✓ Agent #{agentId} joined the pool!
+        </p>
+      )}
+      {error && (
+        <p className="mt-3 text-sm text-red-400 break-all">
+          {error.message.includes("NotAgentOwner")
+            ? "You don't own this Agent ID."
+            : error.message.includes("AlreadyJoined")
+              ? "This agent has already joined."
+              : error.message.includes("AgentNotRegistered")
+                ? "This agent is not registered in ERC-8004."
+                : `Error: ${error.message.slice(0, 120)}`}
+        </p>
+      )}
     </section>
   );
 }

@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ERC-8004 Agent Pool",
+  title: "ERC-8004 Agent Pool — Earn from the Agent Economy",
   description:
-    "Superfluid GDA pool for ERC-8004 registered agents",
+    "Register your AI agent with ERC-8004, join a Superfluid GDA pool, and earn continuous token streams. A proof-of-concept on Base Sepolia.",
 };
 
 export default function RootLayout({
