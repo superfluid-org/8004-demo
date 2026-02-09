@@ -1,0 +1,47 @@
+export const SuperfluidPoolABI = [
+  {
+    type: "function",
+    name: "getTotalUnits",
+    inputs: [],
+    outputs: [{ name: "", type: "uint128", internalType: "uint128" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getUnits",
+    inputs: [{ name: "memberAddr", type: "address", internalType: "address" }],
+    outputs: [{ name: "", type: "uint128", internalType: "uint128" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getTotalFlowRate",
+    inputs: [],
+    outputs: [{ name: "", type: "int96", internalType: "int96" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getMemberFlowRate",
+    inputs: [{ name: "memberAddr", type: "address", internalType: "address" }],
+    outputs: [{ name: "", type: "int96", internalType: "int96" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getClaimableNow",
+    inputs: [{ name: "memberAddr", type: "address", internalType: "address" }],
+    outputs: [
+      { name: "claimableBalance", type: "int256", internalType: "int256" },
+      { name: "timestamp", type: "uint256", internalType: "uint256" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getTotalAmountReceivedByMember",
+    inputs: [{ name: "memberAddr", type: "address", internalType: "address" }],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+] as const;

@@ -1,20 +1,41 @@
 "use client";
 
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { formatEther, type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
+import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
 
 const isDeployed =
   AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
 
 export function ClaimSUP() {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
+
+  const { data: poolAddress } = useReadContract({
+    address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+    abi: AgentPoolDistributorABI,
+    functionName: "pool",
+    query: { enabled: isDeployed },
+  });
+
+  const { data: claimable } = useReadContract({
+    address: poolAddress as Address,
+    abi: SuperfluidPoolABI,
+    functionName: "getClaimableNow",
+    args: [address!],
+    query: { enabled: !!poolAddress && !!address, refetchInterval: 5000 },
+  });
 
   const { writeContract, data: hash, isPending, error, reset } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
+
+  const claimableAmount = claimable
+    ? Number(formatEther(BigInt(claimable[0].toString().replace("-", "")))).toFixed(4)
+    : "--";
 
   function handleClaim() {
     writeContract({
@@ -33,7 +54,7 @@ export function ClaimSUP() {
       <div className="mt-4 flex items-center justify-between">
         <div>
           <p className="text-sm text-zinc-400">Accumulated</p>
-          <p className="text-xl font-semibold text-emerald-400">-- SUP</p>
+          <p className="text-xl font-semibold text-emerald-400">{claimableAmount} SUP</p>
         </div>
       </div>
       <button
