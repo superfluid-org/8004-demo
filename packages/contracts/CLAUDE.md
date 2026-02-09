@@ -57,9 +57,9 @@ script/
 
 ### Before Deploying to Base Sepolia
 
-- [ ] **GDA_FORWARDER address** in `script/Deploy.s.sol` — currently `address(0x1)`. Need the real Superfluid GDAv1Forwarder address on Base Sepolia.
-- [ ] **SUPER_TOKEN address** in `script/Deploy.s.sol` — currently `address(0x2)`. Need to deploy or find a dummy Super Token on Base Sepolia.
-- [ ] **`.env` file** with `PRIVATE_KEY` for the deployer account.
+- [x] **GDA_FORWARDER address** in `script/Deploy.s.sol` — currently `address(0x1)`. Need the real Superfluid GDAv1Forwarder address on Base Sepolia.
+- [x] **SUPER_TOKEN address** in `script/Deploy.s.sol` — currently `address(0x2)`. Need to deploy or find a dummy Super Token on Base Sepolia.
+- [x] **`.env` file** with `PRIVATE_KEY` for the deployer account.
 
 ### Nice to Have (from product brief)
 
@@ -87,8 +87,8 @@ script/
 |---|---|---|
 | ERC-8004 Identity Registry | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
 | ERC-8004 Reputation Registry | `0x8004B663056A597Dffe9eCcC1965A193B7388713` | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
-| Superfluid GDAv1Forwarder | **TBD** | **TBD** |
-| Super Token (SUP) | **TBD** | **TBD** |
+| Superfluid GDAv1Forwarder | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` |
+| Super Token (SUP) | `0xFd62b398DD8a233ad37156690631fb9515059d6A` | `0xa69f80524381275A7fFdb3AE01c54150644c8792` |
 
 ## ERC-8004 Interface Notes
 

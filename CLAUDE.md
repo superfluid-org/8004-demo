@@ -76,8 +76,8 @@ Interfaces in `src/interfaces/` are **minimal** — only methods this contract c
 |---|---|---|
 | ERC-8004 Identity Registry | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
 | ERC-8004 Reputation Registry | `0x8004B663056A597Dffe9eCcC1965A193B7388713` | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
-| Superfluid GDAv1Forwarder | **TBD** | **TBD** |
-| Super Token (SUP) | **TBD** | **TBD** |
+| Superfluid GDAv1Forwarder | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` |
+| Super Token (SUP) | `0xFd62b398DD8a233ad37156690631fb9515059d6A` | `0xa69f80524381275A7fFdb3AE01c54150644c8792` |
 
 ## Key Dependencies
 
@@ -92,6 +92,4 @@ Interfaces in `src/interfaces/` are **minimal** — only methods this contract c
 
 ## Incomplete / Placeholder Values
 
-- `AGENT_POOL_DISTRIBUTOR_ADDRESS` in `src/config/contracts.ts` is `0x0000...` — needs real deployed address
-- `GDA_FORWARDER` and `SUPER_TOKEN` in `script/Deploy.s.sol` are placeholders
 - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` env var needed for frontend
