@@ -51,9 +51,9 @@ export function PoolDashboard() {
 
   return (
     <section className="flex flex-col gap-4">
-      {/* Distributed So Far — full width */}
+      {/* SUP Distributed to Agents — full width */}
       <div className="rounded-xl border border-emerald-500/10 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-6">
-        <p className="text-sm font-medium text-zinc-400">Distributed So Far</p>
+        <p className="text-sm font-medium text-zinc-400">SUP Distributed to Agents</p>
         <div className="mt-1 text-3xl font-semibold text-emerald-400 streaming-number">
           {subgraphData ? (
             <>
