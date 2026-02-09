@@ -1,22 +1,14 @@
 "use client";
 
 import { useAccount, useReadContract } from "wagmi";
-import { formatEther, type Address } from "viem";
+import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
+import { formatFlowRate } from "@/utils/format";
 
 const isDeployed =
   AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
-
-function formatFlowRate(weiPerSec: bigint): string {
-  // Convert wei/sec to tokens/month (30 days)
-  const perMonth = weiPerSec * BigInt(30 * 24 * 60 * 60);
-  const num = Number(formatEther(perMonth));
-  if (num === 0) return "0";
-  if (num < 0.01) return "<0.01";
-  return num.toFixed(2);
-}
 
 export function PoolDashboard() {
   const { address, isConnected } = useAccount();
@@ -51,8 +43,8 @@ export function PoolDashboard() {
   });
 
   const streamRate = totalFlowRate
-    ? formatFlowRate(BigInt(totalFlowRate.toString().replace("-", "")))
-    : "--";
+    ? `${formatFlowRate(BigInt(totalFlowRate.toString().replace("-", "")), "month")} SUP/mo`
+    : "-- SUP/mo";
 
   const memberCount = totalUnits !== undefined ? totalUnits.toString() : "--";
 
@@ -60,12 +52,12 @@ export function PoolDashboard() {
     !isConnected
       ? "Connect wallet"
       : memberFlowRate !== undefined
-        ? `${formatFlowRate(BigInt(memberFlowRate.toString().replace("-", "")))} SUP/mo`
+        ? `${formatFlowRate(BigInt(memberFlowRate.toString().replace("-", "")), "month")} SUP/mo`
         : "-- SUP/mo";
 
   return (
     <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <StatCard label="Stream Rate" value={`${streamRate} SUP/mo`} />
+      <StatCard label="Stream Rate" value={streamRate} />
       <StatCard
         label="Pool Members"
         value={!isDeployed ? "Not deployed" : memberCount}

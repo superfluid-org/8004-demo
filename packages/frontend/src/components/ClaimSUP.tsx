@@ -1,13 +1,20 @@
 "use client";
 
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { formatEther, type Address } from "viem";
+import {
+  useAccount,
+  useReadContract,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+} from "wagmi";
+import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
+import { FlowingBalance } from "./FlowingBalance";
 
 const isDeployed =
-  AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
+  AGENT_POOL_DISTRIBUTOR_ADDRESS !==
+  "0x0000000000000000000000000000000000000000";
 
 export function ClaimSUP() {
   const { address, isConnected } = useAccount();
@@ -24,18 +31,30 @@ export function ClaimSUP() {
     abi: SuperfluidPoolABI,
     functionName: "getClaimableNow",
     args: [address!],
-    query: { enabled: !!poolAddress && !!address, refetchInterval: 5000 },
+    query: { enabled: !!poolAddress && !!address, refetchInterval: 30000 },
   });
 
-  const { writeContract, data: hash, isPending, error, reset } = useWriteContract();
-
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
-    hash,
+  const { data: memberFlowRate } = useReadContract({
+    address: poolAddress as Address,
+    abi: SuperfluidPoolABI,
+    functionName: "getMemberFlowRate",
+    args: [address!],
+    query: { enabled: !!poolAddress && !!address, refetchInterval: 30000 },
   });
 
-  const claimableAmount = claimable
-    ? Number(formatEther(BigInt(claimable[0].toString().replace("-", "")))).toFixed(4)
-    : "--";
+  const {
+    writeContract,
+    data: hash,
+    isPending,
+    error,
+    reset,
+  } = useWriteContract();
+
+  const { isLoading: isConfirming, isSuccess } =
+    useWaitForTransactionReceipt({ hash });
+
+  const hasClaimable =
+    claimable && BigInt(claimable[0].toString()) > BigInt(0);
 
   function handleClaim() {
     writeContract({
@@ -54,7 +73,22 @@ export function ClaimSUP() {
       <div className="mt-4 flex items-center justify-between">
         <div>
           <p className="text-sm text-zinc-400">Accumulated</p>
-          <p className="text-xl font-semibold text-emerald-400">{claimableAmount} SUP</p>
+          <div className="text-xl font-semibold text-emerald-400">
+            {claimable && memberFlowRate !== undefined ? (
+              <>
+                <FlowingBalance
+                  balance={BigInt(claimable[0].toString())}
+                  balanceTimestamp={Number(claimable[1])}
+                  flowRate={BigInt(
+                    memberFlowRate.toString().replace("-", "")
+                  )}
+                />
+                {" SUP"}
+              </>
+            ) : (
+              "-- SUP"
+            )}
+          </div>
         </div>
       </div>
       <button
@@ -65,7 +99,9 @@ export function ClaimSUP() {
         {isPending ? "Confirm…" : isConfirming ? "Claiming…" : "Claim"}
       </button>
       {isSuccess && (
-        <p className="mt-3 text-sm text-emerald-400">✓ SUP claimed successfully!</p>
+        <p className="mt-3 text-sm text-emerald-400">
+          ✓ SUP claimed successfully!
+        </p>
       )}
       {error && (
         <p className="mt-3 text-sm text-red-400 break-all">
