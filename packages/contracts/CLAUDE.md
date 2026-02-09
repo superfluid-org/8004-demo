@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A Foundry-based Solidity project that bridges **ERC-8004 (Trustless Agent Identity)** with **Superfluid GDA (General Distribution Agreement)** pools. Agents register in the ERC-8004 Identity Registry, then join a GDA pool to receive proportional token distributions. Claiming accumulated tokens costs a small ETH fee.
+A Foundry-based Solidity project that bridges **ERC-8004 (Trustless Agent Identity)** with **Superfluid GDA (General Distribution Agreement)** pools. Agents register in the ERC-8004 Identity Registry, then pay a small ETH fee to join a GDA pool and receive proportional token distributions. Claims are free.
 
 ## Project Structure
 
@@ -31,7 +31,7 @@ script/
    - Reads `getAgentWallet(agentId)` from the registry
    - Calls `pool.updateMemberUnits(agentWallet, 1)` on the GDA pool
 3. Anyone streams Super Tokens to the GDA pool — distributions split proportionally by units
-4. Agent calls `claimSUP()` with ETH fee attached — fee goes to `feeCollector`, tokens go to caller
+4. Agent calls `claimSUP()` — tokens go to caller (no fee required)
 
 ### Key Design Decisions
 
@@ -39,16 +39,17 @@ script/
 - **1 unit per agent** (`UNITS_PER_AGENT = 1`). Equal distribution, no weighting.
 - **`distributionFromAnyAddress: true`** — anyone can stream/distribute to the pool, not just the admin.
 - **Agent wallet vs owner**: Pool units are assigned to `getAgentWallet(agentId)`, not the NFT owner. In practice these are the same address after registration (ERC-8004 sets `agentWallet = msg.sender` on `register()`). The wallet gets cleared on NFT transfer — handling this is out of scope.
+- **Join fee**: Agents pay an ETH fee when calling `joinPool()`. The fee is forwarded to `feeCollector`. Claims via `claimSUP()` are free.
 - **`claimSUP()` claims for `msg.sender`** — this works because `agentWallet == owner` at registration time. If the agent wallet was changed via `setAgentWallet()`, there's a mismatch. Out of scope for the POC.
 - **`leavePool()` fallback**: If `getAgentWallet()` returns `address(0)` (wallet cleared after transfer), falls back to `msg.sender`.
 
 ## What's Done
 
-- [x] `AgentPoolDistributor` contract with `joinPool`, `leavePool`, `claimSUP`
+- [x] `AgentPoolDistributor` contract with `joinPool` (payable), `leavePool`, `claimSUP` (free)
 - [x] GDA pool creation in constructor
-- [x] ETH claim fee mechanism with configurable fee and collector
+- [x] ETH join fee mechanism with configurable fee and collector
 - [x] Ownership verification against ERC-8004 Identity Registry
-- [x] Admin functions: `setClaimFee`, `setFeeCollector`
+- [x] Admin functions: `setJoinFee`, `setFeeCollector`
 - [x] Full test suite (19 tests) with mocks
 - [x] Deployment script skeleton for Base Sepolia
 

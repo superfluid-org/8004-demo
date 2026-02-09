@@ -2,7 +2,7 @@
 
 ## What Is This?
 
-A protocol connecting ERC-8004 (Trustless Agent Identity) with Superfluid GDA (General Distribution Agreement) pools. AI agents register on-chain, join a shared pool, and earn continuous token streams automatically distributed to all members.
+A protocol connecting ERC-8004 (Trustless Agent Identity) with Superfluid GDA (General Distribution Agreement) pools. AI agents register on-chain, pay a small ETH fee to join a shared pool, and earn continuous token streams automatically distributed to all members. Claims are free.
 
 This is a proof-of-concept on Base Sepolia testnet.
 
@@ -15,22 +15,22 @@ This is a proof-of-concept on Base Sepolia testnet.
 
 1. **Register** — Call `register()` on the ERC-8004 Identity Registry. You receive an agent ID (ERC-721 NFT) and your wallet is recorded as the agent wallet.
 
-2. **Join Pool** — Call `joinPool(uint256 agentId)` on the AgentPoolDistributor. The contract verifies you own the agent NFT and that your agent wallet is set. You receive 1 pool unit.
+2. **Join Pool** — Call `joinPool(uint256 agentId)` with ETH value >= joinFee (currently 0.001 ETH) on the AgentPoolDistributor. The contract verifies you own the agent NFT and that your agent wallet is set. The fee goes to the protocol fee collector. You receive 1 pool unit.
 
 3. **Earn** — Anyone can stream Super Tokens to the GDA pool. Distributions split proportionally among all members (1 unit each = equal split).
 
-4. **Claim** — Call `claimSUP()` with ETH value >= claimFee (currently 0.001 ETH). The fee goes to the protocol fee collector. Your accumulated tokens are claimed from the pool.
+4. **Claim** — Call `claimSUP()` on the AgentPoolDistributor. No fee required. Your accumulated tokens are claimed from the pool.
 
 5. **Leave** — Call `leavePool(uint256 agentId)` to remove your pool units and stop receiving distributions.
 
 ## Key Function Signatures
 
 ### AgentPoolDistributor
-- `joinPool(uint256 agentId)` — Join the GDA pool (must own the agent NFT)
-- `claimSUP()` payable — Claim accumulated tokens (requires ETH fee)
+- `joinPool(uint256 agentId)` payable — Join the GDA pool (must own the agent NFT, requires ETH fee)
+- `claimSUP()` — Claim accumulated tokens (free, no fee required)
 - `leavePool(uint256 agentId)` — Leave the pool
 - `hasJoined(uint256 agentId) → bool` — Check if an agent has joined
-- `claimFee() → uint256` — Current claim fee in wei
+- `joinFee() → uint256` — Current join fee in wei
 - `pool() → address` — GDA pool address
 
 ### ERC-8004 Identity Registry
@@ -41,7 +41,7 @@ This is a proof-of-concept on Base Sepolia testnet.
 ## Events
 - `AgentJoined(uint256 indexed agentId, address indexed agentWallet)`
 - `AgentLeft(uint256 indexed agentId, address indexed agentWallet)`
-- `SUPClaimed(address indexed claimant, uint256 feePaid)`
+- `SUPClaimed(address indexed claimant)`
 
 ## Links
 - ERC-8004 Specification: https://eips.ethereum.org/EIPS/eip-8004
@@ -54,3 +54,4 @@ This is a proof-of-concept on Base Sepolia testnet.
 - ERC-8004 registration is permissionless — anyone can register
 - 1 unit per agent (equal distribution, no weighting)
 - Agent wallet is set to msg.sender on registration and cleared on NFT transfer
+- Pay-to-join model: fee on joinPool(), free claims via claimSUP()

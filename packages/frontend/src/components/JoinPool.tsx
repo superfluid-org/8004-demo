@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { formatEther } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
 
@@ -11,6 +12,13 @@ const isDeployed =
 export function JoinPool() {
   const { isConnected } = useAccount();
   const [agentId, setAgentId] = useState("");
+
+  const { data: joinFee } = useReadContract({
+    address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+    abi: AgentPoolDistributorABI,
+    functionName: "joinFee",
+    query: { enabled: isDeployed },
+  });
 
   const { writeContract, data: hash, isPending, error, reset } = useWriteContract();
 
@@ -25,6 +33,7 @@ export function JoinPool() {
       abi: AgentPoolDistributorABI,
       functionName: "joinPool",
       args: [BigInt(agentId)],
+      value: joinFee ?? BigInt("1000000000000000"), // fallback 0.001 ETH
     });
   }
 
@@ -34,7 +43,10 @@ export function JoinPool() {
       <p className="mt-1 text-sm text-zinc-400">
         Enter your ERC-8004 Agent ID to join the distribution pool.
       </p>
-      <div className="mt-4 flex gap-3">
+      <div className="mt-2 text-right text-sm text-zinc-400">
+        Join fee: {joinFee ? `${formatEther(joinFee)} ETH` : "0.001 ETH"}
+      </div>
+      <div className="mt-2 flex gap-3">
         <input
           type="number"
           min="0"
@@ -67,7 +79,9 @@ export function JoinPool() {
               ? "This agent has already joined."
               : error.message.includes("AgentNotRegistered")
                 ? "This agent is not registered in ERC-8004."
-                : `Error: ${error.message.slice(0, 120)}`}
+                : error.message.includes("InsufficientFee")
+                  ? "Insufficient ETH for join fee."
+                  : `Error: ${error.message.slice(0, 120)}`}
         </p>
       )}
     </section>

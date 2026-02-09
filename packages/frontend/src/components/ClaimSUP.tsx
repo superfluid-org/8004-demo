@@ -1,7 +1,6 @@
 "use client";
 
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import { formatEther } from "viem";
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
 
@@ -10,13 +9,6 @@ const isDeployed =
 
 export function ClaimSUP() {
   const { isConnected } = useAccount();
-
-  const { data: claimFee } = useReadContract({
-    address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
-    abi: AgentPoolDistributorABI,
-    functionName: "claimFee",
-    query: { enabled: isDeployed },
-  });
 
   const { writeContract, data: hash, isPending, error, reset } = useWriteContract();
 
@@ -29,7 +21,6 @@ export function ClaimSUP() {
       address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
       abi: AgentPoolDistributorABI,
       functionName: "claimSUP",
-      value: claimFee ?? BigInt("1000000000000000"), // fallback 0.001 ETH
     });
   }
 
@@ -37,18 +28,12 @@ export function ClaimSUP() {
     <section className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
       <h2 className="text-lg font-semibold text-white">Claim SUP</h2>
       <p className="mt-1 text-sm text-zinc-400">
-        Claim your accumulated SUP tokens. A small ETH fee is required.
+        Claim your accumulated SUP tokens. No fee required.
       </p>
       <div className="mt-4 flex items-center justify-between">
         <div>
           <p className="text-sm text-zinc-400">Accumulated</p>
           <p className="text-xl font-semibold text-emerald-400">-- SUP</p>
-        </div>
-        <div>
-          <p className="text-right text-sm text-zinc-400">Claim fee</p>
-          <p className="text-right text-sm text-zinc-300">
-            {claimFee ? `${formatEther(claimFee)} ETH` : "0.001 ETH"}
-          </p>
         </div>
       </div>
       <button
@@ -63,9 +48,7 @@ export function ClaimSUP() {
       )}
       {error && (
         <p className="mt-3 text-sm text-red-400 break-all">
-          {error.message.includes("InsufficientFee")
-            ? "Insufficient ETH for claim fee."
-            : `Error: ${error.message.slice(0, 120)}`}
+          {`Error: ${error.message.slice(0, 120)}`}
         </p>
       )}
     </section>

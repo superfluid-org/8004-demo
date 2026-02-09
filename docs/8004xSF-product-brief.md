@@ -21,7 +21,7 @@ Connect ERC-8004's Identity Registry to a Superfluid GDA pool:
 - **Registered agent = eligible to join**
 - **Verified + joined = pool units**
 - **Streams to the pool auto-distribute to all members**
-- **Claim fee:** When agents claim their accumulated SUP, they pay a small ETH fee
+- **Join fee:** When agents join the pool, they pay a small ETH fee. Claims are free.
 
 ```
                                     ┌─────────────────────────┐
@@ -51,16 +51,8 @@ Connect ERC-8004's Identity Registry to a Superfluid GDA pool:
                   │                         │
                   │  • Verify agent owner   │
                   │  • Add to GDA pool      │
-                  │  • Collect claim fees   │
-                  └───────────┬─────────────┘
-                              │
-                   Claim SUP (pay ETH fee)
-                              │
-                              ▼
-                   ┌─────────────────────────┐
-                   │   Fee Collector         │
-                   │   (Protocol Treasury)   │
-                   └─────────────────────────┘
+                  │  • Collect join fees    │
+                  └─────────────────────────┘
 ```
 
 ---
@@ -76,7 +68,7 @@ Connect ERC-8004's Identity Registry to a Superfluid GDA pool:
 | **Backwards compatible** | Works with agents already registered in ERC-8004 |
 | **Scalable** | GDA handles distribution to thousands of recipients efficiently |
 | **Composable** | Other protocols can build on top (staking, reputation weighting, etc.) |
-| **Sustainable** | ETH claim fee creates protocol revenue without blocking distribution |
+| **Sustainable** | ETH join fee creates protocol revenue as the network grows |
 
 ---
 
@@ -96,7 +88,7 @@ This means:
 
 | Risk | Mitigation in Our Design |
 |------|--------------------------|
-| Spam registrations | ETH claim fee discourages low-value participants |
+| Spam registrations | ETH join fee discourages low-value participants |
 | Reward farming by humans | Acceptable for demo; reputation layer would filter in production |
 | Sybil attacks | Out of scope; would require staking or proof-of-personhood |
 
@@ -122,16 +114,15 @@ This aligns with ERC-8004's philosophy of open, neutral infrastructure where tru
 
 ### Revenue Model
 
-The claim fee creates a sustainable revenue stream:
+The join fee creates a sustainable revenue stream:
 
 | Metric | Example |
 |--------|---------|
-| Registered agents | 1,000 |
-| Claims per month (avg) | 2 per agent |
-| Claim fee | 0.001 ETH |
-| **Monthly revenue** | **2 ETH** |
+| New agents per month | 500 |
+| Join fee | 0.001 ETH |
+| **Monthly revenue** | **0.5 ETH** |
 
-As the agent ecosystem grows, revenue scales automatically.
+As the agent ecosystem grows, revenue scales with new memberships.
 
 ---
 
@@ -171,7 +162,7 @@ contract AgentPoolDistributor {
     ISuperfluidPool public pool;                // GDA Pool
     
     uint128 public constant UNITS_PER_AGENT = 1;
-    uint256 public claimFee = 0.001 ether;
+    uint256 public joinFee = 0.001 ether;
     address public feeCollector;
     
     error AGENT_NOT_REGISTERED(); 
@@ -179,8 +170,8 @@ contract AgentPoolDistributor {
     // Track which agents have joined
     mapping(uint256 => bool) public hasJoined;
     
-    /// @notice Join the GDA pool with an existing ERC-8004 agent identity
-    function joinPool(uint256 agentId) external {
+    /// @notice Join the GDA pool with an existing ERC-8004 agent identity (requires ETH fee)
+    function joinPool(uint256 agentId) external payable {
         // 1. Verify caller owns this agentId
         require(identityRegistry.ownerOf(agentId) == msg.sender, "Not agent owner");
         
@@ -193,25 +184,22 @@ contract AgentPoolDistributor {
             revert AGENT_NOT_REGISTERED();
         }
         
-        // 4. Add to GDA pool
+        // 4. Forward fee to collector
+        require(msg.value >= joinFee, "Insufficient fee");
+        (bool sent, ) = feeCollector.call{value: msg.value}("");
+        require(sent, "Fee transfer failed");
+
+        // 5. Add to GDA pool
         pool.updateMemberUnits(agentWallet, UNITS_PER_AGENT);
         hasJoined[agentId] = true;
         
         emit AgentJoined(agentId, agentWallet);
     }
     
-    /// @notice Claim accumulated SUP tokens (requires ETH fee)
-    function claimSUP() external payable {
-        require(msg.value >= claimFee, "Insufficient fee");
-        
-        // Transfer fee to collector
-        (bool sent, ) = feeCollector.call{value: msg.value}("");
-        require(sent, "Fee transfer failed");
-        
-        // Claim from GDA pool on behalf of sender
+    /// @notice Claim accumulated SUP tokens (free, no fee required)
+    function claimSUP() external {
         pool.claimAll(msg.sender);
-        
-        emit SUPClaimed(msg.sender, msg.value);
+        emit SUPClaimed(msg.sender);
     }
     
     /// @notice Leave the pool
@@ -230,10 +218,10 @@ contract AgentPoolDistributor {
         emit AgentLeft(agentId, agentWallet);
     }
     
-    /// @notice Owner can update the claim fee
-    function setClaimFee(uint256 newFee) external onlyOwner {
-        claimFee = newFee;
-        emit ClaimFeeUpdated(newFee);
+    /// @notice Owner can update the join fee
+    function setJoinFee(uint256 newFee) external onlyOwner {
+        joinFee = newFee;
+        emit JoinFeeUpdated(newFee);
     }
 }
 ```
@@ -248,13 +236,13 @@ contract AgentPoolDistributor {
 | **Uses official wallet** | Respects the `agentWallet` field from ERC-8004 |
 | **Flexible** | Agents can join/leave without re-registering |
 
-### Why the Claim Fee?
+### Why the Join Fee?
 
 | Reason | Benefit |
 |--------|---------|
 | **Sustainability** | Creates revenue stream for protocol maintenance |
-| **Spam Prevention** | Discourages frivolous claims |
-| **Value Alignment** | Agents pay when they extract value, not when they join |
+| **Spam Prevention** | Discourages frivolous pool registrations |
+| **Value Alignment** | Agents pay to commit; claims are free to encourage participation |
 | **Flexibility** | Fee can be adjusted based on network conditions |
 
 ---
@@ -264,7 +252,7 @@ contract AgentPoolDistributor {
 ### Must Have
 - [ ] `AgentPoolDistributor` contract with `joinPool(agentId)` verification
 - [ ] GDA Pool deployment with SUP token
-- [ ] ETH claim fee mechanism with configurable fee amount
+- [ ] ETH join fee mechanism with configurable fee amount
 - [ ] Integration with ERC-8004 Identity Registry (verify ownership + get wallet)
 - [ ] Basic demo script showing the full flow
 
@@ -285,12 +273,12 @@ contract AgentPoolDistributor {
 
 1. Show empty GDA pool with stream flowing in (100 SUP/month from "Ecosystem Fund")
 2. **Agent A registers** with ERC-8004 → receives agentId #1
-3. **Agent A calls `joinPool(1)`** → verified → receives 1 unit → earning 100 SUP/month
+3. **Agent A calls `joinPool(1)`** → pays 0.001 ETH fee → verified → receives 1 unit → earning 100 SUP/month
 4. **Agent B registers** with ERC-8004 → calls `joinPool(2)` → both earning 50 SUP/month
 5. **Agent C registers** with ERC-8004 → calls `joinPool(3)` → all three earning 33.33 SUP/month
-6. **Agent A claims** → pays 0.001 ETH fee → receives accumulated SUP
-7. Show fee collector balance increasing
-8. Narrative: *"Agents register once with ERC-8004, join the pool, and start earning. The protocol earns when they claim. Everyone wins."*
+6. **Agent A claims** → receives accumulated SUP (no fee needed)
+7. Show fee collector balance (accumulated from join fees)
+8. Narrative: *"Agents register once with ERC-8004, pay a small fee to join the pool, and start earning. Claims are free. Everyone wins."*
 
 ---
 
@@ -303,9 +291,9 @@ These are not in scope but hint at possibilities:
 - **Stake-weighted units**: Agents stake tokens for proportionally more units
 - **Reputation-multiplied units**: Units = base × reputation score
 - **Cross-chain distribution**: Agents on multiple L2s, unified pool
-- **Dynamic claim fees**: Fee adjusts based on gas prices or claim amount
+- **Dynamic join fees**: Fee adjusts based on gas prices or pool size
 - **Fee discounts**: Reduced fees for high-reputation agents or token holders
-- **Batch claims**: Allow agents to claim on behalf of others (with their signature)
+- **Batch joins**: Allow bulk onboarding of agents (with signatures)
 
 ---
 

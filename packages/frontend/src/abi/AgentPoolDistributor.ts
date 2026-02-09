@@ -4,7 +4,7 @@ export const AgentPoolDistributorABI = [
     name: "joinPool",
     inputs: [{ name: "agentId", type: "uint256", internalType: "uint256" }],
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
   },
   {
     type: "function",
@@ -18,7 +18,7 @@ export const AgentPoolDistributorABI = [
     name: "claimSUP",
     inputs: [],
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
   },
   {
     type: "function",
@@ -29,7 +29,7 @@ export const AgentPoolDistributorABI = [
   },
   {
     type: "function",
-    name: "claimFee",
+    name: "joinFee",
     inputs: [],
     outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
     stateMutability: "view",
@@ -69,7 +69,6 @@ export const AgentPoolDistributorABI = [
     name: "SUPClaimed",
     inputs: [
       { name: "agent", type: "address", indexed: true },
-      { name: "fee", type: "uint256", indexed: false },
     ],
   },
 ] as const;
