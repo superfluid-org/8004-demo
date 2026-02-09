@@ -88,7 +88,7 @@ export function MemberList() {
   });
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
+    <section className="rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
       <h2 className="text-lg font-semibold text-white">Earning Agents</h2>
       {!isDeployed ? (
         <p className="mt-2 text-sm text-zinc-500">

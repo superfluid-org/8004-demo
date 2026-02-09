@@ -16,3 +16,30 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/* Subtle glow for hero */
+.hero-glow {
+  background: radial-gradient(
+    ellipse 60% 40% at 50% 0%,
+    rgba(16, 185, 129, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+/* Card hover lift */
+.card-hover {
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(161, 161, 170, 0.3);
+}
+
+/* Smooth pulse for streaming numbers */
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+.streaming-number {
+  animation: subtle-pulse 2s ease-in-out infinite;
+}

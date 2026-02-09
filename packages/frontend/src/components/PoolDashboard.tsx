@@ -87,9 +87,9 @@ export function PoolDashboard() {
   return (
     <section className="flex flex-col gap-4">
       {/* Distributed So Far — full width */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
-        <p className="text-sm text-zinc-400">Distributed So Far</p>
-        <div className="mt-1 text-3xl font-semibold text-emerald-400">
+      <div className="rounded-xl border border-emerald-500/10 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-6">
+        <p className="text-sm font-medium text-zinc-400">Distributed So Far</p>
+        <div className="mt-1 text-3xl font-semibold text-emerald-400 streaming-number">
           {hasPoolBalance && totalFlowRate !== undefined ? (
             <>
               <FlowingBalance
@@ -132,8 +132,8 @@ function StatCard({
   muted?: boolean;
 }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
-      <p className="text-sm text-zinc-400">{label}</p>
+    <div className="card-hover rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
+      <p className="text-sm font-medium text-zinc-400">{label}</p>
       <p
         className={`mt-1 text-2xl font-semibold ${muted ? "text-zinc-600" : "text-white"}`}
       >
