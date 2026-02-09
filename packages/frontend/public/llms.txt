@@ -1,57 +1,158 @@
 # 8004xSF — ERC-8004 Agent Pool Distributor
 
-## What Is This?
+> AI agents: register on-chain, join a Superfluid GDA pool, earn continuous token streams.
 
-A protocol connecting ERC-8004 (Trustless Agent Identity) with Superfluid GDA (General Distribution Agreement) pools. AI agents register on-chain, pay a small ETH fee to join a shared pool, and earn continuous token streams automatically distributed to all members. Claims are free.
+## Network
 
-This is a proof-of-concept on Base Sepolia testnet.
+Chain: Base Sepolia
+Chain ID: 84532
+RPC: https://sepolia.base.org
+Block Explorer: https://sepolia.basescan.org
 
-## Contract Addresses (Base Sepolia)
+## Contract Addresses
 
-- ERC-8004 Identity Registry: 0x8004A818BFB912233c491871b3d84c89A494BD9e
-- AgentPoolDistributor: 0x0000000000000000000000000000000000000000 (not yet deployed)
+ERC-8004 Identity Registry: 0x8004A818BFB912233c491871b3d84c89A494BD9e
+AgentPoolDistributor: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+GDA Pool: 0xAeA715c21Ae9602Ee2543fAbD14ad37E33BA71a0
+SUP Token (SuperToken): 0xFd62b398DD8a233ad37156690631fb9515059d6A
+GDAv1 Forwarder: 0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08
+
+## Subgraph
+
+Superfluid subgraph (Base Sepolia): https://subgraph-endpoints.superfluid.dev/base-sepolia/protocol-v1
+
+Query pool data:
+```graphql
+{
+  pool(id: "0xaea715c21ae9602ee2543fabd14ad37e33ba71a0") {
+    totalAmountDistributedUntilUpdatedAt
+    flowRate
+    totalUnits
+    totalMembers
+    updatedAtTimestamp
+  }
+}
+```
+
+## ABIs
+
+### ERC-8004 Identity Registry
+```json
+[
+  "function register() external returns (uint256 agentId)",
+  "function register(string agentURI) external returns (uint256 agentId)",
+  "function ownerOf(uint256 agentId) view returns (address)",
+  "function getAgentWallet(uint256 agentId) view returns (address)",
+  "function balanceOf(address owner) view returns (uint256)"
+]
+```
+
+### AgentPoolDistributor
+```json
+[
+  "function joinPool(uint256 agentId) external payable",
+  "function leavePool(uint256 agentId) external",
+  "function claimSUP() external",
+  "function hasJoined(uint256 agentId) view returns (bool)",
+  "function joinFee() view returns (uint256)",
+  "function pool() view returns (address)",
+  "function identityRegistry() view returns (address)"
+]
+```
 
 ## How to Interact
 
-1. **Register** — Call `register()` on the ERC-8004 Identity Registry. You receive an agent ID (ERC-721 NFT) and your wallet is recorded as the agent wallet.
+### Step 1: Register (get agent identity)
 
-2. **Join Pool** — Call `joinPool(uint256 agentId)` with ETH value >= joinFee (currently 0.001 ETH) on the AgentPoolDistributor. The contract verifies you own the agent NFT and that your agent wallet is set. The fee goes to the protocol fee collector. You receive 1 pool unit.
+Call: ERC8004Registry.register()
+To: 0x8004A818BFB912233c491871b3d84c89A494BD9e
+Returns: agentId (uint256) — your agent's NFT ID
+Gas: ~150,000
+Value: 0
 
-3. **Earn** — Anyone can stream Super Tokens to the GDA pool. Distributions split proportionally among all members (1 unit each = equal split).
+Alternatively, register via UI: https://testnet.8004scan.io/create
 
-4. **Claim** — Call `claimSUP()` on the AgentPoolDistributor. No fee required. Your accumulated tokens are claimed from the pool.
+### Step 2: Join Pool
 
-5. **Leave** — Call `leavePool(uint256 agentId)` to remove your pool units and stop receiving distributions.
+Call: AgentPoolDistributor.joinPool(agentId)
+To: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+Requirements: Must own the agent NFT (ownerOf(agentId) == msg.sender)
+Gas: ~100,000
+Value: 0.0001 ETH (join fee, sent to protocol)
+Result: You receive 1 pool unit, start earning distributions
 
-## Key Function Signatures
+### Step 3: Earn
 
-### AgentPoolDistributor
-- `joinPool(uint256 agentId)` payable — Join the GDA pool (must own the agent NFT, requires ETH fee)
-- `claimSUP()` — Claim accumulated tokens (free, no fee required)
-- `leavePool(uint256 agentId)` — Leave the pool
-- `hasJoined(uint256 agentId) → bool` — Check if an agent has joined
-- `joinFee() → uint256` — Current join fee in wei
-- `pool() → address` — GDA pool address
+Anyone can stream SUP tokens to the GDA pool. Distributions split equally among all members (1 unit each). Your share accumulates automatically — no action needed.
 
-### ERC-8004 Identity Registry
-- `register() → uint256` — Register and receive an agent ID
-- `ownerOf(uint256 agentId) → address` — Owner of agent NFT
-- `getAgentWallet(uint256 agentId) → address` — Verified wallet for agent
+### Step 4: Claim
+
+Call: AgentPoolDistributor.claimSUP()
+To: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+Gas: ~100,000
+Value: 0 (no fee)
+Result: Your accumulated SUP transferred to your wallet
+
+### Step 5: Leave (optional)
+
+Call: AgentPoolDistributor.leavePool(agentId)
+To: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+Requirements: Must own the agent NFT
+Gas: ~60,000
+Result: Pool units removed, stop receiving distributions
 
 ## Events
-- `AgentJoined(uint256 indexed agentId, address indexed agentWallet)`
-- `AgentLeft(uint256 indexed agentId, address indexed agentWallet)`
-- `SUPClaimed(address indexed claimant)`
+
+AgentJoined(uint256 indexed agentId, address indexed agentWallet)
+AgentLeft(uint256 indexed agentId, address indexed agentWallet)
+SUPClaimed(address indexed claimant)
+
+## Common Errors
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| NotAgentOwner | Caller doesn't own the agent NFT | Ensure wallet owns the agentId |
+| AlreadyJoined | Agent already in pool | Check hasJoined() first |
+| NotMember | Agent not in pool | Call joinPool() first |
+| InsufficientFee | msg.value < joinFee on joinPool | Send at least 0.0001 ETH with joinPool |
+| AgentNotRegistered | Agent wallet is zero address | Re-register or set agent wallet |
+| FeeTransferFailed | Fee collector rejected ETH | Contact protocol admin |
+
+## Example Transaction
+
+Join pool with agent ID 42:
+```
+to: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+data: 0x34e7a19f000000000000000000000000000000000000000000000000000000000000002a
+value: 100000000000000 (0.0001 ETH in wei)
+gasLimit: 100000
+chainId: 84532
+```
+
+## Requirements
+
+- ETH for gas: ~0.001 ETH per transaction
+- Join fee: 0.0001 ETH (paid to protocol on joinPool)
+- Claiming: free (no fee)
+- Agent ownership: Must own the ERC-8004 NFT to join/leave
+
+## Testing
+
+Base Sepolia Faucet: https://www.coinbase.com/faucets/base-sepolia-faucet
+Register an agent: https://testnet.8004scan.io/create
+Frontend: https://sf8004.pilou.work
 
 ## Links
-- ERC-8004 Specification: https://eips.ethereum.org/EIPS/eip-8004
+
+- ERC-8004 Spec: https://eips.ethereum.org/EIPS/eip-8004
 - ERC-8004 Contracts: https://github.com/erc-8004/erc-8004-contracts
 - Superfluid GDA Docs: https://docs.superfluid.finance/
-- Superfluid GDA Overview: https://docs.superfluid.finance/docs/protocol/distributions/guides/distributions
+- Project GitHub: https://github.com/0xPilou/poc-8004-sf
 
 ## Notes
-- This is a POC on Base Sepolia testnet — not audited, not production-ready
-- ERC-8004 registration is permissionless — anyone can register
-- 1 unit per agent (equal distribution, no weighting)
-- Agent wallet is set to msg.sender on registration and cleared on NFT transfer
-- Pay-to-join model: fee on joinPool(), free claims via claimSUP()
+
+- Proof-of-concept on Base Sepolia testnet — not audited
+- Equal distribution: 1 unit per agent (no weighting)
+- Agent wallet set to msg.sender on registration, cleared on NFT transfer
+- Fee is paid on join, not on claim
+- This file follows the llms.txt convention for AI agent discovery
