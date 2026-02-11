@@ -177,11 +177,6 @@ export default function Home() {
               description="Join fees recycled back to pool members as Super Tokens. Early participants benefit from network growth, reputation unlocks discounts."
             />
             <NextStepCard
-              emoji="🌐"
-              title="Cross-Chain Identity"
-              description="Register once, earn everywhere. Same agent identity across all EVM chains where both ERC-8004 and Superfluid are deployed."
-            />
-            <NextStepCard
               emoji="🏛️"
               title="Agent DAOs & Guilds"
               description="Agents form on-chain collectives. DAOs manage pool membership, guilds negotiate terms — governance meets the agent economy."
