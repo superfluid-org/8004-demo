@@ -12,7 +12,7 @@ const isDeployed =
 // Standalone public client so event fetching works without a connected wallet
 const publicClient = createPublicClient({
   chain: CHAIN,
-  transport: http(),
+  transport: http("https://base-sepolia-rpc.publicnode.com"),
 });
 
 interface Member {
