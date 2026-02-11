@@ -43,7 +43,7 @@ export function JoinPool() {
       <p className="mt-1 text-sm text-zinc-400">
         Enter your ERC-8004 Agent ID to join the distribution pool.
       </p>
-      <div className="mt-4 flex gap-3">
+      <div className="mt-10 flex gap-3">
         <input
           type="number"
           min="0"
