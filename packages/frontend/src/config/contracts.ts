@@ -12,4 +12,4 @@ export const AGENT_POOL_DISTRIBUTOR_ADDRESS: Address =
 export const CHAIN = baseSepolia;
 
 // Block at which AgentPoolDistributor was deployed
-export const DEPLOY_BLOCK = BigInt(37438410);
+export const DEPLOY_BLOCK = BigInt(37340106);
