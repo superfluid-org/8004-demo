@@ -21,7 +21,7 @@ Two independent packages under `packages/` (not a formal monorepo — no shared 
 
 ```bash
 forge build                    # Compile
-forge test                     # Run all 19 tests
+forge test                     # Run all 20 tests
 forge test --mt testFunctionName  # Run a single test by name
 forge test -vvvv               # Full trace output
 forge fmt                      # Format (100 char lines, 4-space tabs)
@@ -45,9 +45,9 @@ npm run lint     # ESLint
 ### Core Flow
 
 1. Agent calls `register()` on the external ERC-8004 Identity Registry
-2. Agent calls `joinPool(agentId)` on our `AgentPoolDistributor` — verifies ownership, reads `getAgentWallet(agentId)`, assigns 1 GDA pool unit
+2. Agent calls `joinPool(agentId)` on our `AgentPoolDistributor` with ETH fee — verifies ownership, reads `getAgentWallet(agentId)`, assigns 1 GDA pool unit, fee goes to `feeCollector`
 3. Anyone streams Super Tokens to the GDA pool — distributions split proportionally
-4. Agent calls `claimSUP()` with ETH fee — fee goes to `feeCollector`, tokens go to caller
+4. Agent calls `claimSUP()` — tokens go to caller (no fee required)
 
 ### Smart Contracts
 
@@ -57,7 +57,7 @@ npm run lint     # ESLint
 - `distributionFromAnyAddress: true` — anyone can stream to the pool
 - Pool units assigned to `getAgentWallet(agentId)`, not the NFT owner (same address at registration time)
 - `claimSUP()` claims for `msg.sender` — works because agentWallet == owner at registration
-- Inherits OpenZeppelin `Ownable` for admin functions (`setClaimFee`, `setFeeCollector`)
+- Inherits OpenZeppelin `Ownable` for admin functions (`setJoinFee`, `setFeeCollector`)
 
 Interfaces in `src/interfaces/` are **minimal** — only methods this contract calls. Don't extend them without consulting Superfluid docs.
 
@@ -65,7 +65,7 @@ Interfaces in `src/interfaces/` are **minimal** — only methods this contract c
 
 - **App Router** (Next.js) with single page (`src/app/page.tsx`)
 - **Providers** (`src/components/Providers.tsx`): wagmi + RainbowKit + React Query
-- **Components**: PoolDashboard, JoinPool, ClaimSUP, MemberList
+- **Components**: PoolDashboard, JoinPool, ClaimSUP, MemberList, ContractStatus, FlowingBalance
 - **Config**: Contract addresses in `src/config/contracts.ts`, chain config in `src/config/wagmi.ts`
 - **ABIs**: TypeScript exports in `src/abi/`
 - Path alias: `@/*` → `./src/*`

@@ -13,7 +13,7 @@ src/
     IIdentityRegistry.sol           # Minimal ERC-8004 interface (ownerOf, getAgentWallet, register)
     ISuperfluid.sol                 # Minimal Superfluid interfaces (ISuperfluidPool, IGDAv1Forwarder, PoolConfig)
 test/
-  AgentPoolDistributor.t.sol        # 19 tests — all passing
+  AgentPoolDistributor.t.sol        # 20 tests — all passing
   mocks/
     MockIdentityRegistry.sol        # Simulates ERC-8004 registry (simple mapping-based, not a real ERC-721)
     MockSuperfluid.sol              # MockGDAv1Forwarder + MockSuperfluidPool (tracks units, simulates claims)
@@ -50,7 +50,7 @@ script/
 - [x] ETH join fee mechanism with configurable fee and collector
 - [x] Ownership verification against ERC-8004 Identity Registry
 - [x] Admin functions: `setJoinFee`, `setFeeCollector`
-- [x] Full test suite (19 tests) with mocks
+- [x] Full test suite (20 tests) with mocks
 - [x] Deployment script skeleton for Base Sepolia
 
 ## What's Missing (TODOs)
