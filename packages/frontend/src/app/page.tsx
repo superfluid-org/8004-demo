@@ -135,10 +135,13 @@ export default function Home() {
         {/* Next Steps */}
         <section className="pb-24">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
-            What&apos;s next
+            Build with us
           </p>
           <h2 className="mb-4 text-center text-3xl font-bold text-white">
-            Next Steps
+            Ship Superfluid Apps that use ERC-8004 and get{" "}
+            <span className="bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent">
+              SUP Grants
+            </span>
           </h2>
           <p className="mx-auto mb-4 max-w-2xl text-center text-lg leading-relaxed text-zinc-400">
             This POC scratches the surface. Here&apos;s what becomes possible
