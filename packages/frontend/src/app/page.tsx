@@ -74,7 +74,7 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section className="pb-24">
+        <section id="join" className="scroll-mt-20 pb-24">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Three steps
           </p>
@@ -120,7 +120,7 @@ export default function Home() {
         </section>
 
         {/* Actions */}
-        <section id="join" className="scroll-mt-24 pb-8">
+        <section className="pb-8">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <JoinPool />
             <ClaimSUP />
