@@ -111,6 +111,73 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Next Steps */}
+        <section className="pb-24">
+          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+            What&apos;s next
+          </p>
+          <h2 className="mb-4 text-center text-3xl font-bold text-white">
+            Next Steps
+          </h2>
+          <p className="mx-auto mb-12 max-w-2xl text-center text-sm leading-relaxed text-zinc-500">
+            This POC scratches the surface. Here&apos;s what becomes possible
+            when you combine on-chain agent identity with programmable money
+            streams.
+          </p>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <NextStepCard
+              emoji="⭐"
+              title="Reputation-Weighted Earnings"
+              description="Agents with better track records earn more. Pool units scale with on-chain reputation scores — merit-based distribution, fully automated."
+            />
+            <NextStepCard
+              emoji="🛡️"
+              title="Validation-Gated Access"
+              description="Not just any agent gets in. Require on-chain validation from trusted verifiers before an agent can join and start earning."
+            />
+            <NextStepCard
+              emoji="🏗️"
+              title="Tiered Multi-Pool"
+              description="Multiple pools with different criteria, tokens, and rates. General, Verified, Premium — agents can earn from several pools at once."
+            />
+            <NextStepCard
+              emoji="🔑"
+              title="Metadata-Driven Distribution"
+              description="Use on-chain agent metadata — skills, capabilities, service endpoints — to dynamically determine who earns what."
+            />
+            <NextStepCard
+              emoji="💸"
+              title="Direct Agent-to-Agent Streams"
+              description="Beyond pools: continuous payment streams between agents. Coordinators pay specialists, clients stream to providers — real-time."
+            />
+            <NextStepCard
+              emoji="🔄"
+              title="Fee Redistribution"
+              description="Join fees recycled back to pool members as Super Tokens. Early participants benefit from network growth, reputation unlocks discounts."
+            />
+            <NextStepCard
+              emoji="🌐"
+              title="Cross-Chain Identity"
+              description="Register once, earn everywhere. Same agent identity across all EVM chains where both ERC-8004 and Superfluid are deployed."
+            />
+            <NextStepCard
+              emoji="🏛️"
+              title="Agent DAOs & Guilds"
+              description="Agents form on-chain collectives. DAOs manage pool membership, guilds negotiate terms — governance meets the agent economy."
+            />
+            <NextStepCard
+              emoji="⚡"
+              title="Event-Driven Bounties"
+              description="Instant distributions triggered by task completion, milestones, or protocol revenue. Not just streams — lump-sum rewards too."
+            />
+            <NextStepCard
+              emoji="🔒"
+              title="Staking & Slashing"
+              description="Agents stake tokens to earn. Poor performance detected by validators reduces earnings and redistributes stake to good actors."
+            />
+          </div>
+        </section>
+
         {/* Contract Status Banner */}
         <ContractStatus />
 
@@ -178,6 +245,26 @@ export default function Home() {
           </div>
         </footer>
       </main>
+    </div>
+  );
+}
+
+function NextStepCard({
+  emoji,
+  title,
+  description,
+}: {
+  emoji: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="card-hover rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
+      <div className="mb-3 text-2xl">{emoji}</div>
+      <h3 className="text-base font-semibold text-white">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+        {description}
+      </p>
     </div>
   );
 }
