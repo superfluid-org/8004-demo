@@ -19,36 +19,58 @@ export function MemberList() {
   const [loading, setLoading] = useState(true);
   const publicClient = usePublicClient({ chainId: CHAIN.id });
 
-  // Fetch historical AgentJoined events
+  // Fetch historical AgentJoined events (chunked to avoid RPC block range limits)
   useEffect(() => {
     if (!isDeployed || !publicClient) return;
 
-    async function fetchMembers() {
-      try {
+    async function getLogsChunked(
+      event: ReturnType<typeof parseAbiItem>,
+      fromBlock: bigint,
+      toBlock: bigint
+    ) {
+      const CHUNK_SIZE = 45000n;
+      const allLogs: any[][] = [];
+      let start = fromBlock;
+      while (start <= toBlock) {
+        const end = start + CHUNK_SIZE > toBlock ? toBlock : start + CHUNK_SIZE;
         const logs = await publicClient!.getLogs({
           address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
-          event: parseAbiItem(
+          event: event as any,
+          fromBlock: start,
+          toBlock: end,
+        });
+        allLogs.push(logs);
+        start = end + 1n;
+      }
+      return allLogs.flat();
+    }
+
+    async function fetchMembers() {
+      try {
+        const latestBlock = await publicClient!.getBlockNumber();
+
+        const logs = await getLogsChunked(
+          parseAbiItem(
             "event AgentJoined(uint256 indexed agentId, address indexed agentWallet)"
           ),
-          fromBlock: DEPLOY_BLOCK,
-          toBlock: "latest",
-        });
-
-        // Also fetch AgentLeft to know who's still in
-        const leftLogs = await publicClient!.getLogs({
-          address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
-          event: parseAbiItem(
-            "event AgentLeft(uint256 indexed agentId, address indexed agentWallet)"
-          ),
-          fromBlock: DEPLOY_BLOCK,
-          toBlock: "latest",
-        });
-
-        const leftSet = new Set(
-          leftLogs.map((l) => l.args.agentId!.toString())
+          DEPLOY_BLOCK,
+          latestBlock
         );
 
-        const activeMembers = logs
+        // Also fetch AgentLeft to know who's still in
+        const leftLogs = await getLogsChunked(
+          parseAbiItem(
+            "event AgentLeft(uint256 indexed agentId, address indexed agentWallet)"
+          ),
+          DEPLOY_BLOCK,
+          latestBlock
+        );
+
+        const leftSet = new Set(
+          leftLogs.map((l) => (l as any).args.agentId!.toString())
+        );
+
+        const activeMembers = (logs as any[])
           .filter((l) => !leftSet.has(l.args.agentId!.toString()))
           .map((l) => ({
             agentId: l.args.agentId!,
