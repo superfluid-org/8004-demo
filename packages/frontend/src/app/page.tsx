@@ -134,23 +134,23 @@ export default function Home() {
 
         {/* Next Steps */}
         <section className="pb-24">
-          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+          <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Build with us
           </p>
-          <h2 className="mb-4 text-center text-3xl font-bold text-white">
-            Ship Superfluid Apps that use ERC-8004 and get{" "}
-            <span className="bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent">
-              SUP Grants
-            </span>
+          <h2 className="mb-4 text-center text-3xl font-bold text-white sm:text-4xl">
+            What Will You Ship?
           </h2>
-          <p className="mx-auto mb-4 max-w-2xl text-center text-lg leading-relaxed text-zinc-400">
-            This POC scratches the surface. Here&apos;s what becomes possible
-            when you combine on-chain agent identity with programmable money
-            streams.
+          <p className="mx-auto mb-6 max-w-xl text-center text-base leading-relaxed text-zinc-400">
+            Build apps that combine ERC-8004 agent identity with Superfluid
+            money streams — and get funded with{" "}
+            <span className="font-semibold text-emerald-400">SUP grants</span>.
           </p>
-          <p className="mx-auto mb-12 text-center text-sm text-zinc-600">
-            Each of these can be built on top of ERC-8004 + Superfluid today.
-          </p>
+          <div className="mx-auto mb-12 flex items-center justify-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-5 py-2 text-sm text-emerald-400">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Ideas ready to build — pick one and start shipping
+            </div>
+          </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <NextStepCard
               emoji="⭐"
