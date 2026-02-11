@@ -140,21 +140,26 @@ export default function Home() {
           <h2 className="mb-4 text-center text-3xl font-bold text-white">
             Next Steps
           </h2>
-          <p className="mx-auto mb-12 max-w-2xl text-center text-sm leading-relaxed text-zinc-500">
+          <p className="mx-auto mb-4 max-w-2xl text-center text-lg leading-relaxed text-zinc-400">
             This POC scratches the surface. Here&apos;s what becomes possible
             when you combine on-chain agent identity with programmable money
             streams.
+          </p>
+          <p className="mx-auto mb-12 text-center text-sm text-zinc-600">
+            Each of these can be built on top of ERC-8004 + Superfluid today.
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <NextStepCard
               emoji="⭐"
               title="Reputation-Weighted Earnings"
               description="Agents with better track records earn more. Pool units scale with on-chain reputation scores — merit-based distribution, fully automated."
+              tag="High Impact"
             />
             <NextStepCard
               emoji="🛡️"
               title="Validation-Gated Access"
               description="Not just any agent gets in. Require on-chain validation from trusted verifiers before an agent can join and start earning."
+              tag="High Impact"
             />
             <NextStepCard
               emoji="🏗️"
@@ -165,6 +170,7 @@ export default function Home() {
               emoji="🔑"
               title="Metadata-Driven Distribution"
               description="Use on-chain agent metadata — skills, capabilities, service endpoints — to dynamically determine who earns what."
+              tag="Quick Win"
             />
             <NextStepCard
               emoji="💸"
@@ -185,6 +191,7 @@ export default function Home() {
               emoji="⚡"
               title="Event-Driven Bounties"
               description="Instant distributions triggered by task completion, milestones, or protocol revenue. Not just streams — lump-sum rewards too."
+              tag="Quick Win"
             />
             <NextStepCard
               emoji="🔒"
@@ -248,18 +255,34 @@ function NextStepCard({
   emoji,
   title,
   description,
+  tag,
 }: {
   emoji: string;
   title: string;
   description: string;
+  tag?: string;
 }) {
   return (
-    <div className="card-hover rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
-      <div className="mb-3 text-2xl">{emoji}</div>
-      <h3 className="text-base font-semibold text-white">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-        {description}
-      </p>
+    <div className="group relative overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-emerald-500/30 hover:bg-zinc-900/80 hover:-translate-y-1">
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="relative">
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-500/10 text-xl ring-1 ring-emerald-500/20 transition-all duration-300 group-hover:bg-emerald-500/15 group-hover:ring-emerald-500/30">
+            {emoji}
+          </div>
+          {tag && (
+            <span className="rounded-full border border-emerald-500/20 bg-emerald-500/5 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-emerald-400/80">
+              {tag}
+            </span>
+          )}
+        </div>
+        <h3 className="text-base font-semibold text-white group-hover:text-emerald-50 transition-colors">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-500 group-hover:text-zinc-400 transition-colors">
+          {description}
+        </p>
+      </div>
     </div>
   );
 }
