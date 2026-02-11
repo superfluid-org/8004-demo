@@ -1,13 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePublicClient, useWatchContractEvent } from "wagmi";
-import { type Address, parseAbiItem } from "viem";
+import { useWatchContractEvent } from "wagmi";
+import { type Address, createPublicClient, http, parseAbiItem } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS, CHAIN, DEPLOY_BLOCK } from "@/config/contracts";
 
 const isDeployed =
   AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
+
+// Standalone public client so event fetching works without a connected wallet
+const publicClient = createPublicClient({
+  chain: CHAIN,
+  transport: http(),
+});
 
 interface Member {
   agentId: bigint;
@@ -17,11 +23,10 @@ interface Member {
 export function MemberList() {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
-  const publicClient = usePublicClient({ chainId: CHAIN.id });
 
   // Fetch historical AgentJoined events (chunked to avoid RPC block range limits)
   useEffect(() => {
-    if (!isDeployed || !publicClient) return;
+    if (!isDeployed) return;
 
     async function getLogsChunked(
       event: ReturnType<typeof parseAbiItem>,
@@ -33,7 +38,7 @@ export function MemberList() {
       let start = fromBlock;
       while (start <= toBlock) {
         const end = start + CHUNK_SIZE > toBlock ? toBlock : start + CHUNK_SIZE;
-        const logs = await publicClient!.getLogs({
+        const logs = await publicClient.getLogs({
           address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
           event: event as any,
           fromBlock: start,
@@ -47,7 +52,7 @@ export function MemberList() {
 
     async function fetchMembers() {
       try {
-        const latestBlock = await publicClient!.getBlockNumber();
+        const latestBlock = await publicClient.getBlockNumber();
 
         const logs = await getLogsChunked(
           parseAbiItem(
@@ -86,7 +91,7 @@ export function MemberList() {
     }
 
     fetchMembers();
-  }, [publicClient]);
+  }, []);
 
   // Watch for new joins in real-time
   useWatchContractEvent({
