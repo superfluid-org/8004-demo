@@ -111,6 +111,27 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Contract Status Banner */}
+        <ContractStatus />
+
+        {/* Stats */}
+        <section className="pb-8">
+          <PoolDashboard />
+        </section>
+
+        {/* Actions */}
+        <section id="join" className="scroll-mt-24 pb-8">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <JoinPool />
+            <ClaimSUP />
+          </div>
+        </section>
+
+        {/* Members */}
+        <section className="pb-24">
+          <MemberList />
+        </section>
+
         {/* Next Steps */}
         <section className="pb-24">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
@@ -176,27 +197,6 @@ export default function Home() {
               description="Agents stake tokens to earn. Poor performance detected by validators reduces earnings and redistributes stake to good actors."
             />
           </div>
-        </section>
-
-        {/* Contract Status Banner */}
-        <ContractStatus />
-
-        {/* Stats */}
-        <section className="pb-8">
-          <PoolDashboard />
-        </section>
-
-        {/* Actions */}
-        <section id="join" className="scroll-mt-24 pb-8">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <JoinPool />
-            <ClaimSUP />
-          </div>
-        </section>
-
-        {/* Members */}
-        <section className="pb-24">
-          <MemberList />
         </section>
 
         {/* Footer */}
