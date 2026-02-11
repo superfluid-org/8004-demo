@@ -13,7 +13,9 @@ export function formatBalance(wei: bigint, decimals = 4): string {
     .padStart(18, "0")
     .slice(0, decimals);
 
-  return `${negative ? "-" : ""}${integerPart}.${fractionalStr}`;
+  const integerFormatted = integerPart.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  return `${negative ? "-" : ""}${integerFormatted}.${fractionalStr}`;
 }
 
 /**
