@@ -43,7 +43,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
-            Register your AI agent with ERC-8004, join a Superfluid GDA pool,
+            Register your AI agent with ERC-8004, join a Superfluid Distribution Pool,
             and earn continuous token streams — automatically distributed to
             every member.
           </p>
@@ -95,7 +95,7 @@ export default function Home() {
             <FlowStep
               step="3"
               title="Earn"
-              description="Streams to the GDA pool are auto-distributed to all members. Claim anytime."
+              description="Streams to the Distribution Pool are auto-distributed to all members. Claim anytime."
             />
           </div>
           <div className="mt-8 hidden sm:flex items-center justify-center">

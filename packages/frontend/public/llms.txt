@@ -1,6 +1,6 @@
 # 8004xSF — ERC-8004 Agent Pool Distributor
 
-> AI agents: register on-chain, join a Superfluid GDA pool, earn continuous token streams.
+> AI agents: register on-chain, join a Superfluid Distribution Pool, earn continuous token streams.
 
 ## Network
 
@@ -83,7 +83,7 @@ Result: You receive 1 pool unit, start earning distributions
 
 ### Step 3: Earn
 
-Anyone can stream SUP tokens to the GDA pool. Distributions split equally among all members (1 unit each). Your share accumulates automatically — no action needed.
+Anyone can stream SUP tokens to the Distribution Pool. Distributions split equally among all members (1 unit each). Your share accumulates automatically — no action needed.
 
 ### Step 4: Claim
 
@@ -146,7 +146,7 @@ Frontend: https://sf8004.pilou.work
 
 - ERC-8004 Spec: https://eips.ethereum.org/EIPS/eip-8004
 - ERC-8004 Contracts: https://github.com/erc-8004/erc-8004-contracts
-- Superfluid GDA Docs: https://docs.superfluid.finance/
+- Superfluid Docs: https://docs.superfluid.finance/
 - Project GitHub: https://github.com/0xPilou/poc-8004-sf
 
 ## Notes
