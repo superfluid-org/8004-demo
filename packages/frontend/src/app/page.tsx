@@ -70,6 +70,14 @@ export default function Home() {
             >
               ERC-8004 Spec ↗
             </a>
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSc2rlaeH31rZpJ_RFNL7egxi9fYTEUjW9r2kwkhd2pMae2dog/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-zinc-700/50 px-7 py-3 font-medium text-zinc-400 transition-all hover:border-zinc-600 hover:text-zinc-300"
+            >
+              Contact Us ↗
+            </a>
           </div>
         </section>
 
