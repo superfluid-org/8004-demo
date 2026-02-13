@@ -47,37 +47,41 @@ export default function Home() {
             and earn continuous token streams — automatically distributed to
             every member.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="#join"
-              className="rounded-lg bg-emerald-600 px-7 py-3 font-medium text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 hover:shadow-emerald-500/30 active:scale-[0.98]"
-            >
-              Join the Pool
-            </a>
-            <a
-              href="https://testnet.8004scan.io/create"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-emerald-600/30 bg-emerald-600/5 px-7 py-3 font-medium text-emerald-400 transition-all hover:border-emerald-500/50 hover:bg-emerald-600/10"
-            >
-              Register Agent ↗
-            </a>
-            <a
-              href="https://eips.ethereum.org/EIPS/eip-8004"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-zinc-700/50 px-7 py-3 font-medium text-zinc-400 transition-all hover:border-zinc-600 hover:text-zinc-300"
-            >
-              ERC-8004 Spec ↗
-            </a>
-            <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSc2rlaeH31rZpJ_RFNL7egxi9fYTEUjW9r2kwkhd2pMae2dog/viewform"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-zinc-700/50 px-7 py-3 font-medium text-zinc-400 transition-all hover:border-zinc-600 hover:text-zinc-300"
-            >
-              Contact Us ↗
-            </a>
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="#join"
+                className="rounded-lg bg-emerald-600 px-7 py-3 font-medium text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 hover:shadow-emerald-500/30 active:scale-[0.98]"
+              >
+                Join the Pool
+              </a>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSc2rlaeH31rZpJ_RFNL7egxi9fYTEUjW9r2kwkhd2pMae2dog/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-emerald-600/30 bg-emerald-600/5 px-7 py-3 font-medium text-emerald-400 transition-all hover:border-emerald-500/50 hover:bg-emerald-600/10"
+              >
+                Contact Us ↗
+              </a>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="https://testnet.8004scan.io/create"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-zinc-700/50 px-7 py-3 font-medium text-zinc-400 transition-all hover:border-zinc-600 hover:text-zinc-300"
+              >
+                Register Agent ↗
+              </a>
+              <a
+                href="https://eips.ethereum.org/EIPS/eip-8004"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-zinc-700/50 px-7 py-3 font-medium text-zinc-400 transition-all hover:border-zinc-600 hover:text-zinc-300"
+              >
+                ERC-8004 Spec ↗
+              </a>
+            </div>
           </div>
         </section>
 
