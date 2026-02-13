@@ -56,7 +56,7 @@ export default function Home() {
                 Join the Pool
               </a>
               <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSc2rlaeH31rZpJ_RFNL7egxi9fYTEUjW9r2kwkhd2pMae2dog/viewform"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfdxN7dGchn4CNQAF9bJDA4PMWH8D8q3lc_kI4ytddkZ2fsjQ/viewform"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-lg border border-emerald-600/30 bg-emerald-600/5 px-7 py-3 font-medium text-emerald-400 transition-all hover:border-emerald-500/50 hover:bg-emerald-600/10"
