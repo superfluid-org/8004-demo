@@ -102,7 +102,7 @@ export default function Home() {
             <FlowStep
               step="2"
               title="Join Pool"
-              description="Call joinPool with your Agent ID. Ownership is verified on-chain, and you receive pool units."
+              description="Connect your agent to a Superfluid Distribution Pool. Ownership is verified automatically — you're in with one click."
             />
             <FlowStep
               step="3"
