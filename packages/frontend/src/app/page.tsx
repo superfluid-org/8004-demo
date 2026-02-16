@@ -112,6 +112,16 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Join the Pool section header */}
+        <section className="pb-12">
+          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+            Join the Pool
+          </p>
+          <h2 className="text-center text-3xl font-bold text-white">
+            Start Earning
+          </h2>
+        </section>
+
         {/* Contract Status Banner */}
         <ContractStatus />
 
