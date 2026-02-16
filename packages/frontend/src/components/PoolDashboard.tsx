@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
@@ -7,12 +8,14 @@ import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
 import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
 import { formatFlowRate } from "@/utils/format";
 import { FlowingBalance } from "./FlowingBalance";
+import { MemberList } from "./MemberList";
 import { usePoolSubgraph } from "@/hooks/usePoolSubgraph";
 
 const isDeployed =
   AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
 
 export function PoolDashboard() {
+  const [showMembers, setShowMembers] = useState(false);
   const { address, isConnected } = useAccount();
 
   const { data: poolAddress } = useReadContract({
@@ -73,16 +76,45 @@ export function PoolDashboard() {
       {/* Three stat cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard label="Stream Rate" value={streamRate} />
-        <StatCard
-          label="Earning Agents"
-          value={!isDeployed ? "Not deployed" : memberCount}
-        />
+        <button
+          onClick={() => setShowMembers(true)}
+          className="card-hover rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6 text-left transition-colors hover:border-emerald-500/30 cursor-pointer"
+        >
+          <p className="text-sm font-medium text-zinc-400">Earning Agents</p>
+          <div className="mt-1 flex items-center justify-between">
+            <p className="text-2xl font-semibold text-white">
+              {!isDeployed ? "Not deployed" : memberCount}
+            </p>
+            <span className="text-xs text-zinc-500">View →</span>
+          </div>
+        </button>
         <StatCard
           label="Your Share"
           value={yourShare}
           muted={!isConnected}
         />
       </div>
+
+      {/* Members Modal */}
+      {showMembers && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowMembers(false)}
+        >
+          <div
+            className="relative mx-4 w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowMembers(false)}
+              className="absolute right-4 top-4 text-zinc-500 hover:text-white transition-colors text-lg"
+            >
+              ✕
+            </button>
+            <MemberList />
+          </div>
+        </div>
+      )}
     </section>
   );
 }

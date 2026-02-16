@@ -138,10 +138,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Members */}
-        <section className="pb-24">
-          <MemberList />
-        </section>
+        {/* Members (shown in modal via PoolDashboard) */}
 
         {/* Next Steps */}
         <section className="pb-24">
