@@ -20,7 +20,7 @@ interface Member {
   wallet: Address;
 }
 
-export function MemberList() {
+export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) {
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -115,8 +115,8 @@ export function MemberList() {
   });
 
   return (
-    <section className="rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
-      <h2 className="text-lg font-semibold text-white">Earning Agents</h2>
+    <section className={hideTitle ? "" : "rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6"}>
+      {!hideTitle && <h2 className="text-lg font-semibold text-white">Earning Agents</h2>}
       {!isDeployed ? (
         <p className="mt-2 text-sm text-zinc-500">
           Contract not deployed yet. Members will appear here once the pool is

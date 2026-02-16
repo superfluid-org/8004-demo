@@ -102,16 +102,21 @@ export function PoolDashboard() {
           onClick={() => setShowMembers(false)}
         >
           <div
-            className="relative mx-4 w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl"
+            className="relative mx-4 w-full max-w-lg max-h-[80vh] overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-950 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              onClick={() => setShowMembers(false)}
-              className="absolute right-4 top-4 text-zinc-500 hover:text-white transition-colors text-lg"
-            >
-              ✕
-            </button>
-            <MemberList />
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-800/50 bg-zinc-950 px-6 py-4">
+              <h2 className="text-lg font-semibold text-white">Earning Agents</h2>
+              <button
+                onClick={() => setShowMembers(false)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-800 hover:text-white transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-6 pt-4">
+              <MemberList hideTitle />
+            </div>
           </div>
         </div>
       )}
