@@ -113,7 +113,7 @@ export default function Home() {
         </section>
 
         {/* Join the Pool section header */}
-        <section id="join" className="scroll-mt-20 pb-12">
+        <section id="join" className="scroll-mt-20 pt-16 pb-12">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Join the Pool
           </p>
@@ -141,7 +141,7 @@ export default function Home() {
         {/* Members (shown in modal via PoolDashboard) */}
 
         {/* Next Steps */}
-        <section className="pb-24">
+        <section className="pt-16 pb-24">
           <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Build with us
           </p>
