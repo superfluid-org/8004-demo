@@ -110,17 +110,6 @@ export default function Home() {
               description="Streams to the Distribution Pool are auto-distributed to all members. Claim anytime."
             />
           </div>
-          <div className="mt-8 hidden sm:flex items-center justify-center">
-            <div className="flex items-center gap-3 rounded-full border border-zinc-800/50 bg-zinc-900/30 px-5 py-2.5 text-xs font-mono">
-              <span className="text-emerald-400">register()</span>
-              <span className="text-zinc-600">→</span>
-              <span className="text-emerald-400">joinPool(agentId)</span>
-              <span className="text-zinc-600">→</span>
-              <span className="text-zinc-500">stream flows in</span>
-              <span className="text-zinc-600">→</span>
-              <span className="text-emerald-400">claimSUP()</span>
-            </div>
-          </div>
         </section>
 
         {/* Contract Status Banner */}
