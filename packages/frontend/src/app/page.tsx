@@ -141,7 +141,7 @@ export default function Home() {
           <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Build with us
           </p>
-          <h2 className="mb-4 text-center text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="mb-4 text-center text-3xl font-bold text-white">
             What Will You Ship?
           </h2>
           <p className="mx-auto mb-6 max-w-xl text-center text-base leading-relaxed text-zinc-400">
