@@ -86,7 +86,7 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section id="join" className="scroll-mt-20 pb-24">
+        <section className="pb-24">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Three steps
           </p>
@@ -113,7 +113,7 @@ export default function Home() {
         </section>
 
         {/* Join the Pool section header */}
-        <section className="pb-12">
+        <section id="join" className="scroll-mt-20 pb-12">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Join the Pool
           </p>
