@@ -86,7 +86,7 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section className="pb-24">
+        <section className="pb-32">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Three steps
           </p>
@@ -113,7 +113,7 @@ export default function Home() {
         </section>
 
         {/* Start Earning */}
-        <section id="join" className="scroll-mt-20 pb-24">
+        <section id="join" className="scroll-mt-20 pb-32">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Join the Pool
           </p>
@@ -137,7 +137,7 @@ export default function Home() {
         </section>
 
         {/* Next Steps */}
-        <section className="pb-24">
+        <section className="pb-32">
           <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Build with us
           </p>
