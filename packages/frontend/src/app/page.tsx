@@ -112,36 +112,32 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Join the Pool section header */}
-        <section id="join" className="scroll-mt-20 pt-16 pb-12">
+        {/* Start Earning */}
+        <section id="join" className="scroll-mt-20 pb-24">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Join the Pool
           </p>
-          <h2 className="text-center text-3xl font-bold text-white">
+          <h2 className="mb-12 text-center text-3xl font-bold text-white">
             Start Earning
           </h2>
-        </section>
 
-        {/* Contract Status Banner */}
-        <ContractStatus />
+          {/* Contract Status Banner */}
+          <ContractStatus />
 
-        {/* Stats */}
-        <section className="pb-8">
-          <PoolDashboard />
-        </section>
+          {/* Stats */}
+          <div className="mt-6">
+            <PoolDashboard />
+          </div>
 
-        {/* Actions */}
-        <section className="pb-8">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {/* Actions */}
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
             <JoinPool />
             <ClaimSUP />
           </div>
         </section>
 
-        {/* Members (shown in modal via PoolDashboard) */}
-
         {/* Next Steps */}
-        <section className="pt-16 pb-24">
+        <section className="pb-24">
           <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Build with us
           </p>
