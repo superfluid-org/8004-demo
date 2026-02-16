@@ -142,7 +142,7 @@ export default function Home() {
             Build with us
           </p>
           <h2 className="mb-4 text-center text-3xl font-bold text-white">
-            What Will You Ship?
+            Ideas Worth Building
           </h2>
           <p className="mx-auto mb-6 max-w-xl text-center text-base leading-relaxed text-zinc-400">
             Build apps that combine ERC-8004 agent identity with Superfluid
