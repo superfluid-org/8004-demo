@@ -11,7 +11,25 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 px-6 py-4 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
+            <a
+              href="https://docs.superfluid.org/docs/concepts/superfluid"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              Superfluid Docs
+            </a>
+            <a
+              href="https://github.com/0xPilou/poc-8004-sf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-zinc-400 hover:text-white transition-colors"
+            >
+              GitHub
+            </a>
+          </div>
+          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
             <span className="text-lg font-bold tracking-tight text-white">
               ERC-8004
             </span>
