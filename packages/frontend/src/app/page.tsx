@@ -12,17 +12,15 @@ export default function Home() {
       <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 px-6 py-4 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 font-mono text-sm font-bold ring-1 ring-emerald-500/20">
-              8004
-            </div>
-            <div className="flex flex-col">
-              <span className="text-base font-bold text-white leading-tight">
-                Agent Pool
-              </span>
-              <span className="text-[10px] uppercase tracking-widest text-zinc-500">
-                Superfluid × ERC-8004
-              </span>
-            </div>
+            <span className="text-lg font-bold tracking-tight text-white">
+              ERC-8004
+            </span>
+            <span className="text-lg text-zinc-500">×</span>
+            <img
+              src="/superfluid-logo.svg"
+              alt="Superfluid"
+              className="h-6"
+            />
           </div>
           <ConnectButton showBalance={false} />
         </div>
@@ -212,10 +210,17 @@ export default function Home() {
         <footer className="border-t border-zinc-800/50 py-10">
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-7 w-7 items-center justify-center rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold">
-                8004
-              </div>
-              <p className="text-sm text-zinc-500">
+              <span className="text-sm font-bold tracking-tight text-zinc-400">
+                ERC-8004
+              </span>
+              <span className="text-sm text-zinc-600">×</span>
+              <img
+                src="/superfluid-logo.svg"
+                alt="Superfluid"
+                className="h-4 opacity-50"
+              />
+              <span className="text-xs text-zinc-600">·</span>
+              <p className="text-xs text-zinc-600">
                 Proof of concept on Base Sepolia
               </p>
             </div>
