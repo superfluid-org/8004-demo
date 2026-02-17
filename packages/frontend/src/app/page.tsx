@@ -9,56 +9,66 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-950">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 px-6 py-4 backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <div className="flex items-center gap-4">
-            <a
-              href="https://docs.superfluid.org/docs/concepts/superfluid"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-zinc-400 hover:text-white transition-colors"
-            >
-              Superfluid Docs
-            </a>
-            <a
-              href="https://github.com/0xPilou/poc-8004-sf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-zinc-400 hover:text-white transition-colors"
-            >
-              GitHub
-            </a>
+      <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4">
+        <div className="mx-auto max-w-5xl">
+          {/* Mobile: logo centered, wallet below */}
+          <div className="flex items-center justify-between sm:hidden">
+            <div className="flex items-center gap-2">
+              <span className="text-base font-bold tracking-tight text-white">
+                ERC-8004
+              </span>
+              <span className="text-base text-zinc-500">×</span>
+              <img src="/superfluid-logo.svg" alt="Superfluid" className="h-5" />
+            </div>
+            <ConnectButton showBalance={false} />
           </div>
-          <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
-            <span className="text-lg font-bold tracking-tight text-white">
-              ERC-8004
-            </span>
-            <span className="text-lg text-zinc-500">×</span>
-            <img
-              src="/superfluid-logo.svg"
-              alt="Superfluid"
-              className="h-6"
-            />
+          {/* Desktop: full navbar */}
+          <div className="hidden sm:flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <a
+                href="https://docs.superfluid.org/docs/concepts/superfluid"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-zinc-400 hover:text-white transition-colors"
+              >
+                Superfluid Docs
+              </a>
+              <a
+                href="https://github.com/0xPilou/poc-8004-sf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-zinc-400 hover:text-white transition-colors"
+              >
+                GitHub
+              </a>
+            </div>
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
+              <span className="text-lg font-bold tracking-tight text-white">
+                ERC-8004
+              </span>
+              <span className="text-lg text-zinc-500">×</span>
+              <img src="/superfluid-logo.svg" alt="Superfluid" className="h-6" />
+            </div>
+            <ConnectButton showBalance={false} />
           </div>
-          <ConnectButton showBalance={false} />
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6">
+      <main className="mx-auto max-w-5xl px-4 sm:px-6">
         {/* Hero */}
-        <section className="hero-glow relative py-24 text-center">
+        <section className="hero-glow relative py-16 text-center sm:py-24">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-4 py-1.5 text-xs text-zinc-400">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
             Live on Base Sepolia
           </div>
-          <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl lg:text-7xl">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
             Earn from the
             <br />
             <span className="bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent">
               Agent Economy
             </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
             Register your AI agent with ERC-8004, join a Superfluid Distribution Pool,
             and earn continuous token streams — automatically distributed to
             every member.
@@ -102,11 +112,11 @@ export default function Home() {
         </section>
 
         {/* How It Works */}
-        <section className="pb-40">
+        <section className="pb-24 sm:pb-40">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Three steps
           </p>
-          <h2 className="mb-12 text-center text-3xl font-bold text-white">
+          <h2 className="mb-12 text-center text-2xl font-bold text-white sm:text-3xl">
             How It Works
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -129,11 +139,11 @@ export default function Home() {
         </section>
 
         {/* Start Earning */}
-        <section id="join" className="scroll-mt-20 pb-40">
+        <section id="join" className="scroll-mt-20 pb-24 sm:pb-40">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Join the Pool
           </p>
-          <h2 className="mb-12 text-center text-3xl font-bold text-white">
+          <h2 className="mb-12 text-center text-2xl font-bold text-white sm:text-3xl">
             Start Earning
           </h2>
 
@@ -153,11 +163,11 @@ export default function Home() {
         </section>
 
         {/* Next Steps */}
-        <section className="pb-40">
+        <section className="pb-24 sm:pb-40">
           <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
             Build with us
           </p>
-          <h2 className="mb-4 text-center text-3xl font-bold text-white">
+          <h2 className="mb-4 text-center text-2xl font-bold text-white sm:text-3xl">
             Ideas Worth Building
           </h2>
           <p className="mx-auto mb-6 max-w-xl text-center text-base leading-relaxed text-zinc-400">
@@ -227,17 +237,18 @@ export default function Home() {
         {/* Footer */}
         <footer className="border-t border-zinc-800/50 py-10">
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-bold tracking-tight text-zinc-400">
-                ERC-8004
-              </span>
-              <span className="text-sm text-zinc-600">×</span>
-              <img
-                src="/superfluid-logo.svg"
-                alt="Superfluid"
-                className="h-4 opacity-50"
-              />
-              <span className="text-xs text-zinc-600">·</span>
+            <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold tracking-tight text-zinc-400">
+                  ERC-8004
+                </span>
+                <span className="text-sm text-zinc-600">×</span>
+                <img
+                  src="/superfluid-logo.svg"
+                  alt="Superfluid"
+                  className="h-4 opacity-50"
+                />
+              </div>
               <p className="text-xs text-zinc-600">
                 Proof of concept on Base Sepolia
               </p>
