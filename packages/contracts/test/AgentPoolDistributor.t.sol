@@ -147,6 +147,139 @@ contract AgentPoolDistributorTest is Test {
         distributor.joinPool{value: JOIN_FEE}(agentId);
     }
 
+    // ─── Increasing fee mechanism ─────────────────────────────────────────────────
+
+    function test_joinPool_increasingFee_sameUserMultipleAgents() public {
+        // Register 3 agents all owned by agentA
+        vm.prank(agentA);
+        uint256 id1 = registry.register();
+        vm.prank(agentA);
+        uint256 id2 = registry.register();
+        vm.prank(agentA);
+        uint256 id3 = registry.register();
+
+        // 1st agent costs joinFee * 1
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE}(id1);
+        assertEq(distributor.agentCountByUser(agentA), 1);
+        assertEq(feeCollector.balance, JOIN_FEE);
+
+        // 2nd agent costs joinFee * 2
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE * 2}(id2);
+        assertEq(distributor.agentCountByUser(agentA), 2);
+        assertEq(feeCollector.balance, JOIN_FEE + JOIN_FEE * 2);
+
+        // 3rd agent costs joinFee * 3
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE * 3}(id3);
+        assertEq(distributor.agentCountByUser(agentA), 3);
+        assertEq(feeCollector.balance, JOIN_FEE + JOIN_FEE * 2 + JOIN_FEE * 3);
+
+        // All 3 agents have units
+        assertEq(pool.getUnits(agentA), 30);
+        assertEq(pool.getTotalUnits(), 30);
+    }
+
+    function test_joinPool_increasingFee_reverts_underpaySecondAgent() public {
+        vm.prank(agentA);
+        uint256 id1 = registry.register();
+        vm.prank(agentA);
+        uint256 id2 = registry.register();
+
+        // 1st agent joins at base fee
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE}(id1);
+
+        // 2nd agent tries to pay only base fee — should revert
+        vm.prank(agentA);
+        vm.expectRevert(AgentPoolDistributor.InsufficientFee.selector);
+        distributor.joinPool{value: JOIN_FEE}(id2);
+    }
+
+    function test_joinPool_increasingFee_independentPerUser() public {
+        // agentA and agentB each register one agent
+        vm.prank(agentA);
+        uint256 idA = registry.register();
+        vm.prank(agentB);
+        uint256 idB = registry.register();
+
+        // Both pay base fee (1st agent for each user)
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE}(idA);
+        vm.prank(agentB);
+        distributor.joinPool{value: JOIN_FEE}(idB);
+
+        // agentA's count is independent from agentB's
+        assertEq(distributor.agentCountByUser(agentA), 1);
+        assertEq(distributor.agentCountByUser(agentB), 1);
+
+        // agentA registers a 2nd agent — costs 2x, agentB unaffected
+        vm.prank(agentA);
+        uint256 idA2 = registry.register();
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE * 2}(idA2);
+
+        assertEq(distributor.agentCountByUser(agentA), 2);
+        assertEq(distributor.agentCountByUser(agentB), 1);
+    }
+
+    function test_getJoinCost_increasesWithAgentCount() public {
+        assertEq(distributor.getJoinCost(agentA), JOIN_FEE);
+
+        vm.prank(agentA);
+        uint256 id1 = registry.register();
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE}(id1);
+
+        assertEq(distributor.getJoinCost(agentA), JOIN_FEE * 2);
+
+        vm.prank(agentA);
+        uint256 id2 = registry.register();
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE * 2}(id2);
+
+        assertEq(distributor.getJoinCost(agentA), JOIN_FEE * 3);
+    }
+
+    function test_joinPool_increasingFee_acceptsOverpayOnSecondAgent() public {
+        vm.prank(agentA);
+        uint256 id1 = registry.register();
+        vm.prank(agentA);
+        uint256 id2 = registry.register();
+
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE}(id1);
+
+        // Overpay on 2nd agent (send 3x instead of required 2x)
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE * 3}(id2);
+
+        // Full overpayment forwarded to fee collector
+        assertEq(feeCollector.balance, JOIN_FEE + JOIN_FEE * 3);
+        assertEq(distributor.agentCountByUser(agentA), 2);
+    }
+
+    function test_leavePool_doesNotReduceAgentCount() public {
+        vm.prank(agentA);
+        uint256 id1 = registry.register();
+        vm.prank(agentA);
+        uint256 id2 = registry.register();
+
+        // Join 2 agents
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE}(id1);
+        vm.prank(agentA);
+        distributor.joinPool{value: JOIN_FEE * 2}(id2);
+        assertEq(distributor.agentCountByUser(agentA), 2);
+
+        // Leave one — count stays (fee keeps increasing)
+        vm.prank(agentA);
+        distributor.leavePool(id1);
+        assertEq(distributor.agentCountByUser(agentA), 2);
+        assertEq(distributor.getJoinCost(agentA), JOIN_FEE * 3);
+    }
+
     // ─── leavePool ───────────────────────────────────────────────────────────────
 
     function test_leavePool_happyPath() public {
