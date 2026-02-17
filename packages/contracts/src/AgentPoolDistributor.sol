@@ -19,11 +19,12 @@ contract AgentPoolDistributor is Ownable {
     IGDAv1Forwarder public immutable gdaForwarder;
     ISuperfluidPool public immutable pool;
 
-    uint128 public constant UNITS_PER_AGENT = 1;
+    uint128 public constant UNITS_PER_AGENT = 10;
     uint256 public joinFee;
     address public feeCollector;
 
     mapping(uint256 agentId => bool joined) public hasJoined;
+    mapping(address user => uint256 agentCount) public agentCountByUser;
 
     // ─── Events ──────────────────────────────────────────────────────────────────
 
@@ -56,17 +57,15 @@ contract AgentPoolDistributor is Ownable {
         address _superToken,
         address _feeCollector,
         uint256 _joinFee
-    ) Ownable(msg.sender) {
+    ) Ownable(_feeCollector) {
         identityRegistry = IIdentityRegistry(_identityRegistry);
         gdaForwarder = IGDAv1Forwarder(_gdaForwarder);
         feeCollector = _feeCollector;
         joinFee = _joinFee;
 
         // Create GDA pool with this contract as admin
-        PoolConfig memory config = PoolConfig({
-            transferabilityForUnitsOwner: false,
-            distributionFromAnyAddress: true
-        });
+        PoolConfig memory config =
+            PoolConfig({transferabilityForUnitsOwner: false, distributionFromAnyAddress: true});
 
         (bool success, ISuperfluidPool _pool) =
             gdaForwarder.createPool(_superToken, address(this), config);
@@ -81,18 +80,22 @@ contract AgentPoolDistributor is Ownable {
     ///         Requires paying the join fee in ETH.
     /// @param agentId The ERC-8004 agent identity token ID
     function joinPool(uint256 agentId) external payable {
-        if (msg.value < joinFee) revert InsufficientFee();
-        if (identityRegistry.ownerOf(agentId) != msg.sender) revert NotAgentOwner();
+        address agentOwner = identityRegistry.ownerOf(agentId);
+        if (agentOwner != msg.sender) revert NotAgentOwner();
         if (hasJoined[agentId]) revert AlreadyJoined();
 
         address agentWallet = identityRegistry.getAgentWallet(agentId);
         if (agentWallet == address(0)) revert AgentNotRegistered();
 
+        uint256 userAgentCount = agentCountByUser[agentOwner];
+        if (msg.value < joinFee * (userAgentCount + 1)) revert InsufficientFee();
+
         // Forward fee to collector
         (bool sent,) = feeCollector.call{value: msg.value}("");
         if (!sent) revert FeeTransferFailed();
 
-        pool.updateMemberUnits(agentWallet, UNITS_PER_AGENT);
+        pool.increaseMemberUnits(agentWallet, UNITS_PER_AGENT);
+        agentCountByUser[agentOwner] += 1;
         hasJoined[agentId] = true;
 
         emit AgentJoined(agentId, agentWallet);
@@ -118,10 +121,15 @@ contract AgentPoolDistributor is Ownable {
             agentWallet = msg.sender;
         }
 
-        pool.updateMemberUnits(agentWallet, 0);
+        pool.decreaseMemberUnits(agentWallet, UNITS_PER_AGENT);
         hasJoined[agentId] = false;
 
         emit AgentLeft(agentId, agentWallet);
+    }
+
+    function getJoinCost(address agentOwner) external view returns (uint256 joinCost) {
+        uint256 userAgentCount = agentCountByUser[agentOwner];
+        joinCost = joinFee * (userAgentCount + 1);
     }
 
     // ─── Admin ───────────────────────────────────────────────────────────────────

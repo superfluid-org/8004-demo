@@ -26,6 +26,21 @@ contract MockSuperfluidPool is ISuperfluidPool {
         return true;
     }
 
+    function increaseMemberUnits(address memberAddr, uint128 addedUnits) external returns (bool) {
+        require(msg.sender == admin, "not pool admin");
+        _units[memberAddr] += addedUnits;
+        _totalUnits += addedUnits;
+        return true;
+    }
+
+    function decreaseMemberUnits(address memberAddr, uint128 subtractedUnits) external returns (bool) {
+        require(msg.sender == admin, "not pool admin");
+        require(_units[memberAddr] >= subtractedUnits, "underflow");
+        _units[memberAddr] -= subtractedUnits;
+        _totalUnits -= subtractedUnits;
+        return true;
+    }
+
     function getUnits(address memberAddr) external view returns (uint128) {
         return _units[memberAddr];
     }

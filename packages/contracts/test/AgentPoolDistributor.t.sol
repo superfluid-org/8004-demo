@@ -29,11 +29,7 @@ contract AgentPoolDistributorTest is Test {
 
         vm.prank(deployer);
         distributor = new AgentPoolDistributor(
-            address(registry),
-            address(forwarder),
-            DUMMY_SUPER_TOKEN,
-            feeCollector,
-            JOIN_FEE
+            address(registry), address(forwarder), DUMMY_SUPER_TOKEN, feeCollector, JOIN_FEE
         );
 
         pool = forwarder.lastCreatedPool();
@@ -53,7 +49,7 @@ contract AgentPoolDistributorTest is Test {
         assertEq(address(distributor.pool()), address(pool));
         assertEq(distributor.joinFee(), JOIN_FEE);
         assertEq(distributor.feeCollector(), feeCollector);
-        assertEq(distributor.owner(), deployer);
+        assertEq(distributor.owner(), feeCollector);
     }
 
     function test_constructor_createsPool_withContractAsAdmin() public view {
@@ -72,8 +68,8 @@ contract AgentPoolDistributorTest is Test {
         distributor.joinPool{value: JOIN_FEE}(agentId);
 
         assertTrue(distributor.hasJoined(agentId));
-        assertEq(pool.getUnits(agentA), 1);
-        assertEq(pool.getTotalUnits(), 1);
+        assertEq(pool.getUnits(agentA), 10);
+        assertEq(pool.getTotalUnits(), 10);
         assertEq(feeCollector.balance, JOIN_FEE);
     }
 
@@ -92,10 +88,10 @@ contract AgentPoolDistributorTest is Test {
         vm.prank(agentC);
         distributor.joinPool{value: JOIN_FEE}(idC);
 
-        assertEq(pool.getTotalUnits(), 3);
-        assertEq(pool.getUnits(agentA), 1);
-        assertEq(pool.getUnits(agentB), 1);
-        assertEq(pool.getUnits(agentC), 1);
+        assertEq(pool.getTotalUnits(), 30);
+        assertEq(pool.getUnits(agentA), 10);
+        assertEq(pool.getUnits(agentB), 10);
+        assertEq(pool.getUnits(agentC), 10);
         assertEq(feeCollector.balance, JOIN_FEE * 3);
     }
 
@@ -246,7 +242,7 @@ contract AgentPoolDistributorTest is Test {
     function test_setJoinFee_onlyOwner() public {
         uint256 newFee = 0.002 ether;
 
-        vm.prank(deployer);
+        vm.prank(feeCollector);
         vm.expectEmit(false, false, false, true);
         emit AgentPoolDistributor.JoinFeeUpdated(newFee);
         distributor.setJoinFee(newFee);
@@ -263,7 +259,7 @@ contract AgentPoolDistributorTest is Test {
     function test_setFeeCollector_onlyOwner() public {
         address newCollector = makeAddr("newCollector");
 
-        vm.prank(deployer);
+        vm.prank(feeCollector);
         vm.expectEmit(false, false, false, true);
         emit AgentPoolDistributor.FeeCollectorUpdated(newCollector);
         distributor.setFeeCollector(newCollector);
@@ -287,8 +283,8 @@ contract AgentPoolDistributorTest is Test {
         // 2. Agent A joins pool (pays fee) -> earning 100% of distributions
         vm.prank(agentA);
         distributor.joinPool{value: JOIN_FEE}(idA);
-        assertEq(pool.getTotalUnits(), 1);
-        assertEq(pool.getUnits(agentA), 1);
+        assertEq(pool.getTotalUnits(), 10);
+        assertEq(pool.getUnits(agentA), 10);
         assertEq(feeCollector.balance, JOIN_FEE);
 
         // 3. Agent B registers and joins -> both earning 50%
@@ -296,17 +292,17 @@ contract AgentPoolDistributorTest is Test {
         uint256 idB = registry.register();
         vm.prank(agentB);
         distributor.joinPool{value: JOIN_FEE}(idB);
-        assertEq(pool.getTotalUnits(), 2);
+        assertEq(pool.getTotalUnits(), 20);
 
         // 4. Agent C registers and joins -> all earning 33.33%
         vm.prank(agentC);
         uint256 idC = registry.register();
         vm.prank(agentC);
         distributor.joinPool{value: JOIN_FEE}(idC);
-        assertEq(pool.getTotalUnits(), 3);
-        assertEq(pool.getUnits(agentA), 1);
-        assertEq(pool.getUnits(agentB), 1);
-        assertEq(pool.getUnits(agentC), 1);
+        assertEq(pool.getTotalUnits(), 30);
+        assertEq(pool.getUnits(agentA), 10);
+        assertEq(pool.getUnits(agentB), 10);
+        assertEq(pool.getUnits(agentC), 10);
         assertEq(feeCollector.balance, JOIN_FEE * 3);
 
         // 5. Agent A claims -> receives accumulated SUP (no fee needed)
@@ -318,7 +314,7 @@ contract AgentPoolDistributorTest is Test {
         // 6. Agent B leaves the pool
         vm.prank(agentB);
         distributor.leavePool(idB);
-        assertEq(pool.getTotalUnits(), 2);
+        assertEq(pool.getTotalUnits(), 20);
         assertEq(pool.getUnits(agentB), 0);
     }
 }

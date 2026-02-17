@@ -8,6 +8,14 @@ interface ISuperfluidPool {
     /// @notice Update the units for a pool member. Only callable by the pool admin.
     function updateMemberUnits(address memberAddr, uint128 newUnits) external returns (bool);
 
+    /// @notice Increases `memberAddr` ownedUnits by `addedUnits`
+    function increaseMemberUnits(address memberAddr, uint128 addedUnits) external returns (bool);
+
+    /// @notice Decreases `memberAddr` ownedUnits by `subtractedUnits`
+    function decreaseMemberUnits(address memberAddr, uint128 subtractedUnits)
+        external
+        returns (bool);
+
     /// @notice Get the current units for a pool member
     function getUnits(address memberAddr) external view returns (uint128);
 
@@ -28,18 +36,14 @@ struct PoolConfig {
 ///         Used to create pools and claim accumulated distributions.
 interface IGDAv1Forwarder {
     /// @notice Create a new GDA pool for the given Super Token
-    function createPool(
-        address token,
-        address admin,
-        PoolConfig memory config
-    ) external returns (bool success, ISuperfluidPool pool);
+    function createPool(address token, address admin, PoolConfig memory config)
+        external
+        returns (bool success, ISuperfluidPool pool);
 
     /// @notice Claim all accumulated distributions for a pool member
-    function claimAll(
-        ISuperfluidPool pool,
-        address memberAddr,
-        bytes memory userData
-    ) external returns (bool success);
+    function claimAll(ISuperfluidPool pool, address memberAddr, bytes memory userData)
+        external
+        returns (bool success);
 
     /// @notice Connect msg.sender to a pool to start receiving real-time distributions
     function connectPool(ISuperfluidPool pool, bytes memory userData)
