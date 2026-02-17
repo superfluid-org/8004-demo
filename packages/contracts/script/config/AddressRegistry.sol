@@ -31,6 +31,6 @@ library AddressRegistry {
      * @dev Get Base Mainnet configuration
      */
     function getBaseSepoliaAddresses() internal pure returns (DeployedAddresses memory addresses) {
-        return DeployedAddresses({agentPoolDistributor: address(0)});
+        return DeployedAddresses({agentPoolDistributor: 0xefeC3A3C466709E17899d852BEEd916a198d34e3});
     }
 }
