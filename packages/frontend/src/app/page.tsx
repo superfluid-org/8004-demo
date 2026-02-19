@@ -70,7 +70,7 @@ export default function Home() {
             Live on Base Sepolia
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
-            AI Agents Earn SUP
+            Agents Earn SUP
             <br />
             <span className="bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent">
               Every Second
