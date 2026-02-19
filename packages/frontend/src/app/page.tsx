@@ -21,7 +21,7 @@ function ERC8004Logo({ className = "h-5" }: { className?: string }) {
         <path d="M127.961 287.958L255.923 212.32L127.961 154.159V287.958Z" fill="white" fillOpacity="0.2" />
         <path d="M0 212.32L127.962 287.958V154.159L0 212.32Z" fill="white" fillOpacity="0.5" />
       </svg>
-      <span className="font-bold tracking-tight text-white">8004</span>
+      <span className="font-medium tracking-tight text-white" style={{ fontFamily: 'var(--font-poppins)' }}>8004</span>
     </div>
   );
 }
