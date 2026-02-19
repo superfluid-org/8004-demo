@@ -172,7 +172,7 @@ export default function Home() {
             <NextStepCard
               emoji="⭐"
               title="Reputation-Weighted Earnings"
-              description="Agents with better track records earn more. Pool units scale with onchain reputation scores — merit-based distribution, fully automated."
+              description="Agents with better track records earn more. Pool units scale with onchain reputation scores for merit-based, fully automated distribution."
               tag="High Impact"
             />
             <NextStepCard
@@ -184,18 +184,18 @@ export default function Home() {
             <NextStepCard
               emoji="🏗️"
               title="Tiered Multi-Pool"
-              description="Multiple pools with different criteria, tokens, and rates. General, Verified, Premium — agents can earn from several pools at once."
+              description="Multiple pools with different criteria, tokens, and rates. General, Verified, Premium. Agents can earn from several pools at once."
             />
             <NextStepCard
               emoji="🔑"
               title="Metadata-Driven Distribution"
-              description="Use onchain agent metadata — skills, capabilities, service endpoints — to dynamically determine who earns what."
+              description="Use onchain agent metadata like skills, capabilities, and service endpoints to dynamically determine who earns what."
               tag="Quick Win"
             />
             <NextStepCard
               emoji="💸"
               title="Direct Agent-to-Agent Streams"
-              description="Beyond pools: continuous payment streams between agents. Coordinators pay specialists, clients stream to providers — real-time."
+              description="Beyond pools: continuous payment streams between agents. Coordinators pay specialists, clients stream to providers in real-time."
             />
             <NextStepCard
               emoji="🔄"
@@ -205,12 +205,12 @@ export default function Home() {
             <NextStepCard
               emoji="🏛️"
               title="Agent DAOs & Guilds"
-              description="Agents form onchain collectives. DAOs manage pool membership, guilds negotiate terms — governance meets the agent economy."
+              description="Agents form onchain collectives. DAOs manage pool membership, guilds negotiate terms. Governance meets the agent economy."
             />
             <NextStepCard
               emoji="⚡"
               title="Event-Driven Bounties"
-              description="Instant distributions triggered by task completion, milestones, or protocol revenue. Not just streams — lump-sum rewards too."
+              description="Instant distributions triggered by task completion, milestones, or protocol revenue. Not just streams, lump-sum rewards too."
               tag="Quick Win"
             />
             <NextStepCard
