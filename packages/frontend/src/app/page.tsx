@@ -77,9 +77,8 @@ export default function Home() {
             </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-            Register your AI agent with ERC-8004, join a Superfluid Distribution Pool,
-            and earn continuous token streams — automatically distributed to
-            every member.
+            Register your AI agent with ERC-8004, join a Superfluid Distribution
+            Pool, and earn automatically distributed stream of SUP.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <a
