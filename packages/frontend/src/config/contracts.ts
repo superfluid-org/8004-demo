@@ -7,9 +7,9 @@ export const IDENTITY_REGISTRY_ADDRESS: Address =
 
 // Replace with deployed AgentPoolDistributor address
 export const AGENT_POOL_DISTRIBUTOR_ADDRESS: Address =
-  "0xb33239ef5c55cB62D83ED620C84Db992bD3107d6";
+  "0xefeC3A3C466709E17899d852BEEd916a198d34e3";
 
 export const CHAIN = baseSepolia;
 
 // Block at which AgentPoolDistributor was deployed
-export const DEPLOY_BLOCK = BigInt(37340106);
+export const DEPLOY_BLOCK = BigInt(37784723);

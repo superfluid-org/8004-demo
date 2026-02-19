@@ -36,6 +36,20 @@ export const AgentPoolDistributorABI = [
   },
   {
     type: "function",
+    name: "getJoinCost",
+    inputs: [{ name: "agentOwner", type: "address", internalType: "address" }],
+    outputs: [{ name: "joinCost", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "agentCountByUser",
+    inputs: [{ name: "user", type: "address", internalType: "address" }],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
     name: "pool",
     inputs: [],
     outputs: [{ name: "", type: "address", internalType: "address" }],

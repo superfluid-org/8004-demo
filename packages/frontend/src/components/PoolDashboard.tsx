@@ -41,8 +41,9 @@ export function PoolDashboard() {
     ? `${formatFlowRate(subgraphData.flowRate, "month")} SUP/mo`
     : "-- SUP/mo";
 
-  const memberCount = subgraphData
-    ? subgraphData.totalMembers.toString()
+  const UNITS_PER_AGENT = 10n;
+  const agentCount = subgraphData
+    ? (subgraphData.totalUnits / UNITS_PER_AGENT).toString()
     : "--";
 
   const yourShare =
@@ -83,7 +84,7 @@ export function PoolDashboard() {
           <p className="text-sm font-medium text-zinc-400">Earning Agents</p>
           <div className="mt-1 flex items-center justify-between">
             <p className="text-2xl font-semibold text-white">
-              {!isDeployed ? "Not deployed" : memberCount}
+              {!isDeployed ? "Not deployed" : agentCount}
             </p>
             <span className="text-xs text-zinc-500">View →</span>
           </div>

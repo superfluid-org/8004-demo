@@ -10,14 +10,15 @@ const isDeployed =
   AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
 
 export function JoinPool() {
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
   const [agentId, setAgentId] = useState("");
 
-  const { data: joinFee } = useReadContract({
+  const { data: joinCost } = useReadContract({
     address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
     abi: AgentPoolDistributorABI,
-    functionName: "joinFee",
-    query: { enabled: isDeployed },
+    functionName: "getJoinCost",
+    args: [address!],
+    query: { enabled: isDeployed && !!address },
   });
 
   const { writeContract, data: hash, isPending, error, reset } = useWriteContract();
@@ -33,7 +34,7 @@ export function JoinPool() {
       abi: AgentPoolDistributorABI,
       functionName: "joinPool",
       args: [BigInt(agentId)],
-      value: joinFee ?? BigInt("1000000000000000"), // fallback 0.001 ETH
+      value: joinCost ?? BigInt("1000000000000000"), // fallback 0.001 ETH
     });
   }
 
@@ -64,7 +65,7 @@ export function JoinPool() {
         </button>
       </div>
       <div className="mt-2 text-right text-xs text-zinc-500">
-        Join fee: {joinFee ? `${formatEther(joinFee)} ETH` : "0.001 ETH"}
+        Join cost: {joinCost ? `${formatEther(joinCost)} ETH` : "-- ETH"}
       </div>
       {isSuccess && (
         <p className="mt-3 text-sm text-emerald-400">
