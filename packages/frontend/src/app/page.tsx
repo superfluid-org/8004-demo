@@ -5,16 +5,6 @@ import { ClaimSUP } from "@/components/ClaimSUP";
 import { MemberList } from "@/components/MemberList";
 import { ContractStatus } from "@/components/ContractStatus";
 
-function ERC8004Logo({ className = "h-5" }: { className?: string }) {
-  return (
-    <img
-      src="/8004-logo.png"
-      alt="8004"
-      className={`${className} brightness-0 invert`}
-    />
-  );
-}
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -23,8 +13,10 @@ export default function Home() {
         <div className="mx-auto max-w-5xl">
           {/* Mobile: logo centered, wallet below */}
           <div className="flex items-center justify-between sm:hidden">
-            <div className="flex items-center gap-2.5">
-              <ERC8004Logo className="h-4" />
+            <div className="flex items-center gap-2">
+              <span className="text-base font-bold tracking-tight text-white">
+                ERC-8004
+              </span>
               <span className="text-base text-zinc-500">×</span>
               <img src="/superfluid-logo.svg" alt="Superfluid" className="h-5" />
             </div>
@@ -59,7 +51,9 @@ export default function Home() {
               </a>
             </div>
             <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
-              <ERC8004Logo className="h-5" />
+              <span className="text-lg font-bold tracking-tight text-white">
+                ERC-8004
+              </span>
               <span className="text-lg text-zinc-500">×</span>
               <img src="/superfluid-logo.svg" alt="Superfluid" className="h-6" />
             </div>
