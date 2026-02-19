@@ -7,22 +7,11 @@ import { ContractStatus } from "@/components/ContractStatus";
 
 function ERC8004Logo({ className = "h-5" }: { className?: string }) {
   return (
-    <div className="flex items-center gap-1.5">
-      <svg
-        viewBox="0 0 256 417"
-        className={className}
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M127.961 0L125.166 9.5V285.168L127.961 287.958L255.923 212.32L127.961 0Z" fill="white" fillOpacity="0.6" />
-        <path d="M127.962 0L0 212.32L127.962 287.958V154.158V0Z" fill="white" />
-        <path d="M127.961 312.187L126.386 314.107V412.668L127.961 417.055L255.999 236.587L127.961 312.187Z" fill="white" fillOpacity="0.6" />
-        <path d="M127.962 417.055V312.187L0 236.587L127.962 417.055Z" fill="white" />
-        <path d="M127.961 287.958L255.923 212.32L127.961 154.159V287.958Z" fill="white" fillOpacity="0.2" />
-        <path d="M0 212.32L127.962 287.958V154.159L0 212.32Z" fill="white" fillOpacity="0.5" />
-      </svg>
-      <span className="font-medium tracking-tight text-white" style={{ fontFamily: 'var(--font-poppins)' }}>8004</span>
-    </div>
+    <img
+      src="/8004-logo.png"
+      alt="8004"
+      className={`${className} brightness-0 invert`}
+    />
   );
 }
 
