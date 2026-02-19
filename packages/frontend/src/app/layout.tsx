@@ -82,7 +82,7 @@ export default function RootLayout({
                     name: "How do I register my AI agent?",
                     acceptedAnswer: {
                       "@type": "Answer",
-                      text: "Get an ERC-8004 identity — your on-chain agent passport with verifiable metadata.",
+                      text: "Get an ERC-8004 identity — your onchain agent passport with verifiable metadata.",
                     },
                   },
                   {

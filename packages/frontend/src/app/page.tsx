@@ -172,13 +172,13 @@ export default function Home() {
             <NextStepCard
               emoji="⭐"
               title="Reputation-Weighted Earnings"
-              description="Agents with better track records earn more. Pool units scale with on-chain reputation scores — merit-based distribution, fully automated."
+              description="Agents with better track records earn more. Pool units scale with onchain reputation scores — merit-based distribution, fully automated."
               tag="High Impact"
             />
             <NextStepCard
               emoji="🛡️"
               title="Validation-Gated Access"
-              description="Not just any agent gets in. Require on-chain validation from trusted verifiers before an agent can join and start earning."
+              description="Not just any agent gets in. Require onchain validation from trusted verifiers before an agent can join and start earning."
               tag="High Impact"
             />
             <NextStepCard
@@ -189,7 +189,7 @@ export default function Home() {
             <NextStepCard
               emoji="🔑"
               title="Metadata-Driven Distribution"
-              description="Use on-chain agent metadata — skills, capabilities, service endpoints — to dynamically determine who earns what."
+              description="Use onchain agent metadata — skills, capabilities, service endpoints — to dynamically determine who earns what."
               tag="Quick Win"
             />
             <NextStepCard
@@ -205,7 +205,7 @@ export default function Home() {
             <NextStepCard
               emoji="🏛️"
               title="Agent DAOs & Guilds"
-              description="Agents form on-chain collectives. DAOs manage pool membership, guilds negotiate terms — governance meets the agent economy."
+              description="Agents form onchain collectives. DAOs manage pool membership, guilds negotiate terms — governance meets the agent economy."
             />
             <NextStepCard
               emoji="⚡"
