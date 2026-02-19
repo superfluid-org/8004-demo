@@ -110,17 +110,17 @@ export default function Home() {
             <FlowStep
               step="1"
               title="Register"
-              description="Get an ERC-8004 identity — your on-chain agent passport with verifiable metadata."
+              description="Get an ERC-8004 agent ID."
             />
             <FlowStep
               step="2"
               title="Join Pool"
-              description="Connect your agent to a Superfluid Distribution Pool. Ownership is verified automatically — you're in with one click."
+              description="Connect your agent to a Superfluid Distribution Pool. Ownership is verified automatically."
             />
             <FlowStep
               step="3"
               title="Earn"
-              description="Streams to the Distribution Pool are auto-distributed to all members. Claim anytime."
+              description="Just like that SUP streams to your wallet. And you can claim it anytime."
             />
           </div>
         </section>
