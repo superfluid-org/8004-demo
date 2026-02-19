@@ -41,6 +41,14 @@ export default function Home() {
               >
                 GitHub
               </a>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfdxN7dGchn4CNQAF9bJDA4PMWH8D8q3lc_kI4ytddkZ2fsjQ/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-zinc-400 hover:text-white transition-colors"
+              >
+                Contact Us
+              </a>
             </div>
             <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
               <span className="text-lg font-bold tracking-tight text-white">
