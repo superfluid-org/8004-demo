@@ -82,12 +82,10 @@ export default function Home() {
                 Join the Pool
               </a>
               <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSfdxN7dGchn4CNQAF9bJDA4PMWH8D8q3lc_kI4ytddkZ2fsjQ/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#infrastructure"
                 className="w-48 text-center rounded-lg border border-emerald-600/30 bg-emerald-600/5 px-7 py-3 font-medium text-emerald-400 transition-all hover:border-emerald-500/50 hover:bg-emerald-600/10"
               >
-                Contact Us ↗
+                Learn More →
               </a>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -231,6 +229,33 @@ export default function Home() {
               title="Staking & Slashing"
               description="Agents stake tokens to earn. Poor performance detected by validators reduces earnings and redistributes stake to good actors."
             />
+          </div>
+        </section>
+
+        {/* Infrastructure CTA */}
+        <section id="infrastructure" className="scroll-mt-20 pb-24 sm:pb-40">
+          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+            Infrastructure
+          </p>
+          <h2 className="mb-6 text-center text-2xl font-bold text-white sm:text-3xl">
+            Better Rails for the Agent Economy
+          </h2>
+          <p className="mx-auto mb-10 max-w-2xl text-center text-base leading-relaxed text-zinc-400">
+            The agent economy needs better rails.{" "}
+            <span className="text-zinc-300">Superfluid Distribution Pools</span>{" "}
+            distribute streams at scale.{" "}
+            <span className="text-zinc-300">ERC-8004</span> gives agents
+            identity. We give you the infrastructure to ship.
+          </p>
+          <div className="flex justify-center">
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfdxN7dGchn4CNQAF9bJDA4PMWH8D8q3lc_kI4ytddkZ2fsjQ/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg bg-emerald-600 px-8 py-3 font-medium text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 hover:shadow-emerald-500/30 active:scale-[0.98]"
+            >
+              Contact Us →
+            </a>
           </div>
         </section>
 
