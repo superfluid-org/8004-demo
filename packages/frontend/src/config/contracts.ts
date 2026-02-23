@@ -16,9 +16,9 @@ interface ContractConfig {
 
 const contracts: Record<number, ContractConfig> = {
   [base.id]: {
-    agentPoolDistributor: "0x0000000000000000000000000000000000000000", // TODO: replace after mainnet deploy
+    agentPoolDistributor: "0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70",
     identityRegistry: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
-    deployBlock: BigInt(0), // TODO: replace after mainnet deploy
+    deployBlock: BigInt(42530672),
     subgraphUrl:
       "https://subgraph-endpoints.superfluid.dev/base-mainnet/protocol-v1",
     rpcUrl: "https://base-rpc.publicnode.com",
