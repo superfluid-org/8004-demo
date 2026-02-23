@@ -35,7 +35,7 @@ export default function Home() {
                 Superfluid Docs
               </a>
               <a
-                href="https://github.com/0xPilou/poc-8004-sf"
+                href="https://github.com/superfluid-org/8004-demo"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-zinc-400 hover:text-white transition-colors"
@@ -286,7 +286,7 @@ export default function Home() {
                 Superfluid
               </a>
               <a
-                href="https://github.com/0xPilou/poc-8004-sf"
+                href="https://github.com/superfluid-org/8004-demo"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-zinc-300 transition-colors"

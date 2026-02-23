@@ -127,7 +127,7 @@ chainId: 8453
 - ERC-8004 Spec: https://eips.ethereum.org/EIPS/eip-8004
 - ERC-8004 Contracts: https://github.com/erc-8004/erc-8004-contracts
 - Superfluid Docs: https://docs.superfluid.finance/
-- Project GitHub: https://github.com/0xPilou/poc-8004-sf
+- Project GitHub: https://github.com/superfluid-org/8004-demo
 
 ## Notes
 
