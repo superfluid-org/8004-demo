@@ -24,7 +24,7 @@ library AddressRegistry {
      * @dev Get Base Mainnet configuration
      */
     function getBaseMainnetAddresses() internal pure returns (DeployedAddresses memory addresses) {
-        return DeployedAddresses({agentPoolDistributor: address(0)});
+        return DeployedAddresses({agentPoolDistributor: 0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70});
     }
 
     /**
