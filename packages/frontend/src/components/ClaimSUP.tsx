@@ -9,18 +9,18 @@ import {
 import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
-import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
+import { useContractConfig } from "@/hooks/useContractConfig";
 import { FlowingBalance } from "./FlowingBalance";
 
-const isDeployed =
-  AGENT_POOL_DISTRIBUTOR_ADDRESS !==
-  "0x0000000000000000000000000000000000000000";
+const ZERO = "0x0000000000000000000000000000000000000000";
 
 export function ClaimSUP() {
   const { address, isConnected } = useAccount();
+  const { agentPoolDistributor } = useContractConfig();
+  const isDeployed = agentPoolDistributor !== ZERO;
 
   const { data: poolAddress } = useReadContract({
-    address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+    address: agentPoolDistributor,
     abi: AgentPoolDistributorABI,
     functionName: "pool",
     query: { enabled: isDeployed },
@@ -58,7 +58,7 @@ export function ClaimSUP() {
 
   function handleClaim() {
     writeContract({
-      address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+      address: agentPoolDistributor,
       abi: AgentPoolDistributorABI,
       functionName: "claimSUP",
     });
@@ -73,7 +73,7 @@ export function ClaimSUP() {
       <div className="mt-4 flex items-center justify-between">
         <div>
           <p className="text-sm text-zinc-400">Accumulated</p>
-          <div className="text-xl font-semibold text-emerald-400">
+          <div className="text-xl font-semibold text-accent-400">
             {claimable && memberFlowRate !== undefined ? (
               <>
                 <FlowingBalance
@@ -95,12 +95,12 @@ export function ClaimSUP() {
       <button
         disabled={!isConnected || !isDeployed || isPending || isConfirming}
         onClick={handleClaim}
-        className="mt-4 w-full rounded-lg bg-emerald-600 px-6 py-2 font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="mt-4 w-full rounded-lg bg-accent-600 px-6 py-2 font-medium text-white transition-colors hover:bg-accent-500 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         {isPending ? "Confirm…" : isConfirming ? "Claiming…" : "Claim"}
       </button>
       {isSuccess && (
-        <p className="mt-3 text-sm text-emerald-400">
+        <p className="mt-3 text-sm text-accent-400">
           ✓ SUP claimed successfully!
         </p>
       )}

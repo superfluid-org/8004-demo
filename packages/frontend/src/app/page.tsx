@@ -4,6 +4,7 @@ import { JoinPool } from "@/components/JoinPool";
 import { ClaimSUP } from "@/components/ClaimSUP";
 import { MemberList } from "@/components/MemberList";
 import { ContractStatus } from "@/components/ContractStatus";
+import { IS_DEV_MODE } from "@/config/contracts";
 
 export default function Home() {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
                 ERC-8004
               </span>
               <span className="text-base text-zinc-500">×</span>
-              <img src="/superfluid-logo.svg" alt="Superfluid" className="h-5" />
+              <img src="/superfluid-logo-new.png" alt="Superfluid" className="h-5" />
             </div>
             <ConnectButton showBalance={false} />
           </div>
@@ -55,7 +56,7 @@ export default function Home() {
                 ERC-8004
               </span>
               <span className="text-lg text-zinc-500">×</span>
-              <img src="/superfluid-logo.svg" alt="Superfluid" className="h-6" />
+              <img src="/superfluid-logo-new.png" alt="Superfluid" className="h-6" />
             </div>
             <ConnectButton showBalance={false} />
           </div>
@@ -66,13 +67,13 @@ export default function Home() {
         {/* Hero */}
         <section className="hero-glow relative py-16 text-center sm:py-24">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-4 py-1.5 text-xs text-zinc-400">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Live on Base Sepolia
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-400 animate-pulse" />
+            Live on Base
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-7xl">
             Agents Earn SUP.
             <br />
-            <span className="bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent-400 to-accent-300 bg-clip-text text-transparent">
               Every Second.
             </span>
           </h1>
@@ -83,15 +84,15 @@ export default function Home() {
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <a
               href="#join"
-              className="w-48 text-center rounded-lg bg-emerald-600 px-7 py-3 font-medium text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-500 hover:shadow-emerald-500/30 active:scale-[0.98]"
+              className="w-48 text-center rounded-lg bg-accent-600 px-7 py-3 font-medium text-white shadow-lg shadow-accent-600/20 transition-all hover:bg-accent-500 hover:shadow-accent-500/30 active:scale-[0.98]"
             >
               Join the Pool
             </a>
             <a
-              href="https://testnet.8004scan.io/create"
+              href={IS_DEV_MODE ? "https://testnet.8004scan.io/create" : "https://8004scan.io/create"}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-48 text-center rounded-lg border border-emerald-600/30 bg-emerald-600/5 px-7 py-3 font-medium text-emerald-400 transition-all hover:border-emerald-500/50 hover:bg-emerald-600/10"
+              className="w-48 text-center rounded-lg border border-accent-600/30 bg-accent-600/5 px-7 py-3 font-medium text-accent-400 transition-all hover:border-accent-500/50 hover:bg-accent-600/10"
             >
               Register Agent ↗
             </a>
@@ -100,7 +101,7 @@ export default function Home() {
 
         {/* How It Works */}
         <section className="pb-24 sm:pb-40">
-          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
             Three steps
           </p>
           <h2 className="mb-12 text-center text-2xl font-bold text-white sm:text-3xl">
@@ -127,7 +128,7 @@ export default function Home() {
 
         {/* Start Earning */}
         <section id="join" className="scroll-mt-20 pb-24 sm:pb-40">
-          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
             Join the Pool
           </p>
           <h2 className="mb-12 text-center text-2xl font-bold text-white sm:text-3xl">
@@ -151,7 +152,7 @@ export default function Home() {
 
         {/* Next Steps */}
         <section className="pb-24 sm:pb-40">
-          <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+          <p className="mb-3 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
             Build with us
           </p>
           <h2 className="mb-4 text-center text-2xl font-bold text-white sm:text-3xl">
@@ -160,11 +161,11 @@ export default function Home() {
           <p className="mx-auto mb-6 max-w-xl text-center text-base leading-relaxed text-zinc-400">
             Build apps that combine ERC-8004 agent identity with Superfluid
             money streams — and get funded with{" "}
-            <span className="font-semibold text-emerald-400">SUP grants</span>.
+            <span className="font-semibold text-accent-400">SUP grants</span>.
           </p>
           <div className="mx-auto mb-12 flex items-center justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-5 py-2 text-sm text-emerald-400">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent-500/20 bg-accent-500/5 px-5 py-2 text-sm text-accent-400">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent-400 animate-pulse" />
               Ideas ready to build — pick one and start shipping
             </div>
           </div>
@@ -223,7 +224,7 @@ export default function Home() {
 
         {/* Infrastructure CTA */}
         <section id="infrastructure" className="scroll-mt-20 pb-24 sm:pb-40">
-          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-emerald-400/60">
+          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
             Infrastructure
           </p>
           <h2 className="mb-6 text-center text-2xl font-bold text-white sm:text-3xl">
@@ -241,7 +242,7 @@ export default function Home() {
               href="https://docs.google.com/forms/d/e/1FAIpQLSfdxN7dGchn4CNQAF9bJDA4PMWH8D8q3lc_kI4ytddkZ2fsjQ/viewform"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-lg border border-emerald-600/30 bg-emerald-600/5 px-8 py-3 font-medium text-emerald-400 transition-all hover:border-emerald-500/50 hover:bg-emerald-600/10"
+              className="rounded-lg border border-accent-600/30 bg-accent-600/5 px-8 py-3 font-medium text-accent-400 transition-all hover:border-accent-500/50 hover:bg-accent-600/10"
             >
               Contact Us →
             </a>
@@ -264,7 +265,7 @@ export default function Home() {
                 />
               </div>
               <p className="text-xs text-zinc-600">
-                Proof of concept on Base Sepolia
+                Live on Base
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-zinc-500">
@@ -318,20 +319,20 @@ function NextStepCard({
   tag?: string;
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-emerald-500/30 hover:bg-zinc-900/80 hover:-translate-y-1">
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+    <div className="group relative overflow-hidden rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-accent-500/30 hover:bg-zinc-900/80 hover:-translate-y-1">
+      <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <div className="relative">
         <div className="mb-4 flex items-center justify-between">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-500/10 text-xl ring-1 ring-emerald-500/20 transition-all duration-300 group-hover:bg-emerald-500/15 group-hover:ring-emerald-500/30">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent-500/10 text-xl ring-1 ring-accent-500/20 transition-all duration-300 group-hover:bg-accent-500/15 group-hover:ring-accent-500/30">
             {emoji}
           </div>
           {tag && (
-            <span className="rounded-full border border-emerald-500/20 bg-emerald-500/5 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-emerald-400/80">
+            <span className="rounded-full border border-accent-500/20 bg-accent-500/5 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-accent-400/80">
               {tag}
             </span>
           )}
         </div>
-        <h3 className="text-base font-semibold text-white group-hover:text-emerald-50 transition-colors">
+        <h3 className="text-base font-semibold text-white group-hover:text-accent-50 transition-colors">
           {title}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-zinc-500 group-hover:text-zinc-400 transition-colors">
@@ -353,7 +354,7 @@ function FlowStep({
 }) {
   return (
     <div className="card-hover rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-400 font-bold ring-1 ring-emerald-500/20">
+      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent-500/10 text-accent-400 font-bold ring-1 ring-accent-500/20">
         {step}
       </div>
       <h3 className="text-lg font-semibold text-white">{title}</h3>

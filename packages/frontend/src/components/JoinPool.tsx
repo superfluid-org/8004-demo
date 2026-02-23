@@ -4,17 +4,18 @@ import { useState } from "react";
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { formatEther } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
-import { AGENT_POOL_DISTRIBUTOR_ADDRESS } from "@/config/contracts";
+import { useContractConfig } from "@/hooks/useContractConfig";
 
-const isDeployed =
-  AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
+const ZERO = "0x0000000000000000000000000000000000000000";
 
 export function JoinPool() {
   const { address, isConnected } = useAccount();
   const [agentId, setAgentId] = useState("");
+  const { agentPoolDistributor } = useContractConfig();
+  const isDeployed = agentPoolDistributor !== ZERO;
 
   const { data: joinCost } = useReadContract({
-    address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+    address: agentPoolDistributor,
     abi: AgentPoolDistributorABI,
     functionName: "getJoinCost",
     args: [address!],
@@ -30,7 +31,7 @@ export function JoinPool() {
   function handleJoin() {
     if (!agentId) return;
     writeContract({
-      address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+      address: agentPoolDistributor,
       abi: AgentPoolDistributorABI,
       functionName: "joinPool",
       args: [BigInt(agentId)],
@@ -54,12 +55,12 @@ export function JoinPool() {
             setAgentId(e.target.value);
             if (error || isSuccess) reset();
           }}
-          className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-white placeholder-zinc-500 focus:border-emerald-500 focus:outline-none"
+          className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-white placeholder-zinc-500 focus:border-accent-500 focus:outline-none"
         />
         <button
           disabled={!agentId || !isConnected || !isDeployed || isPending || isConfirming}
           onClick={handleJoin}
-          className="shrink-0 rounded-lg bg-emerald-600 px-6 py-2 font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="shrink-0 rounded-lg bg-accent-600 px-6 py-2 font-medium text-white transition-colors hover:bg-accent-500 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {isPending ? "Confirm…" : isConfirming ? "Joining…" : "Join"}
         </button>
@@ -68,7 +69,7 @@ export function JoinPool() {
         Join cost: {joinCost ? `${formatEther(joinCost)} ETH` : "-- ETH"}
       </div>
       {isSuccess && (
-        <p className="mt-3 text-sm text-emerald-400">
+        <p className="mt-3 text-sm text-accent-400">
           ✓ Agent #{agentId} joined the pool!
         </p>
       )}

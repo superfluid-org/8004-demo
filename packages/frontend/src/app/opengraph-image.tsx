@@ -94,7 +94,7 @@ export default function Image() {
             }}
           />
           <span style={{ fontSize: 13, color: "#52525b", letterSpacing: 0.5 }}>
-            Live on Base Sepolia
+            Live on Base
           </span>
         </div>
 

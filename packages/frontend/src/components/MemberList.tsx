@@ -1,19 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useWatchContractEvent } from "wagmi";
+import { useChainId, useWatchContractEvent } from "wagmi";
 import { type Address, createPublicClient, http, parseAbiItem } from "viem";
+import { base, baseSepolia } from "viem/chains";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
-import { AGENT_POOL_DISTRIBUTOR_ADDRESS, CHAIN, DEPLOY_BLOCK } from "@/config/contracts";
+import { getContractConfig } from "@/config/contracts";
 
-const isDeployed =
-  AGENT_POOL_DISTRIBUTOR_ADDRESS !== "0x0000000000000000000000000000000000000000";
+const ZERO = "0x0000000000000000000000000000000000000000";
 
-// Standalone public client so event fetching works without a connected wallet
-const publicClient = createPublicClient({
-  chain: CHAIN,
-  transport: http("https://base-sepolia-rpc.publicnode.com"),
-});
+const viemChains: Record<number, (typeof base) | (typeof baseSepolia)> = {
+  [base.id]: base,
+  [baseSepolia.id]: baseSepolia,
+};
 
 interface Member {
   agentId: bigint;
@@ -23,6 +22,10 @@ interface Member {
 const PAGE_SIZE = 20;
 
 export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) {
+  const chainId = useChainId();
+  const config = getContractConfig(chainId);
+  const isDeployed = config.agentPoolDistributor !== ZERO;
+
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
@@ -31,6 +34,11 @@ export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) 
   // Fetch historical AgentJoined events (chunked to avoid RPC block range limits)
   useEffect(() => {
     if (!isDeployed) return;
+
+    const publicClient = createPublicClient({
+      chain: viemChains[chainId] ?? base,
+      transport: http(config.rpcUrl),
+    });
 
     async function getLogsChunked(
       event: ReturnType<typeof parseAbiItem>,
@@ -43,7 +51,7 @@ export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) 
       while (start <= toBlock) {
         const end = start + CHUNK_SIZE > toBlock ? toBlock : start + CHUNK_SIZE;
         const logs = await publicClient.getLogs({
-          address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+          address: config.agentPoolDistributor,
           event: event as any,
           fromBlock: start,
           toBlock: end,
@@ -62,16 +70,15 @@ export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) 
           parseAbiItem(
             "event AgentJoined(uint256 indexed agentId, address indexed agentWallet)"
           ),
-          DEPLOY_BLOCK,
+          config.deployBlock,
           latestBlock
         );
 
-        // Also fetch AgentLeft to know who's still in
         const leftLogs = await getLogsChunked(
           parseAbiItem(
             "event AgentLeft(uint256 indexed agentId, address indexed agentWallet)"
           ),
-          DEPLOY_BLOCK,
+          config.deployBlock,
           latestBlock
         );
 
@@ -95,11 +102,11 @@ export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) 
     }
 
     fetchMembers();
-  }, []);
+  }, [chainId, config, isDeployed]);
 
   // Watch for new joins in real-time
   useWatchContractEvent({
-    address: AGENT_POOL_DISTRIBUTOR_ADDRESS,
+    address: config.agentPoolDistributor,
     abi: AgentPoolDistributorABI,
     eventName: "AgentJoined",
     enabled: isDeployed,
@@ -117,6 +124,9 @@ export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) 
       });
     },
   });
+
+  const viemChain = viemChains[chainId] ?? base;
+  const blockExplorerUrl = viemChain.blockExplorers?.default?.url;
 
   const filtered = useMemo(() => {
     if (!filter) return members;
@@ -163,7 +173,7 @@ export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) 
               placeholder="Search by Agent ID or wallet…"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white placeholder-zinc-500 focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white placeholder-zinc-500 focus:border-accent-500 focus:outline-none"
             />
           </div>
 
@@ -184,11 +194,11 @@ export function MemberList({ hideTitle = false }: { hideTitle?: boolean } = {}) 
                   key={m.agentId.toString()}
                   className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-800/50 px-4 py-3"
                 >
-                  <span className="font-mono text-sm text-emerald-400">
+                  <span className="font-mono text-sm text-accent-400">
                     Agent #{m.agentId.toString()}
                   </span>
                   <a
-                    href={`${CHAIN.blockExplorers?.default?.url}/address/${m.wallet}`}
+                    href={`${blockExplorerUrl}/address/${m.wallet}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-mono text-xs text-zinc-500 hover:text-zinc-300 transition-colors"

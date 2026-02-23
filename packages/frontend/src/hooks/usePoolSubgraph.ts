@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const SUBGRAPH_URL =
-  "https://subgraph-endpoints.superfluid.dev/base-sepolia/protocol-v1";
+import { useChainId } from "wagmi";
+import { getContractConfig } from "@/config/contracts";
 
 interface PoolData {
   totalAmountDistributedUntilUpdatedAt: bigint;
@@ -16,6 +15,8 @@ interface PoolData {
 export function usePoolSubgraph(poolAddress: string | undefined) {
   const [data, setData] = useState<PoolData | null>(null);
   const [loading, setLoading] = useState(true);
+  const chainId = useChainId();
+  const { subgraphUrl } = getContractConfig(chainId);
 
   useEffect(() => {
     if (!poolAddress) return;
@@ -24,7 +25,7 @@ export function usePoolSubgraph(poolAddress: string | undefined) {
 
     async function fetchPool() {
       try {
-        const res = await fetch(SUBGRAPH_URL, {
+        const res = await fetch(subgraphUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -64,7 +65,7 @@ export function usePoolSubgraph(poolAddress: string | undefined) {
     fetchPool();
     const interval = setInterval(fetchPool, 30000);
     return () => clearInterval(interval);
-  }, [poolAddress]);
+  }, [poolAddress, subgraphUrl]);
 
   return { data, loading };
 }
