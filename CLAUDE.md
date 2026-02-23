@@ -27,9 +27,13 @@ forge test -vvvv               # Full trace output
 forge fmt                      # Format (100 char lines, 4-space tabs)
 ```
 
-Deploy (requires `.env` with `PRIVATE_KEY` and real addresses in Deploy.s.sol):
+Deploy (requires `.env` with `PRIVATE_KEY`):
 ```bash
-source .env && forge script script/Deploy.s.sol --rpc-url base-sepolia --broadcast --verify
+source .env
+# Base mainnet
+forge script script/Deploy.s.sol --rpc-url base --broadcast --verify
+# Base Sepolia (testnet)
+forge script script/Deploy.s.sol --rpc-url base-sepolia --broadcast --verify
 ```
 
 ### Frontend (`packages/frontend/`)
@@ -70,14 +74,21 @@ Interfaces in `src/interfaces/` are **minimal** — only methods this contract c
 - **ABIs**: TypeScript exports in `src/abi/`
 - Path alias: `@/*` → `./src/*`
 
+## Deployments
+
+| Chain | AgentPoolDistributor | Deploy Block |
+|---|---|---|
+| **Base (mainnet)** | `0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70` | `42530672` |
+| Base Sepolia | `0xefeC3A3C466709E17899d852BEEd916a198d34e3` | `37784723` |
+
 ## External Contract Addresses
 
-| Contract | Base Sepolia | Base Mainnet |
+| Contract | Base Mainnet | Base Sepolia |
 |---|---|---|
-| ERC-8004 Identity Registry | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
-| ERC-8004 Reputation Registry | `0x8004B663056A597Dffe9eCcC1965A193B7388713` | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
+| ERC-8004 Identity Registry | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | `0x8004A818BFB912233c491871b3d84c89A494BD9e` |
+| ERC-8004 Reputation Registry | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` | `0x8004B663056A597Dffe9eCcC1965A193B7388713` |
 | Superfluid GDAv1Forwarder | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` |
-| Super Token (SUP) | `0xFd62b398DD8a233ad37156690631fb9515059d6A` | `0xa69f80524381275A7fFdb3AE01c54150644c8792` |
+| Super Token (SUP) | `0xa69f80524381275A7fFdb3AE01c54150644c8792` | `0xFd62b398DD8a233ad37156690631fb9515059d6A` |
 
 ## Key Dependencies
 
@@ -90,6 +101,8 @@ Interfaces in `src/interfaces/` are **minimal** — only methods this contract c
 - viem + wagmi + RainbowKit (wallet connection & contract interaction)
 - Tailwind CSS 4
 
-## Incomplete / Placeholder Values
+## Environment Variables
 
-- `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` env var needed for frontend
+### Frontend (`packages/frontend/`)
+- `NEXT_PUBLIC_DEV_MODE` — `true` enables Base Sepolia alongside Base mainnet (default: `false`, mainnet only)
+- `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` — optional, for WalletConnect QR code support

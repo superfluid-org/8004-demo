@@ -18,7 +18,7 @@ test/
     MockIdentityRegistry.sol        # Simulates ERC-8004 registry (simple mapping-based, not a real ERC-721)
     MockSuperfluid.sol              # MockGDAv1Forwarder + MockSuperfluidPool (tracks units, simulates claims)
 script/
-  Deploy.s.sol                      # Deployment script targeting Base Sepolia (has placeholder addresses)
+  Deploy.s.sol                      # Deployment script (supports Base mainnet and Base Sepolia)
 ```
 
 ## How It Works
@@ -40,8 +40,15 @@ script/
 - **`distributionFromAnyAddress: true`** — anyone can stream/distribute to the pool, not just the admin.
 - **Agent wallet vs owner**: Pool units are assigned to `getAgentWallet(agentId)`, not the NFT owner. In practice these are the same address after registration (ERC-8004 sets `agentWallet = msg.sender` on `register()`). The wallet gets cleared on NFT transfer — handling this is out of scope.
 - **Join fee**: Agents pay an ETH fee when calling `joinPool()`. The fee is forwarded to `feeCollector`. Claims via `claimSUP()` are free.
-- **`claimSUP()` claims for `msg.sender`** — this works because `agentWallet == owner` at registration time. If the agent wallet was changed via `setAgentWallet()`, there's a mismatch. Out of scope for the POC.
+- **`claimSUP()` claims for `msg.sender`** — this works because `agentWallet == owner` at registration time. If the agent wallet was changed via `setAgentWallet()`, there's a mismatch. Out of scope for this demo.
 - **`leavePool()` fallback**: If `getAgentWallet()` returns `address(0)` (wallet cleared after transfer), falls back to `msg.sender`.
+
+## Deployments
+
+| Chain | AgentPoolDistributor | Deploy Block |
+|---|---|---|
+| **Base (mainnet)** | `0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70` | `42530672` |
+| Base Sepolia | `0xefeC3A3C466709E17899d852BEEd916a198d34e3` | `37784723` |
 
 ## What's Done
 
@@ -51,23 +58,14 @@ script/
 - [x] Ownership verification against ERC-8004 Identity Registry
 - [x] Admin functions: `setJoinFee`, `setFeeCollector`
 - [x] Full test suite (20 tests) with mocks
-- [x] Deployment script skeleton for Base Sepolia
+- [x] Deployed to Base mainnet and Base Sepolia
 
-## What's Missing (TODOs)
+### Nice to Have
 
-### Before Deploying to Base Sepolia
-
-- [x] **GDA_FORWARDER address** in `script/Deploy.s.sol` — currently `address(0x1)`. Need the real Superfluid GDAv1Forwarder address on Base Sepolia.
-- [x] **SUPER_TOKEN address** in `script/Deploy.s.sol` — currently `address(0x2)`. Need to deploy or find a dummy Super Token on Base Sepolia.
-- [x] **`.env` file** with `PRIVATE_KEY` for the deployer account.
-
-### Nice to Have (from product brief)
-
-- [ ] Simple frontend with real-time visualization
 - [ ] Batch join for multiple agents
 - [ ] Demo script (`script/Demo.s.sol`) that walks through the full 90-second flow on a fork
 
-### Out of Scope (per product brief)
+### Out of Scope
 
 - Reputation scoring / weighted units
 - Handling agent wallet changes after joining
@@ -83,12 +81,12 @@ script/
 
 ## External Contract Addresses
 
-| Contract | Base Sepolia | Base Mainnet |
+| Contract | Base Mainnet | Base Sepolia |
 |---|---|---|
-| ERC-8004 Identity Registry | `0x8004A818BFB912233c491871b3d84c89A494BD9e` | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` |
-| ERC-8004 Reputation Registry | `0x8004B663056A597Dffe9eCcC1965A193B7388713` | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` |
+| ERC-8004 Identity Registry | `0x8004A169FB4a3325136EB29fA0ceB6D2e539a432` | `0x8004A818BFB912233c491871b3d84c89A494BD9e` |
+| ERC-8004 Reputation Registry | `0x8004BAa17C55a88189AE136b182e5fdA19dE9b63` | `0x8004B663056A597Dffe9eCcC1965A193B7388713` |
 | Superfluid GDAv1Forwarder | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` | `0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08` |
-| Super Token (SUP) | `0xFd62b398DD8a233ad37156690631fb9515059d6A` | `0xa69f80524381275A7fFdb3AE01c54150644c8792` |
+| Super Token (SUP) | `0xa69f80524381275A7fFdb3AE01c54150644c8792` | `0xFd62b398DD8a233ad37156690631fb9515059d6A` |
 
 ## ERC-8004 Interface Notes
 
@@ -123,8 +121,11 @@ forge test -vvvv     # Run with full trace output
 forge fmt            # Format code
 ```
 
-Deploy (once addresses are filled in):
+Deploy:
 ```bash
 source .env
+# Base mainnet
+forge script script/Deploy.s.sol --rpc-url base --broadcast --verify
+# Base Sepolia
 forge script script/Deploy.s.sol --rpc-url base-sepolia --broadcast --verify
 ```
