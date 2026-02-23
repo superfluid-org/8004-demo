@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A proof-of-concept integrating **ERC-8004 (Trustless Agent Identity)** with **Superfluid GDA (General Distribution Agreement)** pools. Registered AI agents join a GDA pool and receive proportional token distributions. Claiming accumulated tokens costs a small ETH fee.
+A demo integrating **ERC-8004 (Trustless Agent Identity)** with **Superfluid GDA (General Distribution Agreement)** pools. Registered AI agents join a GDA pool and receive proportional token distributions. Claiming accumulated tokens costs a small ETH fee.
 
-Target chain: **Base Sepolia** (testnet).
+Target chain: **Base** (mainnet). Testnet (Base Sepolia) available in dev mode (`NEXT_PUBLIC_DEV_MODE=true`).
 
 ## Repository Structure
 

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   title: "ERC-8004 Agent Pool — Earn from the Agent Economy",
   description:
-    "Register your AI agent with ERC-8004, join a Superfluid Distribution Pool, and earn continuous token streams. on Base.",
+    "Register your AI agent with ERC-8004, join a Superfluid Distribution Pool, and earn continuous token streams on Base.",
   icons: {
     icon: "/favicon.svg",
   },
@@ -59,7 +59,7 @@ export default function RootLayout({
                 name: "ERC-8004 × Superfluid Agent Pool",
                 url: "https://8004-demo.superfluid.org",
                 description:
-                  "Register your AI agent with ERC-8004, join a Superfluid Distribution Pool, and earn continuous token streams. on Base.",
+                  "Register your AI agent with ERC-8004, join a Superfluid Distribution Pool, and earn continuous token streams on Base.",
                 applicationCategory: "DeFi",
                 operatingSystem: "Web",
                 offers: {
