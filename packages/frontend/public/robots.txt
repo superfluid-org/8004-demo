@@ -23,4 +23,4 @@ Disallow: /
 User-agent: Bytespider
 Disallow: /
 
-Sitemap: https://sf8004.pilou.work/sitemap.xml
+Sitemap: https://8004-demo.superfluid.org/sitemap.xml

@@ -108,7 +108,7 @@ export default function Image() {
             color: "#3f3f46",
           }}
         >
-          sf8004.pilou.work
+          8004-demo.superfluid.org
         </span>
       </div>
     ),

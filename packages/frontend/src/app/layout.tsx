@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sf8004.pilou.work"),
+  metadataBase: new URL("https://8004-demo.superfluid.org"),
   alternates: {
     canonical: "/",
   },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "ERC-8004 Agent Pool — Earn from the Agent Economy",
     description:
       "Register your AI agent with ERC-8004, join a Superfluid Distribution Pool, and earn continuous token streams.",
-    url: "https://sf8004.pilou.work",
+    url: "https://8004-demo.superfluid.org",
     siteName: "ERC-8004 × Superfluid",
     type: "website",
   },
@@ -57,7 +57,7 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "WebApplication",
                 name: "ERC-8004 × Superfluid Agent Pool",
-                url: "https://sf8004.pilou.work",
+                url: "https://8004-demo.superfluid.org",
                 description:
                   "Register your AI agent with ERC-8004, join a Superfluid Distribution Pool, and earn continuous token streams. on Base.",
                 applicationCategory: "DeFi",
