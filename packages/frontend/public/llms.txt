@@ -4,35 +4,21 @@
 
 ## Network
 
-Chain: Base Sepolia
-Chain ID: 84532
-RPC: https://sepolia.base.org
-Block Explorer: https://sepolia.basescan.org
+Chain: Base
+Chain ID: 8453
+RPC: https://mainnet.base.org
+Block Explorer: https://basescan.org
 
 ## Contract Addresses
 
-ERC-8004 Identity Registry: 0x8004A818BFB912233c491871b3d84c89A494BD9e
-AgentPoolDistributor: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
-GDA Pool: 0xAeA715c21Ae9602Ee2543fAbD14ad37E33BA71a0
-SUP Token (SuperToken): 0xFd62b398DD8a233ad37156690631fb9515059d6A
+ERC-8004 Identity Registry: 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432
+AgentPoolDistributor: 0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70
+SUP Token (SuperToken): 0xa69f80524381275A7fFdb3AE01c54150644c8792
 GDAv1 Forwarder: 0x6DA13Bde224A05a288748d857b9e7DDEffd1dE08
 
 ## Subgraph
 
-Superfluid subgraph (Base Sepolia): https://subgraph-endpoints.superfluid.dev/base-sepolia/protocol-v1
-
-Query pool data:
-```graphql
-{
-  pool(id: "0xaea715c21ae9602ee2543fabd14ad37e33ba71a0") {
-    totalAmountDistributedUntilUpdatedAt
-    flowRate
-    totalUnits
-    totalMembers
-    updatedAtTimestamp
-  }
-}
-```
+Superfluid subgraph (Base): https://subgraph-endpoints.superfluid.dev/base-mainnet/protocol-v1
 
 ## ABIs
 
@@ -65,17 +51,17 @@ Query pool data:
 ### Step 1: Register (get agent identity)
 
 Call: ERC8004Registry.register()
-To: 0x8004A818BFB912233c491871b3d84c89A494BD9e
+To: 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432
 Returns: agentId (uint256) — your agent's NFT ID
 Gas: ~150,000
 Value: 0
 
-Alternatively, register via UI: https://testnet.8004scan.io/create
+Register via UI: https://8004scan.io/create
 
 ### Step 2: Join Pool
 
 Call: AgentPoolDistributor.joinPool(agentId)
-To: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+To: 0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70
 Requirements: Must own the agent NFT (ownerOf(agentId) == msg.sender)
 Gas: ~100,000
 Value: 0.0001 ETH (join fee, sent to protocol)
@@ -88,7 +74,7 @@ Anyone can stream SUP tokens to the Distribution Pool. Distributions split equal
 ### Step 4: Claim
 
 Call: AgentPoolDistributor.claimSUP()
-To: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+To: 0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70
 Gas: ~100,000
 Value: 0 (no fee)
 Result: Your accumulated SUP transferred to your wallet
@@ -96,7 +82,7 @@ Result: Your accumulated SUP transferred to your wallet
 ### Step 5: Leave (optional)
 
 Call: AgentPoolDistributor.leavePool(agentId)
-To: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+To: 0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70
 Requirements: Must own the agent NFT
 Gas: ~60,000
 Result: Pool units removed, stop receiving distributions
@@ -122,11 +108,11 @@ SUPClaimed(address indexed claimant)
 
 Join pool with agent ID 42:
 ```
-to: 0xb33239ef5c55cB62D83ED620C84Db992bD3107d6
+to: 0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70
 data: 0x34e7a19f000000000000000000000000000000000000000000000000000000000000002a
 value: 100000000000000 (0.0001 ETH in wei)
 gasLimit: 100000
-chainId: 84532
+chainId: 8453
 ```
 
 ## Requirements
@@ -135,12 +121,6 @@ chainId: 84532
 - Join fee: 0.0001 ETH (paid to protocol on joinPool)
 - Claiming: free (no fee)
 - Agent ownership: Must own the ERC-8004 NFT to join/leave
-
-## Testing
-
-Base Sepolia Faucet: https://www.coinbase.com/faucets/base-sepolia-faucet
-Register an agent: https://testnet.8004scan.io/create
-Frontend: https://sf8004.pilou.work
 
 ## Links
 
@@ -151,7 +131,7 @@ Frontend: https://sf8004.pilou.work
 
 ## Notes
 
-- Proof-of-concept on Base Sepolia testnet — not audited
+- Live on Base mainnet — not audited
 - Equal distribution: 1 unit per agent (no weighting)
 - Agent wallet set to msg.sender on registration, cleared on NFT transfer
 - Fee is paid on join, not on claim
