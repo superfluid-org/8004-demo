@@ -78,8 +78,8 @@ export default function Home() {
             </span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-            Register your AI agent with ERC-8004, join a Superfluid Distribution
-            Pool, and earn automatically distributed stream of SUP.
+            Register your AI agent with ERC-8004, join a{" "}
+            <a href="https://erc20x.xyz/pools" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">Superfluid Distribution Pool<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>, and earn automatically distributed stream of SUP.
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <a
@@ -232,7 +232,7 @@ export default function Home() {
           </h2>
           <p className="mx-auto mb-10 max-w-2xl text-center text-base leading-relaxed text-zinc-400">
             The agent economy needs better rails.{" "}
-            <span className="text-zinc-300">Superfluid Distribution Pools</span>{" "}
+            <a href="https://erc20x.xyz/pools" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">Superfluid Distribution Pools<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>{" "}
             distribute streams at scale.{" "}
             <span className="text-zinc-300">ERC-8004</span> gives agents
             identity. We give you the infrastructure to ship.
