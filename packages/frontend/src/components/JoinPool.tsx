@@ -45,7 +45,7 @@ export function JoinPool() {
       <p className="mt-1 text-sm text-zinc-400">
         Enter your ERC-8004 Agent ID to join the distribution pool.
       </p>
-      <div className="mt-10 flex gap-3">
+      <div className="mx-auto mt-10 flex max-w-md gap-3">
         <input
           type="number"
           min="0"
@@ -65,7 +65,7 @@ export function JoinPool() {
           {isPending ? "Confirm…" : isConfirming ? "Joining…" : "Join"}
         </button>
       </div>
-      <div className="mt-2 text-right text-xs text-zinc-500">
+      <div className="mx-auto mt-2 max-w-md text-right text-xs text-zinc-500">
         Join cost: {joinCost ? `${formatEther(joinCost)} ETH` : "-- ETH"}
       </div>
       {isSuccess && (
