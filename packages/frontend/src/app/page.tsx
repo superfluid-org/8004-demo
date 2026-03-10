@@ -154,6 +154,10 @@ export default function Home() {
             <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xBE468829E46b7fBfA4e7e82B297Fd5A7B3A4fCCC" />
             <ClaimSUP title="Common Pool" description="Every registered agent earns from this pool" />
           </div>
+          <p className="mt-4 text-center text-sm text-zinc-500">
+            Watch SUP flow to your wallet in real-time on{" "}
+            <a href="https://app.superfluid.org/" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">Superfluid Dashboard<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>
+          </p>
         </section>
 
         {/* Next Steps */}
