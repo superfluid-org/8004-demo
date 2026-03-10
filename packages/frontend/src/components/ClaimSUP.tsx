@@ -40,18 +40,36 @@ const GDAv1ForwarderABI = [
   },
 ] as const;
 
-export function ClaimSUP() {
+interface ClaimSUPProps {
+  title?: string;
+  description?: string;
+  poolAddress?: Address;
+}
+
+export function ClaimSUP({ title = "Collect SUP in real-time", description = "Connect to the pool to receive SUP distributions in real-time.", poolAddress: poolAddressProp }: ClaimSUPProps) {
   const { address, isConnected } = useAccount();
   const queryClient = useQueryClient();
   const { agentPoolDistributor } = useContractConfig();
   const isDeployed = agentPoolDistributor !== ZERO;
 
-  const { data: poolAddress } = useReadContract({
+  const { data: poolAddressFromContract } = useReadContract({
     address: agentPoolDistributor,
     abi: AgentPoolDistributorABI,
     functionName: "pool",
-    query: { enabled: isDeployed },
+    query: { enabled: isDeployed && !poolAddressProp },
   });
+
+  const poolAddress = poolAddressProp ?? (poolAddressFromContract as Address | undefined);
+
+  const { data: memberUnits } = useReadContract({
+    address: poolAddress as Address,
+    abi: SuperfluidPoolABI,
+    functionName: "getUnits",
+    args: [address!],
+    query: { enabled: !!poolAddress && !!address },
+  });
+
+  const isMember = memberUnits !== undefined && BigInt(memberUnits.toString()) > BigInt(0);
 
   const { data: isPoolConnected, queryKey: connectedQueryKey } = useReadContract({
     address: GDA_FORWARDER,
@@ -105,57 +123,59 @@ export function ClaimSUP() {
   }
 
   const buttonLabel = isPoolConnected
-    ? "Connected ✓"
-    : isPending
-      ? "Confirm…"
-      : isConfirming
-        ? "Connecting…"
-        : "Connect To Pool";
+    ? "Connected"
+    : !isMember
+      ? "Not Eligible"
+      : isPending
+        ? "Confirm…"
+        : isConfirming
+          ? "Connecting…"
+          : "Connect To Pool";
 
   return (
-    <section className="rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
-      <h2 className="text-lg font-semibold text-white">Collect SUP in real-time</h2>
-      <p className="mt-1 text-sm text-zinc-400">
-        Connect to the pool to receive SUP distributions in real-time.
-      </p>
-      <div className="mt-4 flex items-center justify-between">
-        <div>
-          <p className="text-sm text-zinc-400">Total Received</p>
-          <div className="text-xl font-semibold text-accent-400">
-            {totalReceived !== undefined && memberFlowRate !== undefined ? (
-              <>
-                <FlowingBalance
-                  balance={BigInt(totalReceived.toString())}
-                  balanceTimestamp={Math.floor(Date.now() / 1000)}
-                  flowRate={BigInt(
-                    memberFlowRate.toString().replace("-", "")
-                  )}
-                  decimals={4}
-                />
-                {" SUP"}
-              </>
-            ) : (
-              "-- SUP"
-            )}
-          </div>
-        </div>
-      </div>
-      <button
-        disabled={!isConnected || !isDeployed || !poolAddress || isPending || isConfirming || isPoolConnected}
-        onClick={handleConnect}
-        className={`mt-4 w-full rounded-lg px-6 py-2 font-medium transition-colors disabled:cursor-not-allowed ${
-          isPoolConnected
-            ? "border border-accent-600/30 bg-accent-600/5 text-accent-400"
-            : "bg-accent-600 text-white hover:bg-accent-500 disabled:opacity-40"
-        }`}
-      >
-        {buttonLabel}
-      </button>
-      {error && (
-        <p className="mt-3 text-sm text-red-400 break-all">
-          {`Error: ${error.message.slice(0, 120)}`}
+    <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
+      <div>
+        <h2 className="text-lg font-semibold text-white">{title}</h2>
+        <p className="mt-1 text-sm text-zinc-400">
+          {description}
         </p>
-      )}
+      </div>
+      <div className="mt-auto pt-4">
+        <p className="text-sm text-zinc-400">Total received</p>
+        <div className="text-xl font-semibold text-accent-400">
+          {totalReceived !== undefined && memberFlowRate !== undefined ? (
+            <>
+              <FlowingBalance
+                balance={BigInt(totalReceived.toString())}
+                balanceTimestamp={Math.floor(Date.now() / 1000)}
+                flowRate={BigInt(
+                  memberFlowRate.toString().replace("-", "")
+                )}
+                decimals={4}
+              />
+              {" SUP"}
+            </>
+          ) : (
+            "-- SUP"
+          )}
+        </div>
+        <button
+          disabled={!isConnected || (!poolAddressProp && !isDeployed) || !poolAddress || !isMember || isPending || isConfirming || isPoolConnected}
+          onClick={handleConnect}
+          className={`mt-4 w-full rounded-lg px-6 py-2 font-medium transition-colors disabled:cursor-not-allowed ${
+            isPoolConnected || !isMember
+              ? "border border-accent-600/30 bg-accent-600/5 text-accent-400"
+              : "bg-accent-600 text-white hover:bg-accent-500 disabled:opacity-40"
+          }`}
+        >
+          {buttonLabel}
+        </button>
+        {error && (
+          <p className="mt-3 text-sm text-red-400 break-all">
+            {`Error: ${error.message.slice(0, 120)}`}
+          </p>
+        )}
+      </div>
     </section>
   );
 }

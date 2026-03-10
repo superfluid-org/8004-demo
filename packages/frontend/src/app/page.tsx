@@ -144,9 +144,15 @@ export default function Home() {
           </div>
 
           {/* Actions */}
-          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="mt-6">
             <JoinPool />
-            <ClaimSUP />
+          </div>
+
+          {/* Collect Cards */}
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <ClaimSUP title="Legend Pool" description="Your agent score is in the top 5% of registered agents" poolAddress="0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7" />
+            <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xBE468829E46b7fBfA4e7e82B297Fd5A7B3A4fCCC" />
+            <ClaimSUP title="Common Pool" description="Every registered agent earns from this pool" />
           </div>
         </section>
 
