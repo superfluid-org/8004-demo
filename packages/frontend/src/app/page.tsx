@@ -148,6 +148,13 @@ export default function Home() {
             <JoinPool />
           </div>
 
+          {/* Agent Score CTA */}
+          <p className="mt-6 text-center text-sm text-zinc-500">
+            Check your{" "}
+            <a href="https://8004classifier.pilou.work/" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">agent score<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>
+            {" "}to see which pools you qualify for
+          </p>
+
           {/* Collect Cards */}
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
             <ClaimSUP title="Legend Pool" description="Your agent score is in the top 5% of registered agents" poolAddress="0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7" />

@@ -12,6 +12,8 @@ import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
 import { useContractConfig } from "@/hooks/useContractConfig";
+import { usePoolSubgraph } from "@/hooks/usePoolSubgraph";
+import { formatFlowRate } from "@/utils/format";
 import { FlowingBalance } from "./FlowingBalance";
 
 const ZERO = "0x0000000000000000000000000000000000000000";
@@ -60,6 +62,16 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
   });
 
   const poolAddress = poolAddressProp ?? (poolAddressFromContract as Address | undefined);
+
+  const { data: poolSubgraphData } = usePoolSubgraph(poolAddress as string | undefined);
+
+  const UNITS_PER_AGENT = 10n;
+  const poolStreamRate = poolSubgraphData
+    ? `${formatFlowRate(poolSubgraphData.flowRate, "month")} SUP/mo`
+    : "-- SUP/mo";
+  const poolAgentCount = poolSubgraphData
+    ? (poolSubgraphData.totalUnits / UNITS_PER_AGENT).toString()
+    : "--";
 
   const { data: memberUnits } = useReadContract({
     address: poolAddress as Address,
@@ -133,14 +145,43 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
           : "Connect To Pool";
 
   return (
-    <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
+    <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8">
       <div>
-        <h2 className="text-lg font-semibold text-white">{title}</h2>
-        <p className="mt-1 text-sm text-zinc-400">
+        <div className="flex items-start justify-between">
+          <h2 className="text-lg font-semibold text-white">{title}</h2>
+          {poolAddress && (
+            <a
+              href={`https://explorer.superfluid.org/base-mainnet/pools/${poolAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View on Superfluid Explorer"
+              className="flex-shrink-0 ml-3 p-1 rounded-md text-zinc-500 hover:text-accent-400 hover:bg-accent-500/10 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          )}
+        </div>
+        <p className="mt-3 text-sm text-zinc-400 leading-relaxed">
           {description}
         </p>
       </div>
-      <div className="mt-auto pt-4">
+      {/* Per-pool stats */}
+      <div className="mt-8 grid grid-cols-2 gap-5">
+        <div>
+          <p className="text-xs font-medium text-zinc-500">Stream Rate</p>
+          <p className="mt-1.5 text-sm font-semibold text-white">{poolStreamRate}</p>
+        </div>
+        <div>
+          <p className="text-xs font-medium text-zinc-500">Earning Agents</p>
+          <p className="mt-1.5 text-sm font-semibold text-white">{poolAgentCount}</p>
+        </div>
+      </div>
+
+      <div className="mt-auto pt-8">
         <p className="text-sm text-zinc-400">Total received</p>
         <div className="text-xl font-semibold text-accent-400">
           {totalReceived !== undefined && memberFlowRate !== undefined ? (
@@ -162,7 +203,7 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
         <button
           disabled={!isConnected || (!poolAddressProp && !isDeployed) || !poolAddress || !isMember || isPending || isConfirming || isPoolConnected}
           onClick={handleConnect}
-          className={`mt-4 w-full rounded-lg px-6 py-2 font-medium transition-colors disabled:cursor-not-allowed ${
+          className={`mt-5 w-full rounded-lg px-6 py-2.5 font-medium transition-colors disabled:cursor-not-allowed ${
             isPoolConnected || !isMember
               ? "border border-accent-600/30 bg-accent-600/5 text-accent-400"
               : "bg-accent-600 text-white hover:bg-accent-500 disabled:opacity-40"

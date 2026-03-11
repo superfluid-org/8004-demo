@@ -12,6 +12,8 @@ interface ContractConfig {
   rpcUrl: string;
   scanBaseUrl: string;
   registerAgentUrl: string;
+  /** Additional pool addresses (Legend, Maestro) beyond the default contract pool */
+  additionalPools?: Address[];
 }
 
 const contracts: Record<number, ContractConfig> = {
@@ -24,6 +26,10 @@ const contracts: Record<number, ContractConfig> = {
     rpcUrl: "https://base-rpc.publicnode.com",
     scanBaseUrl: "https://8004scan.io",
     registerAgentUrl: "https://8004scan.io/create",
+    additionalPools: [
+      "0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7", // Legend Pool
+      "0xBE468829E46b7fBfA4e7e82B297Fd5A7B3A4fCCC", // Maestro Pool
+    ],
   },
   [baseSepolia.id]: {
     agentPoolDistributor: "0xefeC3A3C466709E17899d852BEEd916a198d34e3",
