@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount, useChainId, useReadContract } from "wagmi";
-import { type Address } from "viem";
+import { useChainId, useReadContract } from "wagmi";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
-import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
 import { useContractConfig } from "@/hooks/useContractConfig";
-import { formatFlowRate } from "@/utils/format";
 import { FlowingBalance } from "./FlowingBalance";
 import { MemberList } from "./MemberList";
 import { usePoolSubgraph } from "@/hooks/usePoolSubgraph";
@@ -17,7 +14,6 @@ const ZERO = "0x0000000000000000000000000000000000000000";
 
 export function PoolDashboard() {
   const [showMembers, setShowMembers] = useState(false);
-  const { address, isConnected } = useAccount();
   const { agentPoolDistributor } = useContractConfig();
   const isDeployed = agentPoolDistributor !== ZERO;
   const chainId = useChainId();
@@ -41,29 +37,10 @@ export function PoolDashboard() {
   ];
   const { data: aggregatedData } = useMultiPoolSubgraph(allPoolAddresses);
 
-  const { data: memberFlowRate } = useReadContract({
-    address: poolAddress as Address,
-    abi: SuperfluidPoolABI,
-    functionName: "getMemberFlowRate",
-    args: [address!],
-    query: { enabled: !!poolAddress && !!address, refetchInterval: 10000 },
-  });
-
-  const streamRate = subgraphData
-    ? `${formatFlowRate(subgraphData.flowRate, "month")} SUP/mo`
-    : "-- SUP/mo";
-
   const UNITS_PER_AGENT = 10n;
   const agentCount = subgraphData
     ? (subgraphData.totalUnits / UNITS_PER_AGENT).toString()
     : "--";
-
-  const yourShare =
-    !isConnected
-      ? "Connect wallet"
-      : memberFlowRate !== undefined
-        ? `${formatFlowRate(BigInt(memberFlowRate.toString().replace("-", "")), "month")} SUP/mo`
-        : "-- SUP/mo";
 
   return (
     <section className="flex flex-col gap-4">
@@ -100,15 +77,7 @@ export function PoolDashboard() {
           </div>
         </button>
       </div>
-      {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <StatCard label="Stream Rate" value={streamRate} />
-        <StatCard
-          label="Your Share"
-          value={yourShare}
-          muted={!isConnected}
-        />
-      </div>
+
 
       {/* Members Modal */}
       {showMembers && (
@@ -139,23 +108,4 @@ export function PoolDashboard() {
   );
 }
 
-function StatCard({
-  label,
-  value,
-  muted,
-}: {
-  label: string;
-  value: string;
-  muted?: boolean;
-}) {
-  return (
-    <div className="card-hover rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
-      <p className="text-sm font-medium text-zinc-400">{label}</p>
-      <p
-        className={`mt-1 text-2xl font-semibold ${muted ? "text-zinc-600" : "text-white"}`}
-      >
-        {value}
-      </p>
-    </div>
-  );
-}
+

@@ -12,6 +12,8 @@ import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
 import { useContractConfig } from "@/hooks/useContractConfig";
+import { usePoolSubgraph } from "@/hooks/usePoolSubgraph";
+import { formatFlowRate } from "@/utils/format";
 import { FlowingBalance } from "./FlowingBalance";
 
 const ZERO = "0x0000000000000000000000000000000000000000";
@@ -60,6 +62,16 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
   });
 
   const poolAddress = poolAddressProp ?? (poolAddressFromContract as Address | undefined);
+
+  const { data: poolSubgraphData } = usePoolSubgraph(poolAddress as string | undefined);
+
+  const UNITS_PER_AGENT = 10n;
+  const poolStreamRate = poolSubgraphData
+    ? `${formatFlowRate(poolSubgraphData.flowRate, "month")} SUP/mo`
+    : "-- SUP/mo";
+  const poolAgentCount = poolSubgraphData
+    ? (poolSubgraphData.totalUnits / UNITS_PER_AGENT).toString()
+    : "--";
 
   const { data: memberUnits } = useReadContract({
     address: poolAddress as Address,
@@ -140,6 +152,18 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
           {description}
         </p>
       </div>
+      {/* Per-pool stats */}
+      <div className="mt-4 grid grid-cols-2 gap-3">
+        <div>
+          <p className="text-xs font-medium text-zinc-500">Stream Rate</p>
+          <p className="text-sm font-semibold text-white">{poolStreamRate}</p>
+        </div>
+        <div>
+          <p className="text-xs font-medium text-zinc-500">Earning Agents</p>
+          <p className="text-sm font-semibold text-white">{poolAgentCount}</p>
+        </div>
+      </div>
+
       <div className="mt-auto pt-4">
         <p className="text-sm text-zinc-400">Total received</p>
         <div className="text-xl font-semibold text-accent-400">
