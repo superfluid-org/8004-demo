@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount, useChainId, useReadContract } from "wagmi";
 import { type Address } from "viem";
 import { AgentPoolDistributorABI } from "@/abi/AgentPoolDistributor";
 import { SuperfluidPoolABI } from "@/abi/SuperfluidPool";
@@ -10,6 +10,8 @@ import { formatFlowRate } from "@/utils/format";
 import { FlowingBalance } from "./FlowingBalance";
 import { MemberList } from "./MemberList";
 import { usePoolSubgraph } from "@/hooks/usePoolSubgraph";
+import { useMultiPoolSubgraph } from "@/hooks/useMultiPoolSubgraph";
+import { getContractConfig } from "@/config/contracts";
 
 const ZERO = "0x0000000000000000000000000000000000000000";
 
@@ -18,6 +20,8 @@ export function PoolDashboard() {
   const { address, isConnected } = useAccount();
   const { agentPoolDistributor } = useContractConfig();
   const isDeployed = agentPoolDistributor !== ZERO;
+  const chainId = useChainId();
+  const { additionalPools } = getContractConfig(chainId);
 
   const { data: poolAddress } = useReadContract({
     address: agentPoolDistributor,
@@ -29,6 +33,13 @@ export function PoolDashboard() {
   const { data: subgraphData } = usePoolSubgraph(
     poolAddress as string | undefined
   );
+
+  // Aggregate all pools (Common + Legend + Maestro) for the total SUP distributed
+  const allPoolAddresses = [
+    poolAddress as string | undefined,
+    ...(additionalPools ?? []),
+  ];
+  const { data: aggregatedData } = useMultiPoolSubgraph(allPoolAddresses);
 
   const { data: memberFlowRate } = useReadContract({
     address: poolAddress as Address,
@@ -56,16 +67,16 @@ export function PoolDashboard() {
 
   return (
     <section className="flex flex-col gap-4">
-      {/* SUP Distributed to Agents — full width */}
+      {/* SUP Distributed to Agents — full width (aggregated across all pools) */}
       <div className="rounded-xl border border-accent-500/10 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-6">
         <p className="text-sm font-medium text-zinc-400">SUP Distributed to Agents</p>
         <div className="mt-1 text-3xl font-semibold text-accent-400 streaming-number">
-          {subgraphData ? (
+          {aggregatedData ? (
             <>
               <FlowingBalance
-                balance={subgraphData.totalAmountDistributedUntilUpdatedAt}
-                balanceTimestamp={subgraphData.updatedAtTimestamp}
-                flowRate={subgraphData.flowRate}
+                balance={aggregatedData.totalAmountDistributedUntilUpdatedAt}
+                balanceTimestamp={aggregatedData.updatedAtTimestamp}
+                flowRate={aggregatedData.flowRate}
                 decimals={4}
               />
               {" SUP"}
