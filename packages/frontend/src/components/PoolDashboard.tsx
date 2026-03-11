@@ -67,40 +67,42 @@ export function PoolDashboard() {
 
   return (
     <section className="flex flex-col gap-4">
-      {/* SUP Distributed to Agents — full width (aggregated across all pools) */}
-      <div className="rounded-xl border border-accent-500/10 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-6">
-        <p className="text-sm font-medium text-zinc-400">SUP Distributed to Agents</p>
-        <div className="mt-1 text-3xl font-semibold text-accent-400 streaming-number">
-          {aggregatedData ? (
-            <>
-              <FlowingBalance
-                balance={aggregatedData.totalAmountDistributedUntilUpdatedAt}
-                balanceTimestamp={aggregatedData.updatedAtTimestamp}
-                flowRate={aggregatedData.flowRate}
-                decimals={4}
-              />
-              {" SUP"}
-            </>
-          ) : (
-            "-- SUP"
-          )}
+      {/* SUP Distributed + Earning Agents — side by side */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-accent-500/10 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-6">
+          <p className="text-sm font-medium text-zinc-400">SUP Distributed to Agents</p>
+          <div className="mt-1 text-3xl font-semibold text-accent-400 streaming-number">
+            {aggregatedData ? (
+              <>
+                <FlowingBalance
+                  balance={aggregatedData.totalAmountDistributedUntilUpdatedAt}
+                  balanceTimestamp={aggregatedData.updatedAtTimestamp}
+                  flowRate={aggregatedData.flowRate}
+                  decimals={4}
+                />
+                {" SUP"}
+              </>
+            ) : (
+              "-- SUP"
+            )}
+          </div>
         </div>
-      </div>
-      {/* Three stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCard label="Stream Rate" value={streamRate} />
         <button
           onClick={() => setShowMembers(true)}
-          className="card-hover rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6 text-left transition-colors hover:border-accent-500/30 cursor-pointer"
+          className="rounded-xl border border-accent-500/10 bg-gradient-to-br from-zinc-900 to-zinc-900/50 p-6 text-left transition-colors hover:border-accent-500/30 cursor-pointer"
         >
           <p className="text-sm font-medium text-zinc-400">Earning Agents</p>
           <div className="mt-1 flex items-center justify-between">
-            <p className="text-2xl font-semibold text-white">
+            <p className="text-3xl font-semibold text-white">
               {!isDeployed ? "Not deployed" : agentCount}
             </p>
             <span className="text-xs text-zinc-500">View →</span>
           </div>
         </button>
+      </div>
+      {/* Stat cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <StatCard label="Stream Rate" value={streamRate} />
         <StatCard
           label="Your Share"
           value={yourShare}
