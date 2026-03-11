@@ -145,26 +145,26 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
           : "Connect To Pool";
 
   return (
-    <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-7">
+    <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8">
       <div>
         <h2 className="text-lg font-semibold text-white">{title}</h2>
-        <p className="mt-2 text-sm text-zinc-400">
+        <p className="mt-3 text-sm text-zinc-400 leading-relaxed">
           {description}
         </p>
       </div>
       {/* Per-pool stats */}
-      <div className="mt-6 grid grid-cols-2 gap-4">
+      <div className="mt-8 grid grid-cols-2 gap-5">
         <div>
           <p className="text-xs font-medium text-zinc-500">Stream Rate</p>
-          <p className="mt-1 text-sm font-semibold text-white">{poolStreamRate}</p>
+          <p className="mt-1.5 text-sm font-semibold text-white">{poolStreamRate}</p>
         </div>
         <div>
           <p className="text-xs font-medium text-zinc-500">Earning Agents</p>
-          <p className="mt-1 text-sm font-semibold text-white">{poolAgentCount}</p>
+          <p className="mt-1.5 text-sm font-semibold text-white">{poolAgentCount}</p>
         </div>
       </div>
 
-      <div className="mt-auto pt-6">
+      <div className="mt-auto pt-8">
         <p className="text-sm text-zinc-400">Total received</p>
         <div className="text-xl font-semibold text-accent-400">
           {totalReceived !== undefined && memberFlowRate !== undefined ? (
