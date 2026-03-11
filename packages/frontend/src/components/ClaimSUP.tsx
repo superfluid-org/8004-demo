@@ -147,7 +147,24 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
   return (
     <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-8">
       <div>
-        <h2 className="text-lg font-semibold text-white">{title}</h2>
+        <div className="flex items-start justify-between">
+          <h2 className="text-lg font-semibold text-white">{title}</h2>
+          {poolAddress && (
+            <a
+              href={`https://explorer.superfluid.org/base-mainnet/pools/${poolAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View on Superfluid Explorer"
+              className="flex-shrink-0 ml-3 p-1 rounded-md text-zinc-500 hover:text-accent-400 hover:bg-accent-500/10 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          )}
+        </div>
         <p className="mt-3 text-sm text-zinc-400 leading-relaxed">
           {description}
         </p>
