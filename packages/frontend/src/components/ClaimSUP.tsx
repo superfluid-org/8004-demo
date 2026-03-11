@@ -145,26 +145,26 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
           : "Connect To Pool";
 
   return (
-    <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
+    <section className="flex flex-col rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-7">
       <div>
         <h2 className="text-lg font-semibold text-white">{title}</h2>
-        <p className="mt-1 text-sm text-zinc-400">
+        <p className="mt-2 text-sm text-zinc-400">
           {description}
         </p>
       </div>
       {/* Per-pool stats */}
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="mt-6 grid grid-cols-2 gap-4">
         <div>
           <p className="text-xs font-medium text-zinc-500">Stream Rate</p>
-          <p className="text-sm font-semibold text-white">{poolStreamRate}</p>
+          <p className="mt-1 text-sm font-semibold text-white">{poolStreamRate}</p>
         </div>
         <div>
           <p className="text-xs font-medium text-zinc-500">Earning Agents</p>
-          <p className="text-sm font-semibold text-white">{poolAgentCount}</p>
+          <p className="mt-1 text-sm font-semibold text-white">{poolAgentCount}</p>
         </div>
       </div>
 
-      <div className="mt-auto pt-4">
+      <div className="mt-auto pt-6">
         <p className="text-sm text-zinc-400">Total received</p>
         <div className="text-xl font-semibold text-accent-400">
           {totalReceived !== undefined && memberFlowRate !== undefined ? (
@@ -186,7 +186,7 @@ export function ClaimSUP({ title = "Collect SUP in real-time", description = "Co
         <button
           disabled={!isConnected || (!poolAddressProp && !isDeployed) || !poolAddress || !isMember || isPending || isConfirming || isPoolConnected}
           onClick={handleConnect}
-          className={`mt-4 w-full rounded-lg px-6 py-2 font-medium transition-colors disabled:cursor-not-allowed ${
+          className={`mt-5 w-full rounded-lg px-6 py-2.5 font-medium transition-colors disabled:cursor-not-allowed ${
             isPoolConnected || !isMember
               ? "border border-accent-600/30 bg-accent-600/5 text-accent-400"
               : "bg-accent-600 text-white hover:bg-accent-500 disabled:opacity-40"
