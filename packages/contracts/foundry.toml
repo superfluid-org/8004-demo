@@ -12,6 +12,12 @@ remappings = [
     "poc-ccip-8004/=lib/poc-ccip-8004/packages/contracts/",
 ]
 
+# Deployed library addresses (Base Sepolia)
+# Update when deploying to new chains
+libraries = [
+    "lib/poc-ccip-8004/packages/contracts/src/Lib8004ScoreCCIPViewer.sol:Lib8004ScoreCCIPViewer:0x08022410902dcf03b5e8211472cfa8d25b6162a2"
+]
+
 [lint]
 lint_on_build = false
 
