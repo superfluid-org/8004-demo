@@ -140,6 +140,21 @@ contract MaestroPoolManager is Ownable {
         emit AgentLeft(agentId, agentWallet);
     }
 
+    // ─── Admin ───────────────────────────────────────────────────────────────────
+
+    /// @notice Batch-assign pool units to multiple members. Only callable by owner.
+    /// @param members Array of member addresses to update
+    /// @param units   Array of unit amounts to assign (replaces current units)
+    function batchUpdateMembers(address[] calldata members, uint128[] calldata units)
+        external
+        onlyOwner
+    {
+        require(members.length == units.length, "length mismatch");
+        for (uint256 i = 0; i < members.length; i++) {
+            pool.updateMemberUnits(members[i], units[i]);
+        }
+    }
+
     // ─── View ────────────────────────────────────────────────────────────────────
 
     /// @notice Returns the minimum score required (human-readable, 2 decimals)
