@@ -12,11 +12,11 @@ remappings = [
     "poc-ccip-8004/=lib/poc-ccip-8004/packages/contracts/",
 ]
 
-# Deploy profile: pre-linked library addresses (Base Sepolia)
+# Deploy profile: pre-linked library addresses (Base Mainnet)
 # Usage: FOUNDRY_PROFILE=deploy forge script ...
 [profile.deploy]
 libraries = [
-    "lib/poc-ccip-8004/packages/contracts/src/Lib8004ScoreCCIPViewer.sol:Lib8004ScoreCCIPViewer:0x08022410902dcf03b5e8211472cfa8d25b6162a2"
+    "lib/poc-ccip-8004/packages/contracts/src/Lib8004ScoreCCIPViewer.sol:Lib8004ScoreCCIPViewer:0xf0dd34a80dec0a2929abcc00084177cf31fc77e7"
 ]
 
 [lint]
