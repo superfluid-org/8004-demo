@@ -141,23 +141,6 @@ contract MaestroPoolManager is Ownable {
         emit AgentJoined(agentId, agentWallet, score);
     }
 
-    // ─── Leave ───────────────────────────────────────────────────────────────────
-
-    /// @notice Leave the pool. Removes the agent's units.
-    /// @param agentId The ERC-8004 agent identity token ID
-    function leavePool(uint256 agentId) external {
-        if (identityRegistry.ownerOf(agentId) != msg.sender) revert NotAgentOwner();
-        if (!hasJoined[agentId]) revert NotMember();
-
-        address agentWallet = identityRegistry.getAgentWallet(agentId);
-        if (agentWallet == address(0)) agentWallet = msg.sender;
-
-        pool.decreaseMemberUnits(agentWallet, UNITS_PER_AGENT);
-        hasJoined[agentId] = false;
-
-        emit AgentLeft(agentId, agentWallet);
-    }
-
     // ─── Admin ───────────────────────────────────────────────────────────────────
 
     /// @notice Batch-assign pool units to multiple members. Only callable by owner.
@@ -173,11 +156,4 @@ contract MaestroPoolManager is Ownable {
         }
     }
 
-    // ─── View ────────────────────────────────────────────────────────────────────
-
-    /// @notice Returns the minimum score required (human-readable, 2 decimals)
-    /// @return The minimum score scaled by 100 (e.g. 5000 = 50.00)
-    function minScore() external pure returns (uint256) {
-        return MIN_SCORE;
-    }
 }
