@@ -15,7 +15,6 @@ const DRY_RUN = process.env.DRY_RUN === "true";
 
 const abi = parseAbi([
   "function batchUpdateMembers(uint256[] agentIds, address[] members, uint128[] units) external",
-  "function hasJoined(uint256 agentId) view returns (bool)",
   "function owner() view returns (address)",
 ]);
 
@@ -90,34 +89,8 @@ async function main() {
   }
   console.log(`✅ Signer is contract owner`);
 
-  // Check which agents have already joined
-  const alreadyJoined: bigint[] = [];
-  const toUpdate: CsvRow[] = [];
-
-  for (const row of rows) {
-    const joined = await publicClient.readContract({
-      address: MAESTRO_POOL_MANAGER,
-      abi,
-      functionName: "hasJoined",
-      args: [row.agentId],
-    });
-    if (joined) {
-      alreadyJoined.push(row.agentId);
-    } else {
-      toUpdate.push(row);
-    }
-  }
-
-  console.log(`⏭️  Already joined: ${alreadyJoined.length}`);
-  console.log(`📝 To update: ${toUpdate.length}`);
-
-  if (toUpdate.length === 0) {
-    console.log("✅ Nothing to do — all agents already joined");
-    return;
-  }
-
   // Batch and send
-  const batches = chunk(toUpdate, BATCH_SIZE);
+  const batches = chunk(rows, BATCH_SIZE);
   console.log(`📦 Split into ${batches.length} batches of up to ${BATCH_SIZE}\n`);
 
   for (let i = 0; i < batches.length; i++) {
