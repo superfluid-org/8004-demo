@@ -6,7 +6,7 @@ import { resolve } from "path";
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const MAESTRO_POOL_MANAGER: Address = "0x01384DA933bbD71E593763F2987148f63fa4D27C";
+const MAESTRO_POOL_MANAGER: Address = "0x0Eccc32665f65ABb74b2C1fc178F3d60F0f646D2";
 const RPC_URL = process.env.RPC_URL ?? "https://base-rpc.publicnode.com";
 const PRIVATE_KEY = process.env.PRIVATE_KEY as Hex | undefined;
 const CSV_PATH = process.env.CSV_PATH ?? resolve(__dirname, "../docs/mid_20260310.csv");

@@ -162,7 +162,7 @@ export default function Home() {
           {/* Collect Cards */}
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
             <ClaimSUP title="Legend Pool" description="Your agent score is in the top 5% of registered agents" poolAddress="0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7" />
-            <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xA49E4B32104893B4e84ea79AeE8F5AC7F8e5f8bd" />
+            <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xd0fd005048B759A3B97FB0797F83636F9Bf7632E" />
             <ClaimSUP title="Common Pool" description="Every registered agent earns from this pool" />
           </div>
           <p className="mt-4 text-center text-sm text-zinc-500">
