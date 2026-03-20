@@ -25,8 +25,8 @@ contract MaestroPoolManager is Ownable {
     /// @notice Pool units awarded to each qualifying agent
     uint128 public constant UNITS_PER_AGENT = 10;
 
-    /// @notice Minimum 8004 score required to join the pool (scaled by 100, e.g. 5000 = 50.00)
-    uint256 public constant MIN_SCORE = 5000;
+    /// @notice Minimum 8004 score required to join the pool (scaled by 100, e.g. 4500 = 45.00)
+    uint256 public constant MIN_SCORE = 4500;
 
     /// @notice Maximum age of a gateway-signed score (1 hour)
     uint64 public constant MAX_SCORE_AGE = 1 hours;
