@@ -31,6 +31,12 @@ contract MaestroPoolManager is Ownable {
     /// @notice Maximum age of a gateway-signed score (1 hour)
     uint64 public constant MAX_SCORE_AGE = 1 hours;
 
+    /// @notice ETH fee required to join the pool
+    uint256 public constant JOIN_FEE = 0.0001 ether;
+
+    address public immutable FEE_COLLECTOR;
+
+
     // ─── Immutables ──────────────────────────────────────────────────────────────
 
     IIdentityRegistry public immutable identityRegistry;
@@ -55,18 +61,22 @@ contract MaestroPoolManager is Ownable {
     error AgentNotRegistered();
     error ScoreBelowMinimum(uint256 score, uint256 minScore);
     error PoolCreationFailed();
-
+    error InsufficientFee();
+    error FeeTransferFailed();
+    
     // ─── Constructor ─────────────────────────────────────────────────────────────
 
     /// @param _identityRegistry ERC-8004 Identity Registry address
     /// @param _gdaForwarder     Superfluid GDA v1 Forwarder address
     /// @param _superToken       Super Token that the pool distributes
     /// @param _owner            Contract owner (admin)
+    /// @param _feeCollector     Address to collect join fees
     constructor(
         address _identityRegistry,
         address _gdaForwarder,
         address _superToken,
-        address _owner
+        address _owner,
+        address _feeCollector
     ) Ownable(_owner) {
         identityRegistry = IIdentityRegistry(_identityRegistry);
         gdaForwarder = IGDAv1Forwarder(_gdaForwarder);
@@ -78,6 +88,7 @@ contract MaestroPoolManager is Ownable {
             gdaForwarder.createPool(_superToken, address(this), config);
         if (!success) revert PoolCreationFailed();
         pool = _pool;
+        FEE_COLLECTOR = _feeCollector;
     }
 
     // ─── EIP-3668: Request (always reverts) ──────────────────────────────────────
@@ -101,12 +112,15 @@ contract MaestroPoolManager is Ownable {
     ///      If qualified, adds the agent's wallet to the Superfluid pool.
     /// @param response   ABI-encoded gateway response (requester, agentId, score, computedAt, sig)
     /// @param extraData  Original request data for cross-check (requester, agentId)
-    function membershipCallback(bytes calldata response, bytes calldata extraData) external {
+    function membershipCallback(bytes calldata response, bytes calldata extraData) external payable {
+        if (msg.value < JOIN_FEE) revert InsufficientFee();
+
         (address requester, uint256 agentId, uint256 score,) =
             Lib8004ScoreCCIPViewer.verifyAndDecodeScore(response, extraData, MAX_SCORE_AGE);
 
         // Verify ownership again in callback (requester came from signed payload)
         if (identityRegistry.ownerOf(agentId) != requester) revert NotAgentOwner();
+        if (hasJoined[agentId]) revert AlreadyJoined();
 
         // Score gate
         if (score < MIN_SCORE) {
@@ -116,6 +130,10 @@ contract MaestroPoolManager is Ownable {
 
         address agentWallet = identityRegistry.getAgentWallet(agentId);
         if (agentWallet == address(0)) revert AgentNotRegistered();
+
+        // Forward fee to collector
+        (bool sent,) = FEE_COLLECTOR.call{value: msg.value}("");
+        if (!sent) revert FeeTransferFailed();
 
         pool.increaseMemberUnits(agentWallet, UNITS_PER_AGENT);
         hasJoined[agentId] = true;
