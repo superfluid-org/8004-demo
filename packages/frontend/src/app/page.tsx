@@ -5,6 +5,7 @@ import { JoinMaestroPool } from "@/components/JoinMaestroPool";
 import { ClaimSUP } from "@/components/ClaimSUP";
 import { MemberList } from "@/components/MemberList";
 import { ContractStatus } from "@/components/ContractStatus";
+import { Countdown } from "@/components/Countdown";
 import { IS_DEV_MODE } from "@/config/contracts";
 
 export default function Home() {
@@ -132,9 +133,12 @@ export default function Home() {
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
             Join the Pool
           </p>
-          <h2 className="mb-12 text-center text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="mb-6 text-center text-2xl font-bold text-white sm:text-3xl">
             Start Earning
           </h2>
+          <div className="mb-12">
+            <Countdown />
+          </div>
 
           {/* Contract Status Banner */}
           <ContractStatus />
