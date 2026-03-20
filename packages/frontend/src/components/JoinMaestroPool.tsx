@@ -87,7 +87,7 @@ export function JoinMaestroPool() {
           functionName: "membershipCallback",
           args: [response, extraData],
           value: joinFee ?? BigInt("100000000000000"), // fallback 0.0001 ETH
-          gas: 300_000n,
+          gas: 500_000n,
         },
         {
           onSuccess: (hash) => {
