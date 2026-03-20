@@ -58,14 +58,19 @@ export function Countdown() {
   }
 
   return (
-    <div className="flex items-center justify-center gap-3">
-      <CountdownUnit value={timeLeft.days} label="days" />
-      <span className="text-xl font-bold text-zinc-600">:</span>
-      <CountdownUnit value={timeLeft.hours} label="hrs" />
-      <span className="text-xl font-bold text-zinc-600">:</span>
-      <CountdownUnit value={timeLeft.minutes} label="min" />
-      <span className="text-xl font-bold text-zinc-600">:</span>
-      <CountdownUnit value={timeLeft.seconds} label="sec" />
+    <div className="flex flex-col items-center gap-3">
+      <p className="text-sm text-zinc-400">
+        Join a pool before the campaign ends to start earning SUP
+      </p>
+      <div className="flex items-center justify-center gap-3">
+        <CountdownUnit value={timeLeft.days} label="days" />
+        <span className="text-xl font-bold text-zinc-600">:</span>
+        <CountdownUnit value={timeLeft.hours} label="hrs" />
+        <span className="text-xl font-bold text-zinc-600">:</span>
+        <CountdownUnit value={timeLeft.minutes} label="min" />
+        <span className="text-xl font-bold text-zinc-600">:</span>
+        <CountdownUnit value={timeLeft.seconds} label="sec" />
+      </div>
     </div>
   );
 }
