@@ -18,6 +18,10 @@ libraries = [
     "lib/poc-ccip-8004/packages/contracts/src/Lib8004ScoreCCIPViewer.sol:Lib8004ScoreCCIPViewer:0x08022410902dcf03b5e8211472cfa8d25b6162a2"
 ]
 
+# Test profile: no pre-linked library so Foundry auto-deploys it
+[profile.test]
+libraries = []
+
 [lint]
 lint_on_build = false
 
