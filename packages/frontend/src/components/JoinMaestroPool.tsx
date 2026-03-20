@@ -201,7 +201,7 @@ export function JoinMaestroPool() {
         </button>
       </div>
       <div className="mx-auto mt-2 max-w-md text-right text-xs text-zinc-500">
-        Join fee: {joinFee ? `${formatEther(joinFee)} ETH` : "0.0001 ETH"}
+        Join cost: {joinFee ? `${formatEther(joinFee)} ETH` : "0.0001 ETH"}
       </div>
 
       {/* CCIP Read Flow Progress */}
