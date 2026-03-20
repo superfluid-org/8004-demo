@@ -50,14 +50,11 @@ contract MaestroPoolManager is Ownable {
     // ─── Events ──────────────────────────────────────────────────────────────────
 
     event AgentJoined(uint256 indexed agentId, address indexed agentWallet, uint256 score);
-    event AgentLeft(uint256 indexed agentId, address indexed agentWallet);
-    event AgentRejected(uint256 indexed agentId, uint256 score, uint256 minScore);
 
     // ─── Errors ──────────────────────────────────────────────────────────────────
 
     error NotAgentOwner();
     error AlreadyJoined();
-    error NotMember();
     error AgentNotRegistered();
     error ScoreBelowMinimum(uint256 score, uint256 minScore);
     error PoolCreationFailed();
@@ -124,7 +121,6 @@ contract MaestroPoolManager is Ownable {
 
         // Score gate
         if (score < MIN_SCORE) {
-            emit AgentRejected(agentId, score, MIN_SCORE);
             revert ScoreBelowMinimum(score, MIN_SCORE);
         }
 
