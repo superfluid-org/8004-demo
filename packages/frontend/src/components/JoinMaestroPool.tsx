@@ -136,16 +136,7 @@ export function JoinMaestroPool() {
     <section className="rounded-xl border border-zinc-800/50 bg-zinc-900/50 p-6">
       <h2 className="text-lg font-semibold text-white">Join Maestro Pool</h2>
       <p className="mt-1 text-sm text-zinc-400 leading-relaxed">
-        The Maestro Pool requires a minimum{" "}
-        <a
-          href="https://8004classifier.pilou.work/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-accent-400 hover:text-accent-300 transition-colors"
-        >
-          8004 classifier score
-          <span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span>
-        </a>{" "}
+        The Maestro Pool requires a minimum overall score
         of <span className="font-semibold text-white">{minScoreDisplay}</span>.
         Scores are fetched and verified using{" "}
         <a
