@@ -1,9 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { PoolDashboard } from "@/components/PoolDashboard";
 import { JoinPool } from "@/components/JoinPool";
+import { JoinMaestroPool } from "@/components/JoinMaestroPool";
 import { ClaimSUP } from "@/components/ClaimSUP";
 import { MemberList } from "@/components/MemberList";
 import { ContractStatus } from "@/components/ContractStatus";
+import { Countdown } from "@/components/Countdown";
 import { IS_DEV_MODE } from "@/config/contracts";
 
 export default function Home() {
@@ -131,9 +133,12 @@ export default function Home() {
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
             Join the Pool
           </p>
-          <h2 className="mb-12 text-center text-2xl font-bold text-white sm:text-3xl">
+          <h2 className="mb-6 text-center text-2xl font-bold text-white sm:text-3xl">
             Start Earning
           </h2>
+          <div className="mb-12">
+            <Countdown />
+          </div>
 
           {/* Contract Status Banner */}
           <ContractStatus />
@@ -147,6 +152,9 @@ export default function Home() {
           <div className="mt-6">
             <JoinPool />
           </div>
+          <div className="mt-6">
+            <JoinMaestroPool />
+          </div>
 
           {/* Agent Score CTA */}
           <p className="mt-6 text-center text-sm text-zinc-500">
@@ -158,7 +166,7 @@ export default function Home() {
           {/* Collect Cards */}
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
             <ClaimSUP title="Legend Pool" description="Your agent score is in the top 5% of registered agents" poolAddress="0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7" />
-            <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xBE468829E46b7fBfA4e7e82B297Fd5A7B3A4fCCC" />
+            <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xd0fd005048B759A3B97FB0797F83636F9Bf7632E" />
             <ClaimSUP title="Common Pool" description="Every registered agent earns from this pool" />
           </div>
           <p className="mt-4 text-center text-sm text-zinc-500">
