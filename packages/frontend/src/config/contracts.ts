@@ -6,6 +6,7 @@ export const IS_DEV_MODE =
 
 interface ContractConfig {
   agentPoolDistributor: Address;
+  maestroPoolManager?: Address;
   identityRegistry: Address;
   deployBlock: bigint;
   subgraphUrl: string;
@@ -19,6 +20,7 @@ interface ContractConfig {
 const contracts: Record<number, ContractConfig> = {
   [base.id]: {
     agentPoolDistributor: "0x15dcC5564908a3A2C4C7b4659055d0B9e1489A70",
+    maestroPoolManager: "0x01384DA933bbD71E593763F2987148f63fa4D27C",
     identityRegistry: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
     deployBlock: BigInt(42530672),
     subgraphUrl:
@@ -28,7 +30,7 @@ const contracts: Record<number, ContractConfig> = {
     registerAgentUrl: "https://8004scan.io/create",
     additionalPools: [
       "0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7", // Legend Pool
-      "0xBE468829E46b7fBfA4e7e82B297Fd5A7B3A4fCCC", // Maestro Pool
+      "0xA49E4B32104893B4e84ea79AeE8F5AC7F8e5f8bd", // Maestro Pool (via MaestroPoolManager)
     ],
   },
   [baseSepolia.id]: {
