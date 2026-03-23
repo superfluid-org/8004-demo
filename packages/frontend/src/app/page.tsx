@@ -15,15 +15,20 @@ export default function Home() {
       <header className="sticky top-0 z-50 border-b border-zinc-800/50 bg-zinc-950/80 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4">
         <div className="mx-auto max-w-5xl">
           {/* Mobile: logo centered, wallet below */}
-          <div className="flex items-center justify-between sm:hidden">
-            <div className="flex items-center gap-2">
-              <span className="text-base font-bold tracking-tight text-white">
-                ERC-8004
-              </span>
-              <span className="text-base text-zinc-500">×</span>
-              <img src="/superfluid-logo-new.png" alt="Superfluid" className="h-5" />
+          <div className="flex flex-col gap-2 sm:hidden">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-base font-bold tracking-tight text-white">
+                  ERC-8004
+                </span>
+                <span className="text-base text-zinc-500">×</span>
+                <img src="/superfluid-logo-new.png" alt="Superfluid" className="h-5" />
+              </div>
+              <ConnectButton showBalance={false} />
             </div>
-            <ConnectButton showBalance={false} />
+            <div className="flex justify-center">
+              <Countdown compact />
+            </div>
           </div>
           {/* Desktop: full navbar */}
           <div className="hidden sm:flex items-center justify-between">
@@ -59,6 +64,8 @@ export default function Home() {
               </span>
               <span className="text-lg text-zinc-500">×</span>
               <img src="/superfluid-logo-new.png" alt="Superfluid" className="h-6" />
+              <span className="text-zinc-700">|</span>
+              <Countdown compact />
             </div>
             <ConnectButton showBalance={false} />
           </div>
@@ -101,6 +108,51 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Start Earning */}
+        <section id="join" className="scroll-mt-20 pb-24 sm:pb-40">
+          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
+            Join the Pool
+          </p>
+          <h2 className="mb-6 text-center text-2xl font-bold text-white sm:text-3xl">
+            Start Earning
+          </h2>
+          {/* Contract Status Banner */}
+          <ContractStatus />
+
+          {/* Stats */}
+          <div className="mt-6">
+            <PoolDashboard />
+          </div>
+
+          {/* Actions */}
+          <div className="mt-6">
+            <JoinPool />
+          </div>
+
+          {/* Agent Score CTA */}
+          <p className="mt-6 text-center text-sm text-zinc-500">
+            Check your{" "}
+            <a href="https://8004classifier.pilou.work/" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">agent score<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>
+            {" "}to see which pools you qualify for
+          </p>
+
+          {/* Collect Cards */}
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <ClaimSUP title="Legend Pool" description="Your agent score is in the top 5% of registered agents" poolAddress="0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7" />
+            <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xd0fd005048B759A3B97FB0797F83636F9Bf7632E" />
+            <ClaimSUP title="Common Pool" description="Every registered agent earns from this pool" />
+          </div>
+
+          {/* Join Maestro Pool */}
+          <div className="mt-6">
+            <JoinMaestroPool />
+          </div>
+          <p className="mt-4 text-center text-sm text-zinc-500">
+            Watch SUP flow to your wallet in real-time on{" "}
+            <a href="https://app.superfluid.org/" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">Superfluid Dashboard<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>
+          </p>
+        </section>
+
         {/* How It Works */}
         <section className="pb-24 sm:pb-40">
           <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
@@ -126,53 +178,6 @@ export default function Home() {
               description="Just like that SUP streams to your wallet. And you can claim it anytime."
             />
           </div>
-        </section>
-
-        {/* Start Earning */}
-        <section id="join" className="scroll-mt-20 pb-24 sm:pb-40">
-          <p className="mb-2 text-center text-sm font-medium uppercase tracking-widest text-accent-400/60">
-            Join the Pool
-          </p>
-          <h2 className="mb-6 text-center text-2xl font-bold text-white sm:text-3xl">
-            Start Earning
-          </h2>
-          <div className="mb-12">
-            <Countdown />
-          </div>
-
-          {/* Contract Status Banner */}
-          <ContractStatus />
-
-          {/* Stats */}
-          <div className="mt-6">
-            <PoolDashboard />
-          </div>
-
-          {/* Actions */}
-          <div className="mt-6">
-            <JoinPool />
-          </div>
-          <div className="mt-6">
-            <JoinMaestroPool />
-          </div>
-
-          {/* Agent Score CTA */}
-          <p className="mt-6 text-center text-sm text-zinc-500">
-            Check your{" "}
-            <a href="https://8004classifier.pilou.work/" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">agent score<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>
-            {" "}to see which pools you qualify for
-          </p>
-
-          {/* Collect Cards */}
-          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-            <ClaimSUP title="Legend Pool" description="Your agent score is in the top 5% of registered agents" poolAddress="0x72AB3a3459599Bbd2ccdE2db742565f8C50a2Cf7" />
-            <ClaimSUP title="Maestro Pool" description="Your agent score is in the top 10% of registered agents" poolAddress="0xd0fd005048B759A3B97FB0797F83636F9Bf7632E" />
-            <ClaimSUP title="Common Pool" description="Every registered agent earns from this pool" />
-          </div>
-          <p className="mt-4 text-center text-sm text-zinc-500">
-            Watch SUP flow to your wallet in real-time on{" "}
-            <a href="https://app.superfluid.org/" target="_blank" rel="noopener noreferrer" className="text-accent-400 transition-colors hover:text-accent-300">Superfluid Dashboard<span className="inline-block ml-0.5 text-[0.75em] align-baseline">↗</span></a>
-          </p>
         </section>
 
         {/* Next Steps */}
